@@ -1,0 +1,22 @@
+<table>
+  <ng-container *ngIf="view?.id_view">
+  <tr>
+    <th>ID</th>
+    <td>{{view.id_view}}</td>
+  </tr>
+  <tr>
+    <th>Author</th>
+    <td>{{view.author}}</td>
+  </tr>
+  <tr>
+    <th>Created</th>
+    <td>{{view.created}}</td>
+  </tr>
+  </ng-container>
+  <tr>
+    <td colspan="2">
+      <app-meta-list [metakeys]="metakeys" [(values)]="view.metadata" [mandatory_type]="'v'" [meta_target]="'view'"></app-meta-list>
+    </td>
+  </tr>
+</table>
+

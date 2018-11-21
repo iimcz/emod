@@ -1,0 +1,23 @@
+<table>
+  <ng-container *ngIf="group?.id_group">
+  <tr>
+    <th>ID</th>
+    <td>{{group.id_group}}</td>
+  </tr>
+  <tr>
+    <th>Author</th>
+    <td>{{group.id_user}}</td>
+  </tr>
+  <tr>
+    <th>Created</th>
+    <td>{{group.created}}</td>
+  </tr>
+  </ng-container>
+
+  <tr>
+    <td colspan="2">
+      <app-meta-list [(values)]="group.metadata" [metakeys]="metakeys" mandatory_type="g"
+                     meta_target="group"></app-meta-list>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,55 @@
+<form>
+  <table>
+    <tr>
+      <th>
+        Key
+      </th>
+      <th>
+        <mat-form-field>
+          <input type="text" matInput name="key" [disabled]=true [ngModel]="metakey.key">
+        </mat-form-field>
+
+      </th>
+    </tr>
+    <tr>
+      <th>
+        Type
+      </th>
+      <td>
+        <mat-select [multiple]="false" [(ngModel)]="metakey.type" name="type">
+          <mat-option value="string">String</mat-option>
+        </mat-select>
+        <!--<mat-form-field>-->
+          <!--<input type="text" matInput name="type" [(ngModel)]="metakey.type">-->
+        <!--</mat-form-field>-->
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Description
+      </th>
+      <td>
+        <mat-form-field>
+          <input type="text" matInput name="desc" [(ngModel)]="metakey.description">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Mandatory
+      </th>
+      <td>
+        <!--<mat-form-field>-->
+          <!--<input type="text" matInput name="mandatory" [(ngModel)]="metakey.mandatory">-->
+        <!--</mat-form-field>-->
+        <mat-select [multiple]="true" [(ngModel)]="mandatory" name="mand">
+          <mat-option value="i">Item</mat-option>
+          <mat-option value="g">Group</mat-option>
+          <mat-option value="s">Set</mat-option>
+          <mat-option value="v">View</mat-option>
+        </mat-select>
+      </td>
+    </tr>
+
+  </table>
+</form>

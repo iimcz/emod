@@ -1,0 +1,32 @@
+<a mat-raised-button class="mat-primary" [routerLink]="['/items']">< Back to list</a>
+<h1>Upload Digital Items</h1>
+
+<form>
+<input type="file" #fileInput style="display: none;" (change)="file_selected($event, fileInput)">
+  <button mat-raised-button (click)="fileInput.click()">Select file</button>
+</form>
+
+<ng-container *ngIf="file">
+  <h2>Selected file {{file.name}}, size {{file.size}} bytes.</h2>
+  <br>
+  <button mat-raised-button [disabled]="!file || file.size > 10485760" (click)="show_preview()">Show preview</button>
+
+
+  <app-item-preview *ngIf="item" [item]="item" [maxWidth]="512" [maxHeight]="512"></app-item-preview>
+  <app-meta-list [meta_target]="'item'" [mandatory_type]="'i'" [values]="metadata" [metakeys]="metakeys"></app-meta-list>
+
+  <mat-checkbox [(ngModel)]="use_group" [ngModelOptions]="{standalone: true}">Use group</mat-checkbox>&nbsp;
+  <button mat-raised-button (click)="select_group()" [disabled]="!use_group">Select group</button>
+  <ng-container *ngIf="use_group">
+    <ng-container *ngIf="selected_group; else group_not_selected">Selected group {{selected_group.id_group}} ({{get_metadata(selected_group, 'description')}})</ng-container>
+    <ng-template #group_not_selected>No group selected!</ng-template>
+  </ng-container>
+  <br>
+  Select path:
+  <app-select-path [tree]="tree" (path_selected)="path = $event"></app-select-path>
+  <br>
+
+  <button mat-raised-button [disabled]="!file || path === undefined" class="mat-primary" (click)="upload(uploadButton)" #uploadButton="matButton">Upload to <i>{{path}}</i></button>
+  <mat-progress-bar [value]="uploadProgress"></mat-progress-bar>
+</ng-container>
+

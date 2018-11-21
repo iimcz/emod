@@ -1,0 +1,28 @@
+.container-top {
+
+}
+
+.container-top-edit {
+  background-color: blueviolet;
+}
+
+.container-top-play {
+  /*background-color: white;*/
+}
+
+.close-button {
+  background-color: #ffffff7f;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+.hidden-menu-trigger {
+  visibility: hidden;
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+}

@@ -1,0 +1,9 @@
+<div class="image-viewer-container" #topDiv tabindex="0">
+  <img *ngIf="dis[index]?.url" [src]="dis[index]?.url">
+  <div class="image-viewer-dots" *ngIf="dis?.length > 1">
+    <button mat-icon-button *ngFor="let di of dis; let idx = index" (click)="index = idx">
+      <mat-icon *ngIf="idx !== index">radio_button_unchecked</mat-icon>
+      <mat-icon *ngIf="idx === index">radio_button_checked</mat-icon>
+    </button>
+  </div>
+</div>

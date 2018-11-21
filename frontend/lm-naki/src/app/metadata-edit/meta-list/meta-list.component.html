@@ -1,0 +1,24 @@
+<form>
+  <table>
+    <tr *ngFor="let meta of values; let index = index">
+      <th class="left-column">
+        <app-meta-key [metakeys]="optional_keys" [(value)]="meta.key" *ngIf="!is_mandatory(meta.key, index); else mandatoryValue"></app-meta-key>
+        <ng-template #mandatoryValue>{{meta.key}}</ng-template>
+      </th>
+      <td>
+        <mat-form-field>
+          <input type="text" matInput [(ngModel)]="meta.value" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </td>
+      <td>
+        <button mat-icon-button (click)="delete_meta(meta, index)" *ngIf="!is_mandatory(meta.key, index)"><mat-icon>delete</mat-icon></button>
+      </td>
+    </tr>
+
+    <tr>
+      <th colspan="3">
+        <button mat-raised-button (click)="add_empty()">Add metadata</button>
+      </th>
+    </tr>
+  </table>
+</form>

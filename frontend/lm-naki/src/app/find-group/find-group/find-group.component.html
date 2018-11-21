@@ -1,0 +1,54 @@
+<button mat-raised-button (click)="editGroup(null)"><mat-icon>add</mat-icon> Add new group</button>
+<form>
+  <mat-form-field class="full-width">
+    <input matInput type="text" mat-input placeholder="Filter groups" #filterText>
+  </mat-form-field>
+
+</form>
+<div style="max-height: 70%">
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" [length]="total_length" #paginator (page)="update_filter()" showFirstLastButtons></mat-paginator>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID</th>
+      <td mat-cell *matCellDef="let element"> {{element.id_group}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type</th>
+      <td mat-cell *matCellDef="let element"> {{element.type}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="add">
+      <th mat-header-cell *matHeaderCellDef>
+
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="add_clicked.emit(element)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>
+
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="editGroup(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description</th>
+      <td mat-cell *matCellDef="let element"> {{get_metadata(element, 'description')}}</td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>

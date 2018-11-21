@@ -1,0 +1,7 @@
+<mat-form-field>
+  <input type="text" matInput="" [matAutocomplete]="autocomp" [(ngModel)]="value"
+         placeholder="Metadata key">
+  <mat-autocomplete #autocomp="matAutocomplete">
+    <mat-option *ngFor="let key of metakeys" [value]="key.key">{{key.key}}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>

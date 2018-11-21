@@ -1,0 +1,48 @@
+<h1>Metakeys</h1>
+<form style="display: none">
+  <mat-form-field class="full-width">
+    <input matInput type="text" mat-input placeholder="Filter items" #filterText>
+  </mat-form-field>
+
+
+</form>
+<div style="max-height: 70%">
+  <mat-paginator style="display: none" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" [length]="total_length" #paginator (page)="update_filter()" showFirstLastButtons></mat-paginator>
+  <ng-container *ngIf="multiple">Selected {{selected_items.length}} items</ng-container><br>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
+
+    <ng-container matColumnDef="key">
+      <th mat-header-cell *matHeaderCellDef> key</th>
+      <td mat-cell *matCellDef="let element"> {{element.key}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type</th>
+      <td mat-cell *matCellDef="let element"> {{element.type}}</td>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description</th>
+      <td mat-cell *matCellDef="let element"> {{element.description}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>
+
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="edit_item(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mandatory">
+      <th mat-header-cell *matHeaderCellDef> Mandatory</th>
+      <td mat-cell *matCellDef="let element"> {{element.mandatory}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>

@@ -1,0 +1,5 @@
+<h1>User {{user.fullname}}</h1>
+
+<app-edit-user [user]="user" #userInfo="EditUserComponent"></app-edit-user>
+
+<button mat-raised-button (click)="update(userInfo)">Update info</button>

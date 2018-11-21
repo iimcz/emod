@@ -1,0 +1,29 @@
+<h1 matDialogTitle>
+  <ng-container *ngIf="group?.id_group; else newTitle">Editing {{group.id_group}}</ng-container>
+</h1>
+<ng-template #newTitle>Add a new group</ng-template>
+
+<mat-dialog-content>
+  <app-edit-group #newGroup="EditGroupComponent" [group]="group">
+
+  </app-edit-group>
+  <mat-expansion-panel *ngIf="group?.items">
+    <mat-expansion-panel-header>Group contains {{group?.items.length}} items</mat-expansion-panel-header>
+    <table>
+      <tr *ngFor="let item of group.items">
+        <td><button mat-icon-button (click)="delete_item(item)"><mat-icon>delete</mat-icon></button></td>
+        <td><button mat-icon-button (click)="edit_item(item)"><mat-icon>edit</mat-icon></button></td>
+        <td>{{get_metadata(item, 'description') || item.id_item}}</td>
+      </tr>
+    </table>
+    <button mat-raised-button class="mat-primary" (click)="add_item()">Add item</button>
+  </mat-expansion-panel>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="newGroup.save_group(dialogRef)">
+    <ng-container *ngIf="group?.id_group; else creating">Update</ng-container>
+    <ng-template #creating>Create</ng-template>
+  </button>
+  <button mat-raised-button [matDialogClose]="false">Cancel</button>
+
+</mat-dialog-actions>

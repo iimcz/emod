@@ -1,0 +1,56 @@
+<table>
+  <ng-container *ngIf="user !== undefined">
+    <tr>
+      <th>ID</th>
+      <td>{{user?.id_user}}</td>
+    </tr>
+    <tr>
+      <th>Username</th>
+      <td>
+        <mat-form-field>
+          <input type="text" matInput [(ngModel)]="user.username">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <th>Full name</th>
+      <td>
+        <mat-form-field>
+          <input type="text" matInput [(ngModel)]="user.fullname">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <ng-container *ngIf="!user?.id_user; else hasPW">Password</ng-container>
+        <ng-template #hasPW>Update password</ng-template>
+      </th>
+      <td>
+        <mat-form-field>
+          <input type="password" matInput [(ngModel)]="passwd1">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <th>Verify Password</th>
+      <td><mat-form-field>
+        <input type="password" matInput [(ngModel)]="passwd2">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <th>Auth level</th>
+      <td>
+        <mat-form-field>
+          <mat-select [(ngModel)]="user.auth_level" name="auth_level" [disabled]="!nakiService.has_right(rights.Admin)">
+            <mat-option [value]="rights.Guest">Guest</mat-option>
+            <mat-option [value]="rights.Researcher">Researcher</mat-option>
+            <mat-option [value]="rights.Editor">Editor</mat-option>
+            <mat-option [value]="rights.Admin">Admin</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+  </ng-container>
+
+

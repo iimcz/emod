@@ -1,0 +1,154 @@
+<a mat-raised-button class="mat-primary" [routerLink]="['/views']">&lt; Back to list</a>
+
+<ng-container *ngIf="view; else loading">
+
+  <h1>{{get_metadata(view, 'description')}}</h1>
+  <br>
+  <a [routerLink]="['/views/show/' + view.id_view]" mat-raised-button class="mat-primary">Show view-only version</a><br>
+  <!--<mat-button-toggle-group #mode="matButtonToggleGroup" class="mat-primary" value="edit">-->
+    <!--<mat-button-toggle value="edit">EDIT MODE</mat-button-toggle>-->
+    <!--<mat-button-toggle value="play">PLAY MODE</mat-button-toggle>-->
+  <!--</mat-button-toggle-group>-->
+  <h2>Press CRTL key to enter edit mode</h2>
+
+
+  <split direction="horizontal" [gutterSize]="5" height="1024">
+    <split-area [size]="30">
+      <h2>Contents</h2>
+
+      <button mat-button (click)="add_item(false)">Add item</button>
+      <button mat-button (click)="add_item(true)">Add multiple item</button>
+      <br>
+      <button mat-button (click)="add_group()">Add group</button>
+      <br>
+      <mat-slide-toggle [checked]="selecting_items" (change)="selecting_start($event)">Select items</mat-slide-toggle>
+      <br>
+
+      <mat-menu #itemGroupMenu="matMenu">
+        <ng-template matMenuContent let-item="item">
+          <form>
+            <a mat-menu-item (click)="move_item_to_a_group(item, null)">root group</a>
+            <a mat-menu-item *ngFor="let prefix of prefixes" (click)="move_item_to_a_group(item, prefix)"
+               [disabled]="item?.path === prefix">{{prefix}}</a>
+            <a mat-menu-item (click)="$event.stopPropagation(); false">
+              <mat-form-field><input type="text" matInput #inputElement placeholder="New group"></mat-form-field>
+              <input type="submit" style="display: none" (click)="move_item_to_a_group(item, inputElement.value)"> </a>
+          </form>
+        </ng-template>
+      </mat-menu>
+      <mat-menu #itemMenu="matMenu">
+        <ng-template matMenuContent let-item="item">
+          <a mat-menu-item (click)="remove_item(item)">Remove item</a>
+          <a mat-menu-item [matMenuTriggerFor]="itemGroupMenu" [matMenuTriggerData]="{item: item}">Move to a group</a>
+        </ng-template>
+      </mat-menu>
+      <mat-menu #groupMenu="matMenu">
+        <ng-template matMenuContent let-prefix="prefix">
+          <form>
+            <a mat-menu-item (click)="$event.stopPropagation(); false">
+              <mat-form-field>
+                <input type="text" matInput #inputElement placeholder="Rename group">
+              </mat-form-field>
+              <input type="submit" style="display: none" (click)="rename_group(prefix, inputElement.value)">
+            </a>
+          </form>
+        </ng-template>
+      </mat-menu>
+      <ng-template #itemList let-items="items" let-prefix="prefix">
+        <li *ngFor="let item of filter_items(items, prefix)"
+            draggable
+            [dragData]="item"
+            [dragScope]="['canvas', 'container', 'groups']"
+            [dragClass]="'empty'"
+            (contextmenu)="open_ctx_menu(xx, $event)">
+          <mat-checkbox *ngIf="selecting_items" [checked]="is_selected(item)" (change)="select_item(item, $event)">
+            &nbsp;
+          </mat-checkbox>
+          <span><span #xx="matMenuTrigger" [matMenuTriggerFor]="itemMenu" [matMenuTriggerData]="{item: item}"
+                      class="hidden-trigger"></span>{{get_metadata(item, 'description')}}</span>
+          <button mat-icon-button (click)="add_container(item)" matTooltip="Add item to the canvas">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button (click)="remove_item(item)" matTooltip="Removes item from the view">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </li>
+      </ng-template>
+
+      <ul>
+        <div droppable
+             [dropScope]="['groups']"
+             (onDrop)="drop_to_a_group(null, $event)">
+          <ng-container *ngTemplateOutlet="itemList; context: {items: view.items, prefix: null}"></ng-container>
+        </div>
+        <li *ngFor="let prefix of prefixes">
+          <mat-expansion-panel [expanded]="true"
+                               class="mat-elevation-z0"
+                               droppable
+                               [dropScope]="['groups']"
+                               (onDrop)="drop_to_a_group(prefix, $event)">
+            <mat-expansion-panel-header draggable
+                                        [dragScope]="['canvas']"
+                                        [dragData]="{prefix: prefix}"
+                                        (contextmenu)="open_ctx_menu(xxx, $event);">
+              <span #xxx="matMenuTrigger"
+                    [matMenuTriggerFor]="groupMenu"
+                    [matMenuTriggerData]="{prefix: prefix}" class="hidden-trigger"></span>
+              {{prefix}}
+              <button mat-icon-button (click)="remove_group(prefix);$event.stopPropagation();false"
+                      style="height: 18px" matTooltip="Remove all item belonging to this group from the view">
+                <mat-icon style="vertical-align: top; position: relative; top: -2px;">delete_sweep</mat-icon>
+              </button>
+            </mat-expansion-panel-header>
+            <ul>
+              <ng-container *ngTemplateOutlet="itemList; context: {items: view.items, prefix: prefix}"></ng-container>
+            </ul>
+          </mat-expansion-panel>
+        </li>
+      </ul>
+      <button mat-raised-button *ngIf="selecting_items" [disabled]="selected_items.length === 0"
+              (click)="delete_selected()">Delete selected
+      </button>
+      <button mat-raised-button *ngIf="selecting_items" [disabled]="selected_items.length === 0"
+              [matMenuTriggerFor]="itemGroupMenu" [matMenuTriggerData]="{item: null}">Move to a group
+      </button>
+      <br><br>
+      <div>
+        <ng-container *ngFor="let cont of view.containers">
+          <span>{{cont.id_container}}</span><br>
+        </ng-container>
+
+      </div>
+    </split-area>
+    <split-area [size]="70">
+      <div style="background-color: aliceblue; width:1024px; height: 1024px; position: relative"
+           #viewCanvas
+           droppable
+           [dropScope]="'canvas'"
+           [dragOverClass]="'empty'"
+           [dragHintClass]="'empty'"
+           (onDrop)="dropItem($event)">
+
+        <app-container *ngFor="let container of view.containers; index as index"
+                       [view_id]="view.id_view"
+                       [container_id]="container.id_container"
+                       [viewCanvas]="viewCanvas"
+                       [mode]="mode2"
+                       [index]="index"
+                       class="container-box"
+                       (deleteRequest)="$event && remove_container(index)"
+                       droppable
+                       [dropScope]="'container'"
+                       [new_items]="newItemSubjects.get(container.id_container)"
+                       (onDrop)="dropItem2($event, container)">
+        </app-container>
+
+      </div>
+    </split-area>
+  </split>
+</ng-container>
+<ng-template #loading>
+  <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+  Loading view, please wait
+</ng-template>
+

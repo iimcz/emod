@@ -1,0 +1,104 @@
+<a mat-raised-button class="mat-primary" [routerLink]="['/items']">< Back to list</a>
+<h1>Import Digital Items</h1>
+
+<button mat-raised-button (click)="reloadData()">Reload data</button>&nbsp;
+<button mat-raised-button class="mat-primary" [disabled]="selectedItems.size === 0" (click)="process_import()">Import
+  {{selectedItems.size}} items
+</button> <br>
+
+<form>
+  <mat-form-field class="full-width">
+    <mat-select [(ngModel)]="selectedMime" (ngModelChange)="filter_items()" [ngModelOptions]="{standalone: true}"
+                placeholder="Select mime type">
+      <mat-option [value]="null">
+        All files
+      </mat-option>
+      <mat-option *ngFor="let mime of mimeTypes" [value]="mime">{{mime}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>Common metadata&nbsp; <span class="circle-bg mat-caption" *ngIf="common_metadata.length > 0">{{common_metadata.length}}</span></mat-expansion-panel-header>
+    <app-meta-list [values]="common_metadata" [metakeys]="metakeys" [ignore_mandatory]="true"></app-meta-list>
+
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>Digital Group</mat-expansion-panel-header>
+    <mat-checkbox [(ngModel)]="use_group" [ngModelOptions]="{standalone: true}">Use group</mat-checkbox>&nbsp;
+    <button mat-raised-button (click)="select_group()" [disabled]="!use_group">Select group</button>
+    <ng-container *ngIf="use_group">
+      <ng-container *ngIf="selected_group; else group_not_selected">Selected group {{selected_group?.id_group}} ({{get_metadata(selected_group, 'description')}})</ng-container>
+      <ng-template #group_not_selected>No group selected!</ng-template>
+    </ng-container>
+  </mat-expansion-panel>
+  <br>
+  <!--<mat-progress-spinner [mode]="'indeterminate'" *ngIf="!flat_tree || flat_tree.length === 0"></mat-progress-spinner>-->
+  <split direction="horizontal" [gutterSize]="5" [height]="1024" *ngIf="tree">
+    <split-area [size]="30">
+
+      <app-select-path [tree]="tree" (path_selected)="load_dir($event)"></app-select-path>
+
+
+    </split-area>
+    <split-area [size]="70">
+      <mat-slide-toggle class="full-width" [(ngModel)]="show_used" (ngModelChange)="filter_items()" [ngModelOptions]="{standalone: true}">Show used files</mat-slide-toggle>
+      <br>
+      <mat-progress-spinner [mode]="'indeterminate'" *ngIf="flat_tree === undefined"></mat-progress-spinner>
+      <div *ngIf="flat_tree !== undefined && loaded_path && flat_tree !== undefined">Directory {{loaded_path}}, total {{flat_tree?.length}} files<br></div>
+      <table mat-table [dataSource]="flat_tree2" class="mat-elevation-z8 full-width" *ngIf="flat_tree2 !== undefined && flat_tree2?.length > 0">
+
+      <ng-container matColumnDef="path">
+      <th mat-header-cell *matHeaderCellDef> Path</th>
+      <td mat-cell *matCellDef="let element"> {{element.value.path}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mime">
+      <th mat-header-cell *matHeaderCellDef> Mime</th>
+      <td mat-cell *matCellDef="let element"> {{element.value.mime}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="check">
+      <th mat-header-cell *matHeaderCellDef> Select</th>
+      <td mat-cell *matCellDef="let element">
+      <mat-checkbox class="mat-primary" [(ngModel)]="element.checked" [disabled]="element.value.used"
+      [ngModelOptions]="{standalone: true}"
+      (ngModelChange)="selectItem(element, $event)"></mat-checkbox>
+      </td>
+      </ng-container>
+
+      <ng-container matColumnDef="preview">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="2">
+      <ng-container *ngIf="element.value.checked">
+      <app-item-preview [item]="element.value.item" [maxWidth]="256" [maxHeight]="256"></app-item-preview>
+      </ng-container>
+      </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="import">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length - 2">
+      <h4>Link: {{element.value.item.links[0].uri}}</h4>
+      <h4>Metadata</h4>
+      <app-meta-list [metakeys]="metakeys" [values]="element.value.item.metadata"></app-meta-list>
+      <!--<br>-->
+      <!--{{element|json}}-->
+      </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['preview', 'import']; when: isWrapped" style="overflow-x:auto;"
+      [@detailExpand]="row.value.checked ? 'expanded' : 'collapsed'"
+      style="overflow: hidden">
+
+      </tr>
+      </table>
+
+    </split-area>
+
+  </split>
+
+  <!---->
+
+</form>

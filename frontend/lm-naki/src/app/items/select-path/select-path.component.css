@@ -1,0 +1,17 @@
+.no-bullet {
+  list-style: none;
+  text-indent: -1em;
+  padding-left: 20px;
+}
+
+.hidden-icon-button {
+  color: white;
+}
+
+.no-overflow {
+  text-overflow: ellipsis;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}

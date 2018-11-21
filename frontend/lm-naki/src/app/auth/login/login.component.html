@@ -1,0 +1,15 @@
+<div class="centered">
+  <form>
+    <mat-form-field>
+      <label>Username</label>
+      <input type="text" [(ngModel)]="username" matInput name="username">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <label>Password</label>
+      <input type="password" [(ngModel)]="pw" matInput name="pw">
+    </mat-form-field>
+    <br>
+    <button type="submit" mat-raised-button (click)="login()">Login</button>
+  </form>
+</div>

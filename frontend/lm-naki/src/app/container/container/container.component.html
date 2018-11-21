@@ -1,0 +1,73 @@
+<div class="container-top"
+     [class.container-top-edit]="mode === 'edit'"
+     [class.container-top-play]="mode !== 'edit'"
+     [style.z-index]="container?.z"
+     #topElement
+     #topDraggable="ngDraggable"
+     #topResizable="ngResizable"
+     [ngDraggable]="mode === 'edit'"
+     [ngResizable]="mode === 'edit'"
+
+     [gridSize]="nakiConfig.cellWidth"
+     (endOffset)="update_position($event)"
+
+     [bounds]="viewCanvas"
+     [inBounds]="true"
+     [position]="container ? {x: nakiConfig.widthToPx(container.x), y: nakiConfig.heightToPx(container.y)} : {x: 0, y: 0} "
+
+
+     rzHandles="s,e,se"
+     [rzGrid]="[nakiConfig.cellWidth, nakiConfig.cellHeight]"
+     [rzContainment]="viewCanvas"
+     [rzMinWidth]="nakiConfig.cellWidth * nakiConfig.minWidth"
+     [rzMinHeight]="nakiConfig.cellHeight * nakiConfig.minHeight"
+
+     (rzStop)="update_size($event)"
+     tabindex="0"
+     (mousedown)="mode !== 'edit' && itemPlayer.set_focus()"
+     (contextmenu)="click_menu($event, menuTrigger)"
+
+>
+  <button class="hidden-menu-trigger" [mat-menu-trigger-for]="containerMenu" #menuTrigger="matMenuTrigger"></button>
+  <div [style.display]="mode === 'edit' ? 'block' : 'none'" class="close-button">
+    <button mat-icon-button (click)="false" (mousedown)="$event.stopPropagation()"
+            [mat-menu-trigger-for]="containerMenu">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="deleteRequest.emit(true)" (mousedown)="$event.stopPropagation()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <app-item-player [dis]="dis"
+                   [type]="container.type"
+                   [mode]="mode"
+                   *ngIf="container"
+                   [data]="container.data"
+                   [size]="[container.width * nakiConfig.cellWidth, container.height * nakiConfig.cellHeight]"
+                   (update)="update_data($event)"
+                   #itemPlayer="ItemPlayerComponent"></app-item-player>
+
+</div>
+
+<mat-menu #containerMenu="matMenu">
+  <a mat-menu-item [mat-menu-trigger-for]="containerTypeMenu">Change type</a>
+  <a mat-menu-item [mat-menu-trigger-for]="moveZ">Position</a>
+  <a mat-menu-item [mat-menu-trigger-for]="removeItems" *ngIf="dis?.length > 1">Remove items</a>
+  <a mat-menu-item>Other stuff</a>
+
+</mat-menu>
+
+
+<mat-menu #containerTypeMenu="matMenu">
+  <a mat-menu-item *ngFor="let type of defaultPlayerService.getPlayerTypes()" (click)="set_type(type)">{{type}}</a>
+</mat-menu>
+
+<mat-menu #moveZ="matMenu">
+  <a mat-menu-item>Current position {{container?.z}}</a>
+  <a mat-menu-item (click)="update_z(1)">Move up</a>
+  <a mat-menu-item (click)="update_z(-1)">Move down</a>
+</mat-menu>
+
+<mat-menu #removeItems="matMenu">
+  <a mat-menu-item *ngFor="let di of dis" (click)="remove_di(di)">{{get_metadata(di, 'description') || di.id_item}}</a>
+</mat-menu>

@@ -1,0 +1,42 @@
+<form><table>
+  <tr>
+    <th>ID</th>
+    <td>{{item.id_item}}</td>
+  </tr>
+  <tr>
+    <th>Created</th>
+    <td>{{item.created}}</td>
+  </tr>
+  <tr>
+    <th>Mime</th>
+    <td>
+      <mat-form-field>
+        <input type="text" matInput [(ngModel)]="item.mime" name="mime">
+      </mat-form-field>
+    </td>
+  </tr>
+  <tr>
+    <th>Author</th>
+    <td>
+      <mat-form-field>
+        <input type="text" matInput [(ngModel)]="item.id_user" name="author" [disabled]="true">
+      </mat-form-field>
+    </td>
+  </tr>
+
+  <ng-container *ngIf="item.links">
+  <tr *ngFor="let link of item.links">
+    <th>Link ({{link.type}})</th>
+    <td>{{link.uri}}</td>
+  </tr>
+  </ng-container>
+  <tr>
+
+    <td colspan="2">
+      <app-meta-list [metakeys]="metakeys" [values]="item.metadata"></app-meta-list>
+
+    </td>
+  </tr>
+</table>
+
+</form>

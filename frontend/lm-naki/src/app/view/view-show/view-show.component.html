@@ -1,0 +1,22 @@
+<a mat-raised-button class="mat-primary" [routerLink]="['/views']">&lt; Back to list</a>
+
+<ng-container *ngIf="view; else loading">
+
+  <h1>{{get_metadata(view, 'description')}}</h1>
+  <br>
+
+  <div style="background-color: aliceblue; width:1024px; height: 1024px; position: relative"
+       #viewCanvas>
+    <app-container *ngFor="let container of view.containers; index as index"
+                   [view_id]="view.id_view"
+                   [container_id]="container.id_container"
+                   [viewCanvas]="viewCanvas"
+                   [mode]="'play'"
+                   [index]="index"
+                   [readonly]="true"
+                   class="container-box">
+    </app-container>
+
+  </div>
+
+</ng-container>

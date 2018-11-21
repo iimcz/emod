@@ -1,0 +1,2 @@
+<button mat-raised-button (click)="add_view()" *ngIf="nakiService.has_right(rights.Researcher)">Add view</button>
+<app-find-view #viewList="FindViewComponent" (selected)="view_selected($event)"></app-find-view>

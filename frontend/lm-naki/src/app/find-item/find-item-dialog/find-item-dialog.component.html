@@ -1,0 +1,12 @@
+<h2 mat-dialog-title style="position: relative">Find item <span style="right:16px;top:2px;position: absolute"><button mat-icon-button [matDialogClose]="null"><mat-icon>close</mat-icon></button> </span></h2>
+<mat-dialog-content>
+  <app-find-item [show_edit]="false" [show_add]="true" (add_clicked)="dialogRef.close($event)"
+                 [disabled_ids]="data?.disabled" [multiple]="data?.multiple"
+  #findItem="FindItemComponent">
+
+  </app-find-item>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button [disabled]="!data?.multiple" (click)="findItem.multi_add(dialogRef)">Select item</button>
+  <button mat-raised-button [matDialogClose]="null">Close</button>
+</mat-dialog-actions>

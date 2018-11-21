@@ -1,0 +1,17 @@
+.container-box {
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  top: 0px;
+  user-select: none;
+}
+
+.empty {
+
+}
+
+.hidden-trigger {
+  width: 1px;
+  height: 1px;
+  visibility: hidden
+}

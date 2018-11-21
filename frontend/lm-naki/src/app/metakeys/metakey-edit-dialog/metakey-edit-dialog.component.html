@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Edit view</h2>
+<mat-dialog-content>
+  <app-metakey-edit #metakeyEdit="MetakeyEditComponent" [metakey]="data.metakey"></app-metakey-edit>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button [disabled]="false" (click)="metakeyEdit.save(dialogRef)">Save</button>
+  <button mat-raised-button [matDialogClose]="null">Close</button>
+</mat-dialog-actions>

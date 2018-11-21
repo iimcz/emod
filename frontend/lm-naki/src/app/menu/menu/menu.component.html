@@ -1,0 +1,25 @@
+<mat-toolbar color="primary" class="booking-top-menu">
+
+  <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+    <mat-icon>menu</mat-icon>
+  </button>
+
+</mat-toolbar>
+
+
+<mat-menu #menu="matMenu">
+  <a mat-menu-item [routerLink]="['/home']">Home</a>
+
+  <a mat-menu-item [routerLink]="['/items']">Digital Items</a>
+  <a mat-menu-item [routerLink]="['/groups']">Digital Item Groups</a>
+  <a mat-menu-item [routerLink]="['/views']">Views</a>
+  <a mat-menu-item [routerLink]="['/metakeys']" *ngIf="nakiService.has_right(rights.Researcher)">Metakeys</a>
+  <a mat-menu-item [routerLink]="['/users']" *ngIf="nakiService.has_right(rights.Admin)">Users</a>
+  <ng-container *ngIf="!nakiService.is_authenticated(); else authenticated">
+    <a mat-menu-item [routerLink]="['/auth/login']">Login</a>
+  </ng-container>
+  <ng-template #authenticated>
+    <a mat-menu-item [routerLink]="['profile']">{{nakiService.get_user_info()?.fullname}}</a>
+    <a mat-menu-item [routerLink]="['/auth/logout']">Logout</a>
+  </ng-template>
+</mat-menu>

@@ -1,0 +1,29 @@
+<ng-template #leafNode>
+  <button mat-icon-button class="hidden-icon-button">
+    <mat-icon>radio_button_unchecked</mat-icon>
+  </button>
+</ng-template>
+<ng-template #collapseNode><mat-icon>expand_less</mat-icon></ng-template>
+<ng-template let-dir="dir" let-subdirs="subdirs" let-path="path" #dirList>
+
+  <ul class="no-bullet" *ngIf="subdirs && subdirs.length > 0">
+    <li *ngFor="let d of subdirs" class="no-wrap">
+      <button mat-icon-button (click)="dir.dirs[d].expanded = !dir.dirs[d].expanded" *ngIf="get_keys(dir.dirs[d].dirs).length > 0; else leafNode"><mat-icon *ngIf="dir.dirs[d].expanded; else collapseNode">expand_more</mat-icon></button>
+      <a mat-button (click)="path_selected.emit(path + d)" class="no-overflow">{{d}} ({{dir.dirs[d].new_files}}&nbsp;/&nbsp;{{dir.dirs[d].file_count}}&nbsp;files, {{get_keys(dir.dirs[d].dirs).length}} dirs)</a>
+      <ng-container *ngIf="dir.dirs[d].expanded">
+        <ng-container *ngTemplateOutlet="dirList; context: {dir: dir.dirs[d], subdirs: get_keys(dir.dirs[d].dirs), path: path + d + '/'}">
+        </ng-container>
+      </ng-container>
+    </li>
+  </ul>
+
+</ng-template>
+
+<ul class="no-bullet">
+  <li class="no-wrap">
+    <a mat-button (click)="path_selected.emit('/')" class="no-overflow">Root directory ({{tree.new_files}}&nbsp;/&nbsp;{{tree.file_count}}&nbsp;files, {{get_keys(tree.dirs).length}} dirs)</a>
+    <ng-container *ngTemplateOutlet="dirList; context: {dir: tree, subdirs: get_keys(tree.dirs), path: '/'}">
+
+    </ng-container>
+  </li>
+</ul>

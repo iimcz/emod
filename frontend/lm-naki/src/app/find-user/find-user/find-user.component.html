@@ -1,0 +1,60 @@
+<button mat-raised-button (click)="edit_user()"><mat-icon>add</mat-icon> Add new user</button>
+
+<form>
+  <mat-form-field class="full-width">
+    <input matInput type="text" mat-input placeholder="Filter views" #filterText>
+  </mat-form-field>
+
+
+</form>
+<div style="max-height: 70%">
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" [length]="total_length" #paginator (page)="update_filter()" showFirstLastButtons></mat-paginator>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID</th>
+      <td mat-cell *matCellDef="let element"> {{element.id_view}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="add">
+      <th mat-header-cell *matHeaderCellDef>
+
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="add_clicked.emit(element.id_view)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>
+
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="edit_user(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Full name</th>
+      <td mat-cell *matCellDef="let element"> <button mat-button (click)="selected.emit(element.id_view)">{{element.fullname}}</button> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Username</th>
+      <td mat-cell *matCellDef="let element"> <button mat-button (click)="selected.emit(element.id_view)">{{element.username}}</button> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="uuid">
+      <th mat-header-cell *matHeaderCellDef> UUID</th>
+      <td mat-cell *matCellDef="let element"> <button mat-button (click)="selected.emit(element.id_view)">{{element.id_user}}</button> </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>
