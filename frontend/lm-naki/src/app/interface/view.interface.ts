@@ -7,6 +7,7 @@ export interface ViewInterface {
   id_view: string;
   id_user: string;
   created?: string;
+  public: number;
   metadata?: MetadataInterface[];
   items?: DigitalItem[];
   containers?: ContainerInterface[];
