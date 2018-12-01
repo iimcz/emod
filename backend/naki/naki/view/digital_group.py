@@ -13,26 +13,13 @@ from naki.lib.cors import NAKI_CORS_POLICY
 from naki.schemas.digital_item import DigitalItemSchema
 from naki.schemas.digital_group import DigitalGroupSchema
 from naki.lib.rest import APIResponse
-
+from naki.lib.utils import update_metadata, check_missing_metakeys, add_metadata_record
 
 @resource(path='/api/v1/dig/{id:[a-zA-Z0-9-]*}', collection_path='/api/v1/digs', cors_policy=NAKI_CORS_POLICY)
 class DGRes(object):
     def __init__(self, request, context=None):
         self._context = context
         self._request = request
-
-    def _meta_record(self, key, data):
-        return {'key': key.key, 'type': key.type, 'value': data.value}
-
-    def _add_metadata(self, group):
-        ret = group.get_dict()
-        ret['metadata'] = [self._meta_record(x[1], x[0]) for x in
-                           DBSession.query(Metadata, MetaKey)\
-                               .join(MetaKey, Metadata.key == MetaKey.key)\
-                               .filter(sqlalchemy.and_(Metadata.id == group.id_group, Metadata.target == 'group'))\
-                               .all()]
-
-        return ret
 
     @view(permission=Everyone)
     def get(self):
@@ -44,7 +31,8 @@ class DGRes(object):
             .all()]
         if len(dgs) == 0:
             raise HTTPNotFound()
-        dg = self._add_metadata(dgs[0][0])
+
+        dg = add_metadata_record(dgs[0][0].get_dict(), dgs[0][0].id_group, 'group')
         meta = DBSession.query(Metadata, MetaKey)\
             .join(MetaKey, MetaKey.key == Metadata.key)\
             .filter(Metadata.target == 'item')\
@@ -103,37 +91,10 @@ class DGRes(object):
         dg_id = self._request.matchdict['id']
         try:
             group = DBSession.query(DIGroup).filter(DIGroup.id_group == dg_id).one()
-            metadata = [x for x in DBSession.query(Metadata).filter(sqlalchemy.and_(Metadata.id == group.id_group, Metadata.target == 'group')).all()]
-            print('Old metadata: %s'%(str([x.key for x in metadata])))
-            print('updating metadata')
-            for meta in self._request.validated['metadata']:
-                print(meta)
-                m = next((x for x in metadata if x.key == meta['key']), None)
-                if m:
-                    m.value = meta['value']
-                else:
-                    m = Metadata(group.id_group, 'group', meta['key'], meta['value'])
-                    DBSession.add(m)
-            for meta in metadata:
-                m = next((x for x in self._request.validated['metadata'] if x['key'] == meta.key), None)
-                print('Checking %s, new %s' %(meta.key, str(m)))
-                if not m:
-                    print('Deleting meta')
-                    DBSession.delete(meta)
-
-            curr_metakeys = [x['key'] for x in self._request.validated['metadata']]
-            present_keys = [x for x in DBSession.query(MetaKey).filter(MetaKey.key.in_(curr_metakeys)).all()]
-            new_keys = [m for m in curr_metakeys if not m in (x.key for x in present_keys)]
-            for key in new_keys:
-                k = MetaKey(key, 'string', '', '')
-                try:
-                    DBSession.add(k)
-                    print('Created key %s' % key)
-                except:
-                    print('Error adding key %s' % key)
-
+            update_metadata(self._request.validated['metadata'], group.id_group, 'group')
             DBSession.flush()
-            return APIResponse(self._add_metadata(group))
+            # return APIResponse(self._add_metadata(group))
+            return APIResponse(add_metadata_record(group.get_dict(), group.id_group, 'group'))
         except Exception as e:
             print(e)
             raise HTTPNotFound()
@@ -148,32 +109,13 @@ class DGRes(object):
         metakeys = [m['key'] for m in v['metadata']]
         print(metakeys)
 
-        required_keys = DBSession.query(MetaKey).filter(MetaKey.mandatory.contains('g'))
-        print('Required keys: %s' % (','.join((x.key for x in required_keys))))
-        for key in required_keys:
-            if not key.key in metakeys:
-                print('Missing key %s' % key.key)
-                raise HTTPBadRequest('missing metadata key %s' % key.key)
-
-        present_keys = [x for x in DBSession.query(MetaKey).filter(MetaKey.key.in_(metakeys)).all()]
-        new_keys = [m for m in metakeys if not m in (x.key for x in present_keys)]
-        print('All keys: %s' % str(metakeys))
-        print('New keys: %s' % str(new_keys))
-        print('Present keys: %s' % (', '.join(str(x.get_dict()) for x in present_keys)))
-
-        for key in new_keys:
-            k = MetaKey(key, 'string', '', '')
-            DBSession.add(k)
-            print('Created key %s' % key)
+        missing_metakeys = check_missing_metakeys(metakeys, 'g')
+        if len(missing_metakeys) > 0:
+            raise HTTPBadRequest('missing metadata keys: %s' % ', '.join(missing_metakeys))
 
         dg = DIGroup(v['id_group'], v['created'], '', v['id_user'], v['type'])
-
+        update_metadata(v['metadata'], dg.id_group, 'group')
         DBSession.add(dg)
-        DBSession.flush()
-
-        for meta in v['metadata']:
-            m = Metadata(dg.id_group, 'group', meta['key'], meta['value'])
-            DBSession.add(m)
         DBSession.flush()
 
         print(dg)
