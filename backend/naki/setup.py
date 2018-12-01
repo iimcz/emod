@@ -16,6 +16,7 @@ requires = [
     'pyramid_tm',
     'waitress',
     'cornice',
+    'cornice_swagger',
     'colander',
     'ldap3',
     'colanderalchemy',

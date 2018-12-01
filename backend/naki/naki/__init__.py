@@ -34,6 +34,7 @@ def main(global_config, **settings):
 
     # config.include('pyramid_tm')
     config.include('cornice')
+    config.include('cornice_swagger')
 
     config.scan('naki.view')
 
