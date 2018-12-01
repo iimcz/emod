@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NakiService} from '../../naki.service';
-import {DigitalItem} from '../../interface/digital-item';
-import {DomSanitizer} from '@angular/platform-browser';
-import {LinkInterface} from '../../interface/link.interface';
+import {Rights} from '../../rights.enum';
 
 @Component({
   selector: 'app-item-list',
@@ -10,11 +8,13 @@ import {LinkInterface} from '../../interface/link.interface';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
-
-
   constructor(public nakiService: NakiService) {
   }
 
   ngOnInit() {
+  }
+
+  public can_edit(): boolean {
+    return this.nakiService.has_right(Rights.Editor);
   }
 }

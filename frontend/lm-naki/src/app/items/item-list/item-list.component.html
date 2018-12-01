@@ -1,51 +1,8 @@
 <h1>Digital items</h1>
 
 <button mat-raised-button (click)="findItem.reloadData()">Reload data</button>&nbsp;
-<a mat-raised-button [routerLink]="['/items/import']">Import</a>
-<a mat-raised-button [routerLink]="['/items/upload']">Upload</a>
+<a mat-raised-button [routerLink]="can_edit() ? ['/items/import']: []" [disabled]="!can_edit()">Import</a>
+<a mat-raised-button [routerLink]="can_edit() ? ['/items/upload'] : []" [disabled]="!can_edit()">Upload</a>
 <br><br>
 
-<!--<table mat-table [dataSource]="items" class="mat-elevation-z8 full-width">-->
-
-  <!--<ng-container matColumnDef="id">-->
-    <!--<th mat-header-cell *matHeaderCellDef> ID </th>-->
-    <!--<td mat-cell *matCellDef="let element"> {{element.id_item}} </td>-->
-  <!--</ng-container>-->
-
-  <!--<ng-container matColumnDef="id_user">-->
-    <!--<th mat-header-cell *matHeaderCellDef> Author </th>-->
-    <!--<td mat-cell *matCellDef="let element"> {{element.id_user}} </td>-->
-  <!--</ng-container>-->
-
-  <!--<ng-container matColumnDef="description">-->
-    <!--<th mat-header-cell *matHeaderCellDef> Description </th>-->
-    <!--<td mat-cell *matCellDef="let element"> {{get_metadata(element, 'description')}} </td>-->
-  <!--</ng-container>-->
-
-  <!--<ng-container matColumnDef="mime">-->
-    <!--<th mat-header-cell *matHeaderCellDef> Mime </th>-->
-    <!--<td mat-cell *matCellDef="let element"> {{element.mime}} </td>-->
-  <!--</ng-container>-->
-
-  <!--<ng-container matColumnDef="preview">-->
-    <!--<th mat-header-cell *matHeaderCellDef> Preview </th>-->
-    <!--<td mat-cell *matCellDef="let element">-->
-      <!--<ng-container *ngIf="element.mime.startsWith('image/')">-->
-        <!--<img style="width:48px; height:48px" [src]="element.url">-->
-      <!--</ng-container>-->
-      <!--&lt;!&ndash;<ng-container *ngIf="element.mime.startsWith('video/')">&ndash;&gt;-->
-        <!--&lt;!&ndash;<video [controls]="true" [autoplay]="true" style="width:48px; height:48px">&ndash;&gt;-->
-          <!--&lt;!&ndash;<source [src]="element.url">&ndash;&gt;-->
-        <!--&lt;!&ndash;</video>&ndash;&gt;-->
-      <!--&lt;!&ndash;</ng-container>&ndash;&gt;-->
-
-    <!--</td>-->
-  <!--</ng-container>-->
-
-
-  <!--<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
-  <!--<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-<!--</table>-->
-
-
-<app-find-item style="width: 100%" #findItem="FindItemComponent" [click_to_show]="true"></app-find-item>
+<app-find-item style="width: 100%" #findItem="FindItemComponent" [click_to_show]="true" [show_edit]="can_edit()"></app-find-item>
