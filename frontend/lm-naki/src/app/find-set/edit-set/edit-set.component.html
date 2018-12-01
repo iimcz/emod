@@ -1,0 +1,29 @@
+<table>
+  <ng-container *ngIf="set?.id_set">
+    <tr>
+      <th>ID</th>
+      <td>{{set?.id_set}}</td>
+    </tr>
+    <tr>
+      <th>Created</th>
+      <td>{{set.created}}</td>
+    </tr>
+  </ng-container>
+  <tr>
+    <th>Author</th>
+    <td>{{set?.id_user}}
+      <ng-container *ngIf="set?.author">
+        <br>{{set?.author?.fullname}}
+
+      </ng-container>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <app-meta-list [metakeys]="metakeys" [(values)]="set.metadata" [mandatory_type]="'s'"
+                     [meta_target]="'set'"></app-meta-list>
+    </td>
+  </tr>
+</table>
+
