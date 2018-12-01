@@ -6,13 +6,14 @@ import {FormsModule} from '@angular/forms';
 import {MetadataEditModule} from '../metadata-edit/metadata-edit.module';
 import {
   MatButtonModule,
+  MatCheckboxModule,
   MatDialogModule,
   MatIconModule,
   MatInputModule,
   MatPaginatorModule,
   MatTableModule
 } from '@angular/material';
-import { EditViewDialogComponent } from './edit-view-dialog/edit-view-dialog.component';
+import {EditViewDialogComponent} from './edit-view-dialog/edit-view-dialog.component';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { EditViewDialogComponent } from './edit-view-dialog/edit-view-dialog.com
     MatInputModule,
     MatPaginatorModule,
     MatTableModule,
+    MatCheckboxModule,
 
     MetadataEditModule,
   ],

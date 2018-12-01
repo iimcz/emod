@@ -6,13 +6,22 @@
   </tr>
   <tr>
     <th>Author</th>
-    <td>{{view.author}}</td>
+    <td>{{view?.id_user}}
+    <ng-container *ngIf="view?.author">
+      <br>{{view?.author?.fullname}}
+
+    </ng-container>
+    </td>
   </tr>
   <tr>
     <th>Created</th>
     <td>{{view.created}}</td>
   </tr>
   </ng-container>
+  <tr>
+    <th>Public</th>
+    <td><mat-checkbox [(ngModel)]="view.public"></mat-checkbox></td>
+  </tr>
   <tr>
     <td colspan="2">
       <app-meta-list [metakeys]="metakeys" [(values)]="view.metadata" [mandatory_type]="'v'" [meta_target]="'view'"></app-meta-list>

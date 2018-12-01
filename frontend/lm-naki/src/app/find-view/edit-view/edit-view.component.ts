@@ -25,7 +25,8 @@ export class EditViewComponent implements OnInit {
         id_view: '',
         created: '',
         id_user: user,
-        metadata: []
+        metadata: [],
+        public: 0
       };
     }
   }

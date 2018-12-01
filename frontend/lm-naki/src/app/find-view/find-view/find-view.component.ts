@@ -3,9 +3,9 @@ import {GenericFindComponent, GenericListReply} from '../../generic-find.compone
 import {ViewInterface} from '../../interface/view.interface';
 import {MatDialog} from '@angular/material';
 import {NakiService} from '../../naki.service';
-import {DigitalItem} from '../../interface/digital-item';
 import {APIResponse} from '../../apiresponse.interface';
-import {EditItemDialogComponent} from '../../find-item/edit-item-dialog/edit-item-dialog.component';
+import {EditViewDialogComponent} from '../edit-view-dialog/edit-view-dialog.component';
+import {Rights} from '../../rights.enum';
 
 @Component({
   selector: 'app-find-view',
@@ -28,10 +28,13 @@ export class FindViewComponent extends GenericFindComponent<ViewInterface> imple
     if (this.show_add) {
       this.displayedColumns.push('add');
     }
-    if (this.show_edit) {
+    if (this.show_edit && this.nakiService.has_right(Rights.Researcher)) {
       this.displayedColumns.push('edit');
     }
     this.displayedColumns.push('description');
+    if (this.show_edit && this.nakiService.has_right(Rights.Researcher)) {
+      this.displayedColumns.push('copy');
+    }
     this.init();
   }
 
@@ -39,16 +42,19 @@ export class FindViewComponent extends GenericFindComponent<ViewInterface> imple
     this.deinit();
   }
 
-  public edit_item(item: DigitalItem): void {
-    // Make a deep copy (Object.assing is not sufficient, so the dialog cannot modify our data directly
-    //   const item_copy = JSON.parse(JSON.stringify(item));
-    // const dialogRef = this.dialog.open(EditItemDialogComponent, {data: {item: item_copy, metakeys: this.metakeys}});
-    // dialogRef.afterClosed().subscribe(res => {
-    //   console.log(res);
-    //   if (res) {
-    //     this.reloadData();
-    //   }
-    // });
+  public edit_view(view: ViewInterface): void {
+    const view_copy = JSON.parse(JSON.stringify(view));
+    const dialogRef = this.dialog.open(EditViewDialogComponent, {data: {view: view_copy, metakeys: this.metakeys}});
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(res);
+      if (res) {
+        this.reloadData();
+      }
+    });
+  }
+
+  public copy_view(view: ViewInterface): void {
+
   }
 
   protected reload_list(keys: string, offset: number, limit: number): Promise<GenericListReply<ViewInterface>> {

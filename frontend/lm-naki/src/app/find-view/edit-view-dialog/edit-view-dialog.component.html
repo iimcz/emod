@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Edit view</h2>
+<h2 mat-dialog-title><ng-container *ngIf="data?.view; else newView">Edit view</ng-container><ng-template #newView>New view</ng-template></h2>
 <mat-dialog-content>
   <app-edit-view [view]="data.view" [metakeys]="data.metakeys" #editComp="EditViewComponent"></app-edit-view>
 </mat-dialog-content>
