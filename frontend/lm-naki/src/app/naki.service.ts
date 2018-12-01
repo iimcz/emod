@@ -352,13 +352,8 @@ export class NakiService {
     // });
   }
 
-  public update_view(item: ViewInterface): Promise<APIResponse<ViewInterface>> {
-    return new Promise<APIResponse<ViewInterface>>((resolve, reject) => {
-      this.httpClient.put<APIResponse<ViewInterface>>(base_url + 'view/' + item.id_view, item).subscribe(res => {
-        console.log(res);
-        resolve(res);
-      });
-    });
+  public update_view(view: ViewInterface): Promise<APIResponse<ViewInterface>> {
+    return this.generic_update<ViewInterface>('view', view.id_view, view);
   }
 
   public get_view(id: string): Promise<APIResponse<ViewInterface>> {
@@ -371,21 +366,11 @@ export class NakiService {
   }
 
   public add_item_to_view(id_view: string, id_item: string, path: string = ''): Promise<APIResponse<DigitalItem>> {
-    return new Promise<APIResponse<DigitalItem>>((resolve, reject) => {
-      this.httpClient.put<APIResponse<DigitalItem>>(base_url + 'view/' + id_view + '/item/' + id_item, {}, {params: {'path': path}}).subscribe(res => {
-        console.log(res);
-        resolve(res);
-      });
-    });
+    return this.generic_request_put<any, DigitalItem>(this._join_path('view', id_view, 'item', id_item), {}, {'path': path});
   }
 
   public remove_item_from_view(id_view: string, id_item: string): Promise<APIResponse<ViewInterface>> {
-    return new Promise<APIResponse<ViewInterface>>((resolve, reject) => {
-      this.httpClient.delete<APIResponse<ViewInterface>>(base_url + 'view/' + id_view + '/item/' + id_item, {}).subscribe(res => {
-        console.log(res);
-        resolve(res);
-      });
-    });
+    return this.generic_request_delete(this._join_path('view', id_view, 'item', id_item));
   }
 
   public create_container(id_view: string, container: ContainerInterface): Promise<APIResponse<ContainerInterface>> {
