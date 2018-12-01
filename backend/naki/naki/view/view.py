@@ -55,6 +55,22 @@ class ViewRes(object):
             print(e)
             raise HTTPNotFound()
 
+    @view(permission=RIGHTS.Researcher, schema=ViewSchema, validators=(colander_body_validator,))
+    def put(self):
+        view_id = self._request.matchdict['view_id']
+        try:
+            q = DBSession.query(View).filter(View.id_view == view_id)
+            if self._request.user.auth_level < RIGHTLevels.Editor:
+                q = q.filter(View.id_user == self._request.user.id_user)
+            view = q.one()
+            view.set_from_dict(self._request.validated)
+            update_metadata(self._request.validated['metadata'], view.id_view, 'view')
+            DBSession.flush()
+            return APIResponse(view.get_dict())
+        except Exception as e:
+            print(e)
+            raise HTTPNotFound()
+
     def _get_subq_base(self):
         return DBSession.query(View.id_view) \
             .outerjoin(Metadata, sqlalchemy.and_(Metadata.id == View.id_view, Metadata.target == 'view'))
