@@ -11,7 +11,7 @@ from naki.model import DBSession, View
 from naki.lib.cors import NAKI_CORS_POLICY
 from naki.schemas.view import ViewSchema
 from naki.lib.rest import APIResponse
-from naki.lib.utils import get_list_params
+from naki.lib.utils import get_list_params, check_missing_metakeys, update_metadata, add_metadata_record, meta_record
 from naki.model import View, Metadata, MetaKey, ViewItem, DigitalItem, Container, ContainerItem, User
 
 #from naki.schemas.link import LinkSchema
@@ -22,9 +22,7 @@ class ViewRes(object):
     def __init__(self, request, context = None):
         self._context = context
         self._request = request
-    def _meta_record(self, key, data):
-        return {'key': key.key, 'type': key.type, 'value': data.value}
-
+    
     def _get_items(self, view):
         bundles = [x for x in
                         DBSession.query(DigitalItem, ViewItem) \
@@ -34,7 +32,7 @@ class ViewRes(object):
         items = []
         for bundle in bundles:
             item = bundle[0].get_dict()
-            item['metadata'] = [self._meta_record(x[1], x[0]) for x in
+            item['metadata'] = [meta_record(x[1], x[0]) for x in
                                DBSession.query(Metadata, MetaKey) \
                                    .join(MetaKey, Metadata.key == MetaKey.key) \
                                    .filter(sqlalchemy.and_(Metadata.id == item['id_item'], Metadata.target == 'item')) \
@@ -42,14 +40,6 @@ class ViewRes(object):
             item['path'] = bundle[1].path
             items.append(item)
         return items
-    def _add_metadata(self, view):
-        ret = view.get_dict()
-        ret['metadata'] = [self._meta_record(x[1], x[0]) for x in
-                           DBSession.query(Metadata, MetaKey)\
-                               .join(MetaKey, Metadata.key == MetaKey.key)\
-                               .filter(sqlalchemy.and_(Metadata.id == view.id_view, Metadata.target == 'view'))\
-                               .all()]
-        return ret
 
     @view(permission=Everyone)
     def get(self):
@@ -57,7 +47,7 @@ class ViewRes(object):
         view_id = self._request.matchdict['view_id']
         try:
             view_info = DBSession.query(View).filter(View.id_view == view_id).one()
-            res = self._add_metadata(view_info)
+            res = add_metadata_record(view_info.get_dict(), view_info.id_view, 'view')
             res['items'] = self._get_items(view_info)
             res['containers'] = [x.get_dict() for x in DBSession.query(Container).filter(Container.id_view == view_id).all()]
             return APIResponse(res)
@@ -87,19 +77,7 @@ class ViewRes(object):
 
     def collection_get(self):
         params = get_list_params(self._request)
-        # limit = self._request.GET.get('limit', 10)
-        # offset = self._request.GET.get('offset', 0)
-        # q = self._request.GET.get('q', '')
-        # dry = self._request.GET.get('dry', '0') == '1'
-        # query_keys = [x for x in q.split(' ') if len(x) > 0]
-
-        # subq = DBSession.query(View.id_view) \
-        #     .outerjoin(Metadata, sqlalchemy.and_(Metadata.id == View.id_view, Metadata.target == 'view'))
-        # if len(params.query_keys) > 0:
-        #     subq = subq.filter(sqlalchemy.and_(
-        #         *[Metadata.value.contains(key) for key in params.query_keys]))
-        # subq = subq.group_by(View.id_view)
-
+        
         if len(params.query_keys) == 0:
             subq = self._add_user_checking(self._get_subq_base().group_by(View.id_view))
         else:
@@ -143,47 +121,23 @@ class ViewRes(object):
         metakeys = [m['key'] for m in v['metadata']]
         print(metakeys)
 
-        required_keys = DBSession.query(MetaKey).filter(MetaKey.mandatory.contains('v'))
-        print('Required keys: %s' % (','.join((x.key for x in required_keys))))
-        for key in required_keys:
-            if not key.key in metakeys:
-                print('Missing key %s' % key.key)
-                raise HTTPBadRequest('missing metadata key %s' % key.key)
-
-        present_keys = [x for x in DBSession.query(MetaKey).filter(MetaKey.key.in_(metakeys)).all()]
-        new_keys = [m for m in metakeys if not m in (x.key for x in present_keys)]
-        print('All keys: %s' % str(metakeys))
-        print('New keys: %s' % str(new_keys))
-        print('Present keys: %s' % (', '.join(str(x.get_dict()) for x in present_keys)))
-
-        for key in new_keys:
-            k = MetaKey(key, 'string', '', '')
-            DBSession.add(k)
-            print('Created key %s' % key)
-
+        missing_metakeys = check_missing_metakeys(metakeys, 'i')
+        if len(missing_metakeys) > 0:
+            raise HTTPBadRequest('missing metadata keys: %s' % ', '.join(missing_metakeys))
 
         view = View(v['id_view'], v['created'], v['description'], v['id_user'], v['public'])
+        update_metadata(v['metadata'], view.id_view, 'view')
+
         DBSession.add(view)
         DBSession.flush()
-
-        for meta in v['metadata']:
-            m = Metadata(view.id_view, 'view', meta['key'], meta['value'])
-            DBSession.add(m)
-        DBSession.flush()
+        #
+        # for meta in v['metadata']:
+        #     m = Metadata(view.id_view, 'view', meta['key'], meta['value'])
+        #     DBSession.add(m)
+        # DBSession.flush()
 
         print(view)
-        return APIResponse(self._add_metadata(view))
-
-
-        #
-        #
-        #
-        # data = self._request.validated
-        #
-        # DBSession.add(view)
-        # DBSession.flush()
-        # return APIResponse(view.get_dict())
-
+        return APIResponse(add_metadata_record(view.get_dict(), view.view_id, 'view'))
 
 view_item_service = Service(name='view_item_manip', path='/api/v1/view/{view_id:[a-zA-Z0-9-]+}/item/{item_id:[a-zA-Z0-9-]+}', description='Test servicex', cors_policy=NAKI_CORS_POLICY)
 
