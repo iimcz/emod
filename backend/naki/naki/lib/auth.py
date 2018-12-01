@@ -9,6 +9,12 @@ class RIGHTS:
     Editor = 'editor'
     Admin = 'admin'
 
+class RIGHTLevels:
+    Guest = 0
+    Researcher = 1
+    Editor = 2
+    Admin = 3
+
 class TokenAuthenticationPolicy(object):
 
     def __init__(self):
