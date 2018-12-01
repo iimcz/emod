@@ -9,6 +9,7 @@ from uuid import uuid4
 import datetime
 
 from naki.model import DigitalItem, DIGroup, DBSession, MetaKey, Metadata, Link, GroupItem, ContainerItem, Container
+from naki.lib.auth import RIGHTS
 from naki.lib.cors import NAKI_CORS_POLICY
 from naki.schemas.digital_item import DigitalItemSchema
 from naki.schemas.digital_group import DigitalGroupSchema
@@ -86,7 +87,7 @@ class DGRes(object):
 
         return APIResponse([groups[x] for x in groups])
 
-    @view(permission=Everyone, schema=DigitalGroupSchema, validators=(colander_body_validator,))
+    @view(permission=RIGHTS.Editor, schema=DigitalGroupSchema, validators=(colander_body_validator,))
     def put(self):
         dg_id = self._request.matchdict['id']
         try:
@@ -99,7 +100,7 @@ class DGRes(object):
             print(e)
             raise HTTPNotFound()
 
-    @view(permission=Everyone, schema=DigitalGroupSchema, validators=(colander_body_validator,))
+    @view(permission=RIGHTS.Editor, schema=DigitalGroupSchema, validators=(colander_body_validator,))
     def collection_post(self):
         self._request.validated['id_group'] = str(uuid4())
         self._request.validated['created'] = datetime.datetime.now()
@@ -124,7 +125,7 @@ class DGRes(object):
 
 group_item_service = Service(name='group_item_manip', path='/api/v1/dig/{group_id:[a-zA-Z0-9-]+}/item/{item_id:[a-zA-Z0-9-]+}', description='Test service', cors_policy=NAKI_CORS_POLICY)
 
-@group_item_service.put()
+@group_item_service.put(permission=RIGHTS.Editor)
 def group_item_service_func(request):
     group_id = request.matchdict['group_id']
     item_id = request.matchdict['item_id']
@@ -133,7 +134,7 @@ def group_item_service_func(request):
     req = Request.blank('/api/v1/di/' + item_id)
     return request.invoke_subrequest(req)
 
-@group_item_service.delete()
+@group_item_service.delete(permission=RIGHTS.Editor)
 def group_item_service_func_del(request):
     group_id = request.matchdict['group_id']
     item_id = request.matchdict['item_id']
