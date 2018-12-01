@@ -6,7 +6,7 @@ from pyramid.security import Everyone
 from pyramid.request import Request
 import sqlalchemy
 import datetime
-from naki.lib.auth import RIGHTS
+from naki.lib.auth import RIGHTS, RIGHTLevels
 from naki.model import DBSession, View
 from naki.lib.cors import NAKI_CORS_POLICY
 from naki.schemas.view import ViewSchema
@@ -72,7 +72,7 @@ class ViewRes(object):
     def _add_user_checking(self, subq):
         if self._request.user is None:
             return subq.filter(View.public == True)
-        if self._request.user.auth_level < 2:
+        if self._request.user.auth_level < RIGHTLevels.Editor:
             subq = subq.filter(sqlalchemy.or_(View.public == True, View.id_user == self._request.user.id_user))
         return subq
 
