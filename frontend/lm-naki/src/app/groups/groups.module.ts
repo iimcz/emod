@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { GroupListComponent } from './group-list/group-list.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {GroupListComponent} from './group-list/group-list.component';
 import {ItemListComponent} from '../items/item-list/item-list.component';
 import {ItemImportComponent} from '../items/item-import/item-import.component';
 import {ItemInfoComponent} from '../items/item-info/item-info.component';
@@ -16,6 +16,7 @@ import {
   MatTableModule
 } from '@angular/material';
 import {FindGroupModule} from '../find-group/find-group.module';
+import {GroupInfoComponent} from './group-info/group-info.component';
 
 
 export const routerConfig = [{
@@ -24,7 +25,7 @@ export const routerConfig = [{
     {
       path: '',
       component: GroupListComponent
-    }
+    },
     // ,
     // {
     //   path: 'import',
@@ -35,10 +36,10 @@ export const routerConfig = [{
     //   redirectTo: 'show/:id',
     //   pathMatch: 'full'
     // },
-    // {
-    //   path: 'show/:id',
-    //   component: ItemInfoComponent
-    // }
+    {
+      path: 'show/:id',
+      component: GroupInfoComponent
+    }
   ]
 
 }];
@@ -63,7 +64,9 @@ export const routerConfig = [{
 
   ],
   declarations: [
-    GroupListComponent
+    GroupListComponent,
+    GroupInfoComponent
   ]
 })
-export class GroupsModule { }
+export class GroupsModule {
+}
