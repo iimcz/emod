@@ -94,6 +94,7 @@ class StorageRes(object):
 
         return APIResponse(res)
 
+upload_service = Service(name='upload', path='/api/v1/storage/upload/{filename}', description='Upload servicex', cors_policy=NAKI_CORS_POLICY)
 
 @upload_service.post(permission=RIGHTS.Researcher)
 def upload_file(request):
