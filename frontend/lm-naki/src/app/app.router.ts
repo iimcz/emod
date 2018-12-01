@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'items', loadChildren: './items/items.module#ItemsModule'},
   {path: 'groups', loadChildren: './groups/groups.module#GroupsModule'},
+  {path: 'sets', loadChildren: './sets/sets.module#SetsModule'},
   {path: 'views', loadChildren: './view/view.module#ViewModule'},
   {path: 'metakeys', loadChildren: './metakeys/metakeys.module#MetakeysModule'},
   {path: 'auth', loadChildren: './auth/auth.module#AuthModule'},
