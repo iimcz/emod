@@ -13,6 +13,7 @@ import {FileTreeElementInterface} from './interface/filetree-element.interface';
 import {UserInterface} from './interface/user.interface';
 import {Rights} from './rights.enum';
 import {TreeElementInterface} from './interface/tree-element.interface';
+import {DigitalSetInterface} from './interface/digital-set.interface';
 
 @Injectable()
 export class NakiService {
@@ -315,6 +316,22 @@ export class NakiService {
         resolve(res);
       });
     });
+  }
+
+  public get_set_list(query: string = '', limit: number = 10, offset: number = 0): Promise<APIResponse<DigitalSetInterface[]>> {
+    return this.generic_list<DigitalSetInterface>('diss', query, {limit: limit.toString(10), offset: offset.toString(10)});
+  }
+
+  public get_set_list_count(keys: string): Promise<APIResponse<number>> {
+    return this.generic_list_count('diss', keys);
+  }
+
+  public create_set(dset: DigitalSetInterface): Promise<APIResponse<DigitalSetInterface>> {
+    return this.generic_create('diss', dset);
+  }
+
+  public update_set(dset: DigitalSetInterface): Promise<APIResponse<DigitalSetInterface>> {
+    return this.generic_update('dis', dset.id_set.toString(), dset);
   }
 
   public get_view_list(query: string = '', limit: number = 10, offset: number = 0): Promise<APIResponse<ViewInterface[]>> {
