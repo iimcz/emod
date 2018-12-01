@@ -511,7 +511,7 @@ export class NakiService {
     if (token) {
       params['token'] = token;
     }
-    return Object.keys(params).map(e => e.toString() + '=' + params[e].toString()).join('&');
+    return Object.keys(params).map(e => e.toString() + '=' + (params[e] ? params[e].toString() : '')).join('&');
   }
 
 
