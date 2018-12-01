@@ -155,33 +155,16 @@ export class NakiService {
 
   private generic_create<T, Return = T>(url_fragment: string, value: T): Promise<APIResponse<Return>> {
     return this.generic_request_post<T, Return>(url_fragment, value);
-    // return new Promise<APIResponse<Return>>((resolve, reject) => {
-    //   this.httpClient.post<APIResponse<Return>>(base_url + url_fragment, value).subscribe(res => {
-    //     console.log(res);
-    //     resolve(res);
-    //   });
-    // });
   }
 
   public generic_update<T, Return = T>(url_fragment: string, id: string, item: T): Promise<APIResponse<Return>> {
     return this.generic_request_put(this._join_path(url_fragment, id), item);
-    // return new Promise<APIResponse<Return>>((resolve, reject) => {
-    //   this.httpClient.put<APIResponse<Return>>(base_url + url_fragment + '/' + id, item).subscribe(res => {
-    //     console.log(res);
-    //     resolve(res);
-    //   });
-    // });
   }
 
   private generic_get<T>(url_fragment: string, id: string): Promise<APIResponse<T>> {
     return this.generic_request_get<T>(this._join_path(url_fragment, id), {});
-    // return new Promise<APIResponse<T>>((resolve, reject) => {
-    //   this.httpClient.get<APIResponse<T>>(this._join_path(base_url, url_fragment, id)).subscribe(res => {
-    //     console.log(res);
-    //     resolve(res);
-    //   });
-    // });
   }
+
   private _join_path(...segments: string[]): string {
     return segments.map(e => e.startsWith('/') ? e.slice(1) : e).map(e => e.endsWith('/') ? e.slice(0, -1) : e).join('/');
   }
@@ -427,6 +410,7 @@ export class NakiService {
       });
     });
   }
+
 
   public upload_file(name: string, data: ArrayBuffer, path: string, cb?: any): Promise<APIResponse<FileTreeElementInterface>> {
     return new Promise<APIResponse<FileTreeElementInterface>>((resolve, reject) => {
