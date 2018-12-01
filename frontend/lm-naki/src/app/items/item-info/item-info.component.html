@@ -1,3 +1,33 @@
-<p>
-  item-info works!
-</p>
+<a mat-raised-button class="mat-primary" [routerLink]="['/items']">< Back to list</a>
+
+<ng-container *ngIf="item !== undefined">
+<h1>{{get_metadata(item, 'description')}}</h1>
+
+  <app-item-preview [item]="item" [maxWidth]="800" [maxHeight]="600"></app-item-preview>
+<br>
+
+<h3>Item details</h3>
+  <table>
+    <tr>
+      <th colspan="2">
+        Links
+      </th>
+    </tr>
+    <tr *ngFor="let link of item.links">
+      <th>{{link.type}}</th>
+      <td>{{link.uri}}</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">
+        Metadata
+      </th>
+    </tr>
+    <tr *ngFor="let meta of item.metadata">
+      <th>{{meta.key}}</th>
+      <td>{{meta.value}}</td>
+    </tr>
+  </table>
+
+  <button mat-raised-button *ngIf="nakiService.has_right(rights.Editor)" (click)="edit_item()">Edit item</button>
+</ng-container>
