@@ -14,7 +14,7 @@ from naki.lib.rest import APIResponse
 from naki.lib.utils import get_list_params
 from naki.model import DigitalItem, DBSession, MetaKey, Metadata, Link, GroupItem
 from naki.schemas.digital_item import DigitalItemSchema
-
+from naki.lib.auth import RIGHTS
 # di_schema = SQLAlchemySchemaNode(DigitalItem)
 
 
@@ -52,7 +52,7 @@ class DIRes(object):
             print(e)
             raise HTTPNotFound()
 
-    @view(permission=Everyone, schema=DigitalItemSchema, validators=(colander_body_validator,))
+    @view(permission=RIGHTS.Editor, schema=DigitalItemSchema, validators=(colander_body_validator,))
     def put(self):
         di_id = self._request.matchdict['id']
         try:
@@ -150,7 +150,7 @@ class DIRes(object):
 
 
 
-    @view(permission=Everyone, schema=DigitalItemSchema, validators=(colander_body_validator,))
+    @view(permission=RIGHTS.Editor, schema=DigitalItemSchema, validators=(colander_body_validator,))
     def collection_post(self):
         self._request.validated['id_item'] = str(uuid4())
         self._request.validated['created'] = datetime.datetime.now()
