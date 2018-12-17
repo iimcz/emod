@@ -13,12 +13,8 @@ import {
 import {NakiService} from '../../naki.service';
 import {NakiConfig} from '../../config';
 import {AngularDraggableDirective, AngularResizableDirective, IPosition} from 'angular2-draggable';
-import {ImageViewerComponent} from '../../image-container/image-viewer/image-viewer.component';
-import {GenericViewComponent} from '../../generic-view/generic-view/generic-view.component';
 import {IResizeEvent} from 'angular2-draggable/lib/models/resize-event';
 import {ContainerInterface} from '../../interface/container.interface';
-import {IframeViewComponent} from '../../iframe-view/iframe-view/iframe-view.component';
-import {VideoViewComponent} from '../../video-view/video-view/video-view.component';
 import {NakiDefaultPlayerService} from '../../naki-default-player.service';
 import {APIResponse} from '../../apiresponse.interface';
 import {Subject, Subscription} from 'rxjs';
@@ -40,11 +36,6 @@ export class ContainerComponent implements OnInit, OnDestroy {
 
   @Input() container_id = '';
   @Input() view_id = '';
-  // @Input() items: string[];
-  // @Input() left = 0;
-  // @Input() top = 0;
-  // @Input() width = 2;
-  // @Input() height = 2;
   @Input() index = 0;
   @Input() viewCanvas: ElementRef | undefined;
   @Input() readonly = false;
