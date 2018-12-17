@@ -12,11 +12,11 @@ class View(Base):
     id_user = Column('sAuthor', UnicodeText, info={'colanderalchemy': {'missing': ''}})
     public = Column('bPublic', Integer, info={'colanderalchemy': {'missing': 0}})
         
-    def __init__(self, id_view, created, description, author, public):
+    def __init__(self, id_view, created, description, id_user, public):
         self.id_view = id_view
         self.created = created
         self.description = description
-        self.author = author
+        self.id_user = id_user
         self.public = public
 
     def get_dict(self):
