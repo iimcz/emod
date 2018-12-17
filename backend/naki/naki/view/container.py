@@ -26,15 +26,16 @@ class ContainerRes(object):
     def get(self):
         container_id = self._request.matchdict['container_id']
         items = DBSession.query(Container, ContainerItem)\
-            .join(ContainerItem, ContainerItem.id_container == Container.id_container)\
-            .filter(Container.id_view == self._view_id)\
-            .filter(ContainerItem.id_container == container_id)\
+            .outerjoin(ContainerItem, ContainerItem.id_container == Container.id_container)\
+            .filter(Container.id_view == self._view_id) \
+            .filter(Container.id_container == container_id)\
             .all()
+
         if len(items) == 0:
             raise HTTPNotFound()
 
         ret = items[0][0].get_dict();
-        ret['item_ids'] = [x[1].id_item for x in items]
+        ret['item_ids'] = [x[1].id_item for x in items] if items[0][1] else []
         return APIResponse(ret)
 
     @view(permission=Everyone)
