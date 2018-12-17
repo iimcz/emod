@@ -11,5 +11,5 @@ export interface ContainerInterface {
   height: number;
   item_ids: string[];
   items?: DigitalItem[];
-  data?: Object;
+  data?: string;
 }
