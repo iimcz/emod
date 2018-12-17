@@ -50,7 +50,7 @@ export class FindSetComponent extends GenericFindComponent<DigitalSetInterface> 
   }
 
   public editSet(dset: DigitalSetInterface | null): void {
-    const set_copy = JSON.parse(JSON.stringify(dset);
+    const set_copy = JSON.parse(JSON.stringify(dset));
     const dialogRef = this.dialog.open(EditSetDialogComponent, {data: {set: set_copy, metakeys: this.metakeys}});
     dialogRef.afterClosed().subscribe(res => {
       console.log(res);
