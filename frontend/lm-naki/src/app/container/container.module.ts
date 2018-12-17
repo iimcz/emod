@@ -7,7 +7,7 @@ import {ImageViewerComponent} from '../image-container/image-viewer/image-viewer
 import {GenericViewModule} from '../generic-view/generic-view.module';
 import {GenericViewComponent} from '../generic-view/generic-view/generic-view.component';
 import {MatButtonModule, MatIconModule, MatMenuModule} from '@angular/material';
-import {IframeViewModule} from '../iframe-view/iframe-view.module';
+import {IframeViewerModule} from '../iframe-viewer/iframe-viewer.module';
 import {IframeViewComponent} from '../iframe-view/iframe-view/iframe-view.component';
 import {VideoViewComponent} from '../video-view/video-view/video-view.component';
 import {VideoViewModule} from '../video-view/video-view.module';
@@ -20,7 +20,7 @@ import {MotionContainerModule} from '../motion-container/motion-container.module
     AngularDraggableModule,
     ImageContainerModule,
     GenericViewModule,
-    IframeViewModule,
+    IframeViewerModule,
     VideoViewModule,
     MotionContainerModule,
 

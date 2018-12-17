@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IframeViewComponent } from './iframe-view.component';
+import { IframeViewerComponent } from './iframe-viewer.component';
 
-describe('IframeViewComponent', () => {
-  let component: IframeViewComponent;
-  let fixture: ComponentFixture<IframeViewComponent>;
+describe('IframeViewerComponent', () => {
+  let component: IframeViewerComponent;
+  let fixture: ComponentFixture<IframeViewerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IframeViewComponent ]
+      declarations: [ IframeViewerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IframeViewComponent);
+    fixture = TestBed.createComponent(IframeViewerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

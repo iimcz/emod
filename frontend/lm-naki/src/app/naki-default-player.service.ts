@@ -1,7 +1,7 @@
 import {Component, Injectable} from '@angular/core';
 import {ImageViewerComponent} from './image-container/image-viewer/image-viewer.component';
 import {GenericViewComponent} from './generic-view/generic-view/generic-view.component';
-import {IframeViewComponent} from './iframe-view/iframe-view/iframe-view.component';
+import {IframeViewerComponent} from './iframe-viewer/iframe-view/iframe-viewer.component';
 import {VideoViewComponent} from './video-view/video-view/video-view.component';
 import {MotionViewComponent} from './motion-container/motion-view/motion-view.component';
 
@@ -23,7 +23,7 @@ export class NakiDefaultPlayerService {
   private playerComponentMap: Map<string, any> = new Map<string, any>([
     ['image', ImageViewerComponent],
     ['generic', GenericViewComponent],
-    ['www', IframeViewComponent],
+    ['www', IframeViewerComponent],
     ['video', VideoViewComponent],
     ['motion', MotionViewComponent]
   ]);

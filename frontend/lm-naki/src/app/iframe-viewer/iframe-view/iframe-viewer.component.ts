@@ -5,11 +5,11 @@ import {NakiService} from '../../naki.service';
 import {LinkInterface} from '../../interface/link.interface';
 
 @Component({
-  selector: 'app-iframe-view',
-  templateUrl: './iframe-view.component.html',
-  styleUrls: ['./iframe-view.component.css']
+  selector: 'app-iframe-viewer',
+  templateUrl: './iframe-viewer.component.html',
+  styleUrls: ['./iframe-viewer.component.css']
 })
-export class IframeViewComponent implements OnInit {
+export class IframeViewerComponent implements OnInit {
   @Input() play_mode = false;
   @Input() dis: DigitalItem[] = [];
 
