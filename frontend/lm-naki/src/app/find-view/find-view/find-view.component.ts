@@ -54,7 +54,15 @@ export class FindViewComponent extends GenericFindComponent<ViewInterface> imple
   }
 
   public copy_view(view: ViewInterface): void {
-
+    const view_copy: ViewInterface = JSON.parse(JSON.stringify(view));
+    view_copy.id_view = '';
+    const dialogRef = this.dialog.open(EditViewDialogComponent, {data: {view: view_copy, metakeys: this.metakeys, copy_view_id: view.id_view}});
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(res);
+      if (res) {
+        this.reloadData();
+      }
+    });
   }
 
   protected reload_list(keys: string, offset: number, limit: number): Promise<GenericListReply<ViewInterface>> {
