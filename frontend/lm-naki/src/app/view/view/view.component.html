@@ -115,7 +115,7 @@
       </button>
       <br><br>
       <div>
-        <ng-container *ngFor="let cont of view.containers">
+        <ng-container *ngFor="let cont of view?.containers">
           <span>{{cont.id_container}}</span><br>
         </ng-container>
 
@@ -130,8 +130,8 @@
            [dragHintClass]="'empty'"
            (onDrop)="dropItem($event)">
 
-        <app-container *ngFor="let container of view.containers; index as index"
-                       [view_id]="view.id_view"
+        <app-container *ngFor="let container of view?.containers; index as index"
+                       [view_id]="view?.id_view"
                        [container_id]="container.id_container"
                        [viewCanvas]="viewCanvas"
                        [mode]="mode2"
