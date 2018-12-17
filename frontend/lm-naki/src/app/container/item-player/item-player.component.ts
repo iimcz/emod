@@ -12,6 +12,7 @@ import {NakiService} from '../../naki.service';
 import {DigitalItem} from '../../interface/digital-item';
 import {NakiDefaultPlayerService} from '../../naki-default-player.service';
 import {Subscription} from 'rxjs';
+import {ContainerEventInterface} from '../../interface/container-event.interface';
 
 @Component({
   selector: 'app-item-player',
@@ -22,9 +23,11 @@ import {Subscription} from 'rxjs';
 export class ItemPlayerComponent implements OnInit, OnDestroy {
 
   @ViewChild('innerContent') innerContent: ElementRef | undefined;
-
+  @Output() stateUpdate: EventEmitter<ContainerEventInterface> = new EventEmitter<ContainerEventInterface>();
+  @Input() view_id: string | undefined;
   private componentRef: ComponentRef<any> | undefined;
   private componentUpdateRef: Subscription | undefined;
+  private componentEventRef: Subscription | undefined;
   private _type = 'image';
 
   get type() {
@@ -130,6 +133,7 @@ export class ItemPlayerComponent implements OnInit, OnDestroy {
     this.componentRef.instance.play_mode = this.mode === 'play';
     this.componentRef.instance.data = this.data;
     this.componentRef.instance.size = this.size;
+    this.componentRef.instance.view_id = this.view_id;
 
     if (this.componentRef.instance.update) {
       this.componentUpdateRef = (this.componentRef.instance.update as EventEmitter<string>).subscribe((value: string) => {
@@ -137,6 +141,12 @@ export class ItemPlayerComponent implements OnInit, OnDestroy {
         this.update_container(value);
       });
     }
+    if (this.componentRef.instance.stateUpdate) {
+      this.componentEventRef = (this.componentRef.instance.stateUpdate as EventEmitter<ContainerEventInterface>).subscribe((value: ContainerEventInterface) => {
+        this.stateUpdate.emit(value);
+      });
+    }
+
 
     this.appRef.attachView(this.componentRef.hostView);
 
@@ -163,6 +173,10 @@ export class ItemPlayerComponent implements OnInit, OnDestroy {
       this.componentUpdateRef.unsubscribe();
       this.componentUpdateRef = undefined;
     }
+    if (this.componentEventRef) {
+      this.componentEventRef.unsubscribe();
+      this.componentEventRef = undefined;
+    }
     this.componentRef = undefined;
   }
   private update_container(value: string): void {
@@ -179,5 +193,18 @@ export class ItemPlayerComponent implements OnInit, OnDestroy {
     // this.innerContent.nativeElement.firstChild.focus();
     // console.log(document.activeElement);
   }
+
+  public receiveEvent(event: ContainerEventInterface): void {
+    if (this.componentRef && this.componentRef.instance.receiveEvent) {
+      this.componentRef.instance.receiveEvent(event);
+    }
+  }
+
+  public annotate(): void {
+    if (this.componentRef && this.componentRef.instance.annotate) {
+      this.componentRef.instance.annotate();
+    }
+  }
 }
+
 
