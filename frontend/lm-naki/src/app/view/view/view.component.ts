@@ -16,6 +16,7 @@ import {ContainerInterface} from '../../interface/container.interface';
 import {Subject} from 'rxjs';
 import {FindGroupDialogComponent} from '../../find-group/find-group-dialog/find-group-dialog.component';
 import {DigitalGroup} from '../../interface/digital-group';
+import {EditGroupDialogComponent} from '../../find-group/edit-group-dialog/edit-group-dialog.component';
 import {ContainerEventInterface} from '../../interface/container-event.interface';
 
 @Component({
