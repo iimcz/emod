@@ -4,6 +4,7 @@ import {GenericViewerComponent} from './generic-viewer/generic-viewer/generic-vi
 import {IframeViewerComponent} from './iframe-viewer/iframe-view/iframe-viewer.component';
 import {VideoViewerComponent} from './video-viewer/video-viewer/video-viewer.component';
 import {MotionViewerComponent} from './motion-viewer/motion-viewer/motion-viewer.component';
+import {AnnotationViewerComponent} from './annotation-viewer/annotation-viewer/annotation-viewer.component';
 
 
 @Injectable({
@@ -26,6 +27,7 @@ export class NakiDefaultPlayerService {
     ['www', IframeViewerComponent],
     ['video', VideoViewerComponent],
     ['motion', MotionViewerComponent],
+    ['annotation', AnnotationViewerComponent]
   ]);
 
   constructor() {

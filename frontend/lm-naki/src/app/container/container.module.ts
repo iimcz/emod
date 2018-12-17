@@ -9,6 +9,7 @@ import {IframeViewerModule} from '../iframe-viewer/iframe-viewer.module';
 import {VideoViewerModule} from '../video-viewer/video-viewer.module';
 import {ItemPlayerComponent} from './item-player/item-player.component';
 import {MotionViewerModule} from '../motion-viewer/motion-viewer.module';
+import {AnnotationViewerModule} from '../annotation-viewer/annotation-viewer.module';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {MotionViewerModule} from '../motion-viewer/motion-viewer.module';
     IframeViewerModule,
     VideoViewerModule,
     MotionViewerModule,
+    AnnotationViewerModule,
 
     MatButtonModule,
     MatIconModule,
