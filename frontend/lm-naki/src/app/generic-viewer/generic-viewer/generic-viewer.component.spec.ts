@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenericViewComponent } from './generic-view.component';
+import { GenericViewerComponent } from './generic-viewer.component';
 
-describe('GenericViewComponent', () => {
-  let component: GenericViewComponent;
-  let fixture: ComponentFixture<GenericViewComponent>;
+describe('GenericViewerComponent', () => {
+  let component: GenericViewerComponent;
+  let fixture: ComponentFixture<GenericViewerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenericViewComponent ]
+      declarations: [ GenericViewerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GenericViewComponent);
+    fixture = TestBed.createComponent(GenericViewerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

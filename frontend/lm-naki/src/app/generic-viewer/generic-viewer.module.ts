@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {GenericViewComponent} from './generic-view/generic-view.component';
+import {GenericViewerComponent} from './generic-viewer/generic-viewer.component';
 import {MatButtonModule} from '@angular/material';
 
 @NgModule({
@@ -8,10 +8,10 @@ import {MatButtonModule} from '@angular/material';
     CommonModule,
     MatButtonModule
   ],
-  declarations: [GenericViewComponent],
+  declarations: [GenericViewerComponent],
   entryComponents: [
-    GenericViewComponent
+    GenericViewerComponent
   ]
 })
-export class GenericViewModule {
+export class GenericViewerModule {
 }

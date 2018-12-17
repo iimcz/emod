@@ -5,10 +5,10 @@ import {Utils} from '../../naki.utils';
 
 @Component({
   selector: 'app-generic-view',
-  templateUrl: './generic-view.component.html',
-  styleUrls: ['./generic-view.component.css']
+  templateUrl: './generic-viewer.component.html',
+  styleUrls: ['./generic-viewer.component.css']
 })
-export class GenericViewComponent implements OnInit {
+export class GenericViewerComponent implements OnInit {
   @Input() play_mode = false;
   @Input() dis: DigitalItem[] = [];
 
