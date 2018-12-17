@@ -14,7 +14,7 @@ from naki.lib.cors import NAKI_CORS_POLICY
 from naki.schemas.digital_item import DigitalItemSchema
 from naki.schemas.digital_group import DigitalGroupSchema
 from naki.lib.rest import APIResponse
-from naki.lib.utils import update_metadata, check_missing_metakeys, add_metadata_record
+from naki.lib.utils import update_metadata, check_missing_metakeys, add_metadata_record, meta_record
 
 @resource(path='/api/v1/dig/{id:[a-zA-Z0-9-]*}', collection_path='/api/v1/digs', cors_policy=NAKI_CORS_POLICY)
 class DGRes(object):
@@ -44,7 +44,7 @@ class DGRes(object):
             if not bundle[1]:
                 continue
             item = bundle[1].get_dict()
-            item['metadata'] = [self._meta_record(x[1], x[0]) for x in meta if x[0].id == bundle[1].id_item]
+            item['metadata'] = [meta_record(x[1], x[0]) for x in meta if x[0].id == bundle[1].id_item]
             dg['items'].append(item)
         # dg['items'] = [x[1].get_dict() for x in dgs if x[1]]
         return APIResponse(dg)
@@ -120,7 +120,7 @@ class DGRes(object):
         DBSession.flush()
 
         print(dg)
-        return APIResponse(self._add_metadata(dg))
+        return APIResponse(add_metadata_record(dg.get_dict(), dg.id_group, 'group'))
 
 
 group_item_service = Service(name='group_item_manip', path='/api/v1/dig/{group_id:[a-zA-Z0-9-]+}/item/{item_id:[a-zA-Z0-9-]+}', description='Test service', cors_policy=NAKI_CORS_POLICY)
