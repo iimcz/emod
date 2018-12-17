@@ -14,6 +14,8 @@ import {UserInterface} from './interface/user.interface';
 import {Rights} from './rights.enum';
 import {TreeElementInterface} from './interface/tree-element.interface';
 import {DigitalSetInterface} from './interface/digital-set.interface';
+import {AnnotationInterface} from './interface/annotation.interface';
+import {LinkInterface} from './interface/link.interface';
 
 @Injectable()
 export class NakiService {
@@ -409,6 +411,10 @@ export class NakiService {
         resolve(res);
       });
     });
+  }
+
+  public create_annotation(info: AnnotationInterface): Promise<APIResponse<LinkInterface>> {
+    return this.generic_create<AnnotationInterface, LinkInterface>(this._join_path('di', info.id_item, 'annotations'), info);
   }
 
 
