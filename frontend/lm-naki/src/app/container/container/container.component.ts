@@ -25,7 +25,9 @@ import {Subject, Subscription} from 'rxjs';
 import {ItemPlayerComponent} from '../item-player/item-player.component';
 import {Utils} from '../../naki.utils';
 import {MatMenuTrigger} from '@angular/material';
-import {assertDefined} from '@angular/core/src/render3/assert';
+import {ContainerEventInterface} from '../../interface/container-event.interface';
+import {ViewComponent} from '../../view/view/view.component';
+
 
 
 @Component({
@@ -47,7 +49,10 @@ export class ContainerComponent implements OnInit, OnDestroy {
   @Input() viewCanvas: ElementRef | undefined;
   @Input() readonly = false;
   @Output() deleteRequest: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() stateUpdate: EventEmitter<ContainerEventInterface> = new EventEmitter<ContainerEventInterface>();
   @Input() new_items: Subject<string> | undefined;
+  @Input() events: Subject<ContainerEventInterface> | undefined;
+  @Input() viewManager: ViewComponent | undefined;
   @ViewChild('topDraggable') topDraggable: AngularDraggableDirective | undefined;
   @ViewChild('topResizable') topResizable: AngularResizableDirective | undefined;
   @ViewChild('topElement') topElement: ElementRef | undefined;
@@ -57,7 +62,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
   public nakiConfig = NakiConfig;
   public container: ContainerInterface | undefined;
   private new_items_sub: Subscription | undefined;
-
+  private event_sub: Subscription | undefined;
   public get_metadata = Utils.get_metadata;
 
   constructor(public defaultPlayerService: NakiDefaultPlayerService,
@@ -82,6 +87,11 @@ export class ContainerComponent implements OnInit, OnDestroy {
         });
       });
     }
+    if (this.events) {
+      this.event_sub = this.events.subscribe((value: ContainerEventInterface) => {
+        this.receiveContainerEvent(value);
+      })
+    }
     // this.init();
   }
 
@@ -89,6 +99,9 @@ export class ContainerComponent implements OnInit, OnDestroy {
     // this.destroy_view();
     if (this.new_items_sub) {
       this.new_items_sub.unsubscribe();
+    }
+    if (this.event_sub) {
+      this.event_sub.unsubscribe();
     }
   }
 
@@ -241,6 +254,17 @@ export class ContainerComponent implements OnInit, OnDestroy {
     console.log(what, key);
     return true;
   }
+  public updateState(event: ContainerEventInterface): void {
+    event.id_container = this.container_id;
+    this.stateUpdate.emit(event);
+  }
+  public receiveContainerEvent(event: ContainerEventInterface): void {
+    console.log(event);
+    if (this.itemPlayer) {
+      this.itemPlayer.receiveEvent(event);
+    }
+  }
+
 }
 
 

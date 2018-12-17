@@ -45,6 +45,8 @@
                    [data]="container.data"
                    [size]="[container.width * nakiConfig.cellWidth, container.height * nakiConfig.cellHeight]"
                    (update)="update_data($event)"
+                   (stateUpdate)="updateState($event)"
+                   [view_id]="view_id"
                    #itemPlayer="ItemPlayerComponent"></app-item-player>
 
 </div>
