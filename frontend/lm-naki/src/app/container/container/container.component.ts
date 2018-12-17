@@ -256,6 +256,11 @@ export class ContainerComponent implements OnInit, OnDestroy {
     }
   }
 
+  public create_annotation_container(): void {
+    if (this.viewManager) {
+      this.viewManager.create_annotation_container(this.container_id);
+    }
+  }
 }
 
 

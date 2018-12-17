@@ -55,6 +55,8 @@
   <a mat-menu-item [mat-menu-trigger-for]="containerTypeMenu">Change type</a>
   <a mat-menu-item [mat-menu-trigger-for]="moveZ">Position</a>
   <a mat-menu-item [mat-menu-trigger-for]="removeItems" *ngIf="dis?.length > 1">Remove items</a>
+  <a mat-menu-item (click)="itemPlayer.annotate()">Annotate</a>
+  <a mat-menu-item (click)="create_annotation_container()">Create annotation container</a>
   <a mat-menu-item>Other stuff</a>
 
 </mat-menu>
