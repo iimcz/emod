@@ -3,7 +3,7 @@ import {ImageViewerComponent} from './image-viewer/image-viewer/image-viewer.com
 import {GenericViewerComponent} from './generic-viewer/generic-viewer/generic-viewer.component';
 import {IframeViewerComponent} from './iframe-viewer/iframe-view/iframe-viewer.component';
 import {VideoViewerComponent} from './video-viewer/video-viewer/video-viewer.component';
-import {MotionViewComponent} from './motion-container/motion-view/motion-view.component';
+import {MotionViewerComponent} from './motion-viewer/motion-viewer/motion-viewer.component';
 
 
 @Injectable({
@@ -25,7 +25,7 @@ export class NakiDefaultPlayerService {
     ['generic', GenericViewerComponent],
     ['www', IframeViewerComponent],
     ['video', VideoViewerComponent],
-    ['motion', MotionViewComponent]
+    ['motion', MotionViewerComponent],
   ]);
 
   constructor() {

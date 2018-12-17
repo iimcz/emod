@@ -5,14 +5,19 @@ declare const THREE: any;
 import {DigitalItem} from '../../interface/digital-item';
 import {NakiService} from '../../naki.service';
 import {Utils} from '../../naki.utils';
+import {ContentViewer} from '../../content-viewer';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatDialog} from '@angular/material';
+import {AnnotationInterface} from '../../interface/annotation.interface';
+import {ContainerEventInterface} from '../../interface/container-event.interface';
 @Component({
   selector: 'app-motion-view',
-  templateUrl: './motion-view.component.html',
-  styleUrls: ['./motion-view.component.css']
+  templateUrl: './motion-viewer.component.html',
+  styleUrls: ['./motion-viewer.component.css']
 })
-export class MotionViewComponent implements OnInit, OnDestroy {
+export class MotionViewerComponent extends ContentViewer implements OnInit, OnDestroy {
   @ViewChild('canvasElement') canvasElement: ElementRef<HTMLCanvasElement> | undefined;
-  @Input() dis: DigitalItem[] = [];
+  // @Input() dis: DigitalItem[] = [];
   private size_: number[] | undefined;
   private renderer: any; // THREE.WebGLRenderer;
   private clock: any = new THREE.Clock(); // THREE.Clock
@@ -28,7 +33,10 @@ export class MotionViewComponent implements OnInit, OnDestroy {
   private animation_clip: any;
   private animation_action: any;
   private start_position: any; // THREE.Vector3
-  constructor(public nakiService: NakiService) {
+  constructor(protected sanitizer: DomSanitizer,
+              protected dialog: MatDialog,
+              public nakiService: NakiService) {
+    super(sanitizer, dialog, nakiService);
   }
 
   get size() {
@@ -102,7 +110,9 @@ export class MotionViewComponent implements OnInit, OnDestroy {
     const delta = this.clock.getDelta();
     if (this.mixer) {
       this.mixer.update(delta);
+      // console.log(this.mixer);
     }
+    this.emitState();
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -121,6 +131,26 @@ export class MotionViewComponent implements OnInit, OnDestroy {
       this.camera.aspect = this.canvasElement.nativeElement.width / this.canvasElement.nativeElement.height;
       this.camera.updateProjectionMatrix();
     }
+  }
+
+  protected annotation_info(): AnnotationInterface | undefined {
+    return {
+      id_item: this.dis[0].id_item,
+      time: this.mixer.time,
+      uri: ''
+    };
+  }
+
+  protected prepare_state(): ContainerEventInterface | undefined {
+    if (!this.dis || this.dis.length === 0) {
+      return undefined;
+    }
+    return {
+      id_container: '',
+      id_item: this.dis[0].id_item,
+      item_index: 0,
+      item_time: this.mixer ? this.mixer.time : 0
+    };
   }
 }
 

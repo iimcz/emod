@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MotionViewComponent } from './motion-view/motion-view.component';
+import { MotionViewerComponent } from './motion-viewer/motion-viewer.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    MotionViewComponent
+    MotionViewerComponent
   ],
   exports: [
-    MotionViewComponent
+    MotionViewerComponent
   ],
   entryComponents: [
-    MotionViewComponent
+    MotionViewerComponent
   ]
 })
-export class MotionContainerModule { }
+export class MotionViewerModule { }
