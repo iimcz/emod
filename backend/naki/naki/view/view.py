@@ -131,7 +131,7 @@ class ViewRes(object):
     def collection_post(self):
         self._request.validated['id_view'] = str(uuid4())
         self._request.validated['created'] = datetime.datetime.now()
-
+        copy_view_id = self._request.GET.get('view_id', '')
         v = self._request.validated
         print(v)
         metakeys = [m['key'] for m in v['metadata']]
@@ -152,8 +152,38 @@ class ViewRes(object):
         #     DBSession.add(m)
         # DBSession.flush()
 
+        # If user specified a view_id parameter, let's make a copy
+        if copy_view_id:
+            old_view = DBSession.query(View).filter(View.id_view == copy_view_id).one()
+            old_items = DBSession.query(ViewItem).filter(ViewItem.id_view == copy_view_id).all()
+            for item in old_items:
+                print('Adding item' + item.id_item)
+                vi = ViewItem(view.id_view,item.id_item, item.path)
+                DBSession.add(vi)
+            old_containers = DBSession\
+                .query(Container, ContainerItem)\
+                .join(ContainerItem, ContainerItem.id_container == Container.id_container)\
+                .filter(Container.id_view == copy_view_id)\
+                .all()
+            process_conts = {}
+            for ci in old_containers:
+                cid = ci[0].id_container
+                if not cid in process_conts:
+                    c = ci[0]
+                    new_cid = str(uuid4())
+                    print('Adding container %s as %s' %(cid, new_cid))
+                    process_conts[cid] = new_cid
+                    cont = Container(new_cid, view.id_view, c.type, c.description, c.x, c.y, c.width, c.height, c.z, c.data)
+                    DBSession.add(cont)
+                else:
+                    new_cid = process_conts[cid]
+
+                print('Adding item %s to container %s'%(ci[1].id_item, new_cid))
+                citem = ContainerItem(new_cid, ci[1].id_item, ci[1].data)
+                DBSession.add(citem)
+
         print(view)
-        return APIResponse(add_metadata_record(view.get_dict(), view.view_id, 'view'))
+        return APIResponse(add_metadata_record(view.get_dict(), view.id_view, 'view'))
 
 view_item_service = Service(name='view_item_manip', path='/api/v1/view/{view_id:[a-zA-Z0-9-]+}/item/{item_id:[a-zA-Z0-9-]+}', description='Test servicex', cors_policy=NAKI_CORS_POLICY)
 
