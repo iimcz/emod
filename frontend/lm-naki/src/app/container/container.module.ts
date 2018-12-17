@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ContainerComponent} from './container/container.component';
 import {AngularDraggableModule} from 'angular2-draggable';
-import {ImageContainerModule} from '../image-container/image-container.module';
+import {ImageViewerModule} from '../image-viewer/image-viewer.module';
 import {GenericViewerModule} from '../generic-viewer/generic-viewer.module';
 import {MatButtonModule, MatIconModule, MatMenuModule} from '@angular/material';
 import {IframeViewerModule} from '../iframe-viewer/iframe-viewer.module';
@@ -13,7 +13,7 @@ import {MotionContainerModule} from '../motion-container/motion-container.module
   imports: [
     CommonModule,
     AngularDraggableModule,
-    ImageContainerModule,
+    ImageViewerModule,
     GenericViewModule,
     IframeViewerModule,
     VideoViewModule,

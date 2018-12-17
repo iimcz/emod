@@ -3,24 +3,28 @@ import {NakiService} from '../../naki.service';
 import {DigitalItem} from '../../interface/digital-item';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Observable, Subscription} from 'rxjs';
+import {ContentViewer} from '../../content-viewer';
+import {ContainerEventInterface} from '../../interface/container-event.interface';
+import {AnnotationInterface} from '../../interface/annotation.interface';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-image-viewer',
   templateUrl: './image-viewer.component.html',
   styleUrls: ['./image-viewer.component.css']
 })
-export class ImageViewerComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() dis: DigitalItem[] = [];
+export class ImageViewerComponent extends ContentViewer implements OnInit, AfterViewInit, OnDestroy {
+
   @Input() data: string | undefined;
-  @Input() play_mode = false;
   @Output() update: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('topDiv') topDiv: ElementRef | undefined;
   private index_ = 0;
   private event_sub: Subscription | undefined;
 
-  constructor(private sanitizer: DomSanitizer,
+  constructor(protected sanitizer: DomSanitizer,
+              protected dialog: MatDialog,
               public nakiService: NakiService) {
-
+    super(sanitizer, dialog, nakiService);
   }
 
   public get index() {
@@ -37,15 +41,17 @@ export class ImageViewerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     setTimeout(() => {
       this.update.emit(JSON.stringify({index: this.index_}));
+      this.emitState();
     }, 0);
   }
 
   ngOnInit() {
     console.log('Initializing');
-    this.dis.forEach((di: DigitalItem) => {
-      if (di.links && di.links[0]) {
-        di.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.nakiService.get_resource_url(di.links[0].uri));
-      }
+    this.dis.forEach((di: DigitalItem, i: number) => {
+      di.url = this.get_url(i);
+      // if (di.links && di.links[0]) {
+      //   di.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.nakiService.get_resource_url(di.links[0].uri));
+      // }
     });
     if (this.data) {
       const obj = JSON.parse(this.data);
@@ -55,7 +61,7 @@ export class ImageViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       this.index = 0;
     }
     if (this.topDiv === undefined) {
-      console.error ('topDiv not defined');
+      console.error('topDiv not defined');
     } else {
       this.event_sub = Observable
         .fromEvent(this.topDiv.nativeElement, 'keyup')
@@ -77,19 +83,45 @@ export class ImageViewerComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
   }
+
   public ngOnDestroy(): void {
     if (this.event_sub) {
       this.event_sub.unsubscribe();
     }
   }
+
   ngAfterViewInit() {
 
   }
+
   public focus(): void {
     console.log(document.activeElement);
     if (this.topDiv) {
       this.topDiv.nativeElement.focus();
     }
     console.log(document.activeElement);
+  }
+
+  protected prepare_state(): ContainerEventInterface | undefined {
+    if (!this.dis || this.dis.length <= this.index) {
+      return undefined;
+    }
+    return {
+      id_container: '',
+      id_item: this.dis[this.index].id_item,
+      item_index: this.index,
+      item_time: 0
+    };
+  }
+
+  protected annotation_info(): AnnotationInterface | undefined {
+    if (!this.dis || this.dis.length <= this.index) {
+      return undefined;
+    }
+    return {
+      id_item: this.dis[this.index].id_item,
+      uri: '',
+      time: 0
+    };
   }
 }
