@@ -14,7 +14,7 @@ import {MotionContainerModule} from '../motion-container/motion-container.module
     CommonModule,
     AngularDraggableModule,
     ImageViewerModule,
-    GenericViewModule,
+    GenericViewerModule,
     IframeViewerModule,
     VideoViewerModule,
     MotionContainerModule,
