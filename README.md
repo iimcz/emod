@@ -17,7 +17,7 @@ Edit file *backend/naki/development.ini* and set:
 Prepare environment for the server:
 ```bash
 $ cd backend/naki
-$ python3 -m venv venv
+$ python3 -m venv env
 $ env/bin/pip install --upgrade pip setuptools
 $ env/bin/pip install -e ".[testing]"
 ```
