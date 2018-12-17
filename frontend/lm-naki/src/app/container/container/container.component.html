@@ -39,11 +39,11 @@
     </button>
   </div>
   <app-item-player [dis]="dis"
-                   [type]="container.type"
+                   [type]="container?.type"
                    [mode]="mode"
                    *ngIf="container"
-                   [data]="container.data"
-                   [size]="[container.width * nakiConfig.cellWidth, container.height * nakiConfig.cellHeight]"
+                   [data]="container?.data"
+                   [size]="[container?.width * nakiConfig.cellWidth, container?.height * nakiConfig.cellHeight]"
                    (update)="update_data($event)"
                    (stateUpdate)="updateState($event)"
                    [view_id]="view_id"
