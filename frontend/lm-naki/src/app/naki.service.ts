@@ -242,12 +242,7 @@ export class NakiService {
   }
 
   public add_item_to_group(id_group: string, id_item: string): Promise<APIResponse<DigitalItem>> {
-    return new Promise<APIResponse<DigitalItem>>((resolve, reject) => {
-      this.httpClient.put<APIResponse<DigitalItem>>(base_url + 'dig/' + id_group + '/item/' + id_item, {}).subscribe(res => {
-        console.log(res);
-        resolve(res);
-      });
-    });
+    return this.generic_request_put<Object, DigitalItem>(this._join_path('dig', id_group, 'item', id_item), {});
   }
 
   public remove_item_from_group(id_group: string, id_item: string): Promise<APIResponse<DigitalGroup>> {
