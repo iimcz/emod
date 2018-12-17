@@ -160,7 +160,7 @@ export class ViewComponent implements OnInit {
           // }
         });
         if (this.view.containers === undefined) {
-           this.view.containers = [];
+          this.view.containers = [];
         }
         for (const cont of this.view.containers) {
           this.newItemSubjects.set(cont.id_container, new Subject<string>());
@@ -416,5 +416,10 @@ export class ViewComponent implements OnInit {
       }
     }
   }
+
+  public create_annotation_container(remote_container: string): void {
+    this.add_container_with_type('annotation', [], 0, 0, JSON.stringify({'id_container': remote_container}));
+  }
+
 
 }
