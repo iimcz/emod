@@ -136,7 +136,7 @@ class DIRes(object):
         DBSession.flush()
 
         for link in v['links']:
-            l = Link(str(uuid4()), di.id_item, link['type'], link['description'], link['uri'])
+            l = Link(str(uuid4()), di.id_item, link['id_user'], link['type'], link['description'], link['uri'])
             DBSession.add(l)
 
         for group_id in v['group_ids']:
