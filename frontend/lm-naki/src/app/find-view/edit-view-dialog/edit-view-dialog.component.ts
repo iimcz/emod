@@ -11,7 +11,9 @@ import {ViewInterface} from '../../interface/view.interface';
 export class EditViewDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<EditViewDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: {view: ViewInterface, metakeys: MetakeyInterface[]}) { }
+              @Inject(MAT_DIALOG_DATA) public data:
+                {view: ViewInterface, metakeys: MetakeyInterface[], copy_view_id: string | undefined}) {
+  }
 
   ngOnInit() {
   }

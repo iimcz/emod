@@ -13,6 +13,7 @@ import {MatDialogRef} from '@angular/material';
 export class EditViewComponent implements OnInit {
   @Input() view: ViewInterface | undefined | null;
   @Input() metakeys: MetakeyInterface[] = [];
+  @Input() copy_view_id: string | undefined;
 
   constructor(public nakiService: NakiService) {
   }
@@ -36,7 +37,8 @@ export class EditViewComponent implements OnInit {
     if (!this.view) {
       return;
     }
-    const req = this.view.id_view ? this.nakiService.update_view(this.view) : this.nakiService.create_view(this.view);
+    const req = this.view.id_view ? this.nakiService.update_view(this.view) :
+      this.copy_view_id ? this.nakiService.copy_view(this.copy_view_id, this.view) : this.nakiService.create_view(this.view);
     req.then(() => {
       console.log('OK');
       if (dialogRef) {
