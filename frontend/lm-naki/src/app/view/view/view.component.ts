@@ -359,6 +359,18 @@ export class ViewComponent implements OnInit {
     return this.selected_items.findIndex(e => e.id_item === item.id_item) !== -1;
   }
 
+  public save_group(prefix: string): void {
+    const dialogRef = this.dialog.open(EditGroupDialogComponent, {data: {group_id: null}});
+    dialogRef.afterClosed().subscribe((group) => {
+      if (group && this.view && this.view.items) {
+        Promise.all(this.filter_items(this.view.items, prefix).map(e => this.nakiService.add_item_to_group(group.id_group, e.id_item)))
+          .then((res: APIResponse<DigitalItem>[]) => {
+            console.log(res);
+          });
+      }
+    });
+  }
+
   private add_item_to_view(item_id: string, path?: string): void {
     if (this.view === undefined || this.view.items === undefined) {
       return;
