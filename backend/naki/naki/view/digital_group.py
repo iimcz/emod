@@ -16,6 +16,7 @@ from naki.schemas.digital_group import DigitalGroupSchema
 from naki.lib.rest import APIResponse
 from naki.lib.utils import update_metadata, check_missing_metakeys, add_metadata_record, meta_record
 
+
 @resource(path='/api/v1/dig/{id:[a-zA-Z0-9-]*}', collection_path='/api/v1/digs', cors_policy=NAKI_CORS_POLICY)
 class DGRes(object):
     def __init__(self, request, context=None):
@@ -25,19 +26,19 @@ class DGRes(object):
     @view(permission=Everyone)
     def get(self):
         dg_id = self._request.matchdict['id']
-        dgs = [x for x in DBSession.query(DIGroup, DigitalItem)\
-            .outerjoin(GroupItem, GroupItem.id_group == DIGroup.id_group)\
-            .outerjoin(DigitalItem, DigitalItem.id_item == GroupItem.id_item)\
-            .filter(DIGroup.id_group == dg_id)\
+        dgs = [x for x in DBSession.query(DIGroup, DigitalItem) \
+            .outerjoin(GroupItem, GroupItem.id_group == DIGroup.id_group) \
+            .outerjoin(DigitalItem, DigitalItem.id_item == GroupItem.id_item) \
+            .filter(DIGroup.id_group == dg_id) \
             .all()]
         if len(dgs) == 0:
             raise HTTPNotFound()
 
         dg = add_metadata_record(dgs[0][0].get_dict(), dgs[0][0].id_group, 'group')
-        meta = DBSession.query(Metadata, MetaKey)\
-            .join(MetaKey, MetaKey.key == Metadata.key)\
-            .filter(Metadata.target == 'item')\
-            .filter(Metadata.id.in_([x[1].id_item for x in dgs if x[1]]))\
+        meta = DBSession.query(Metadata, MetaKey) \
+            .join(MetaKey, MetaKey.key == Metadata.key) \
+            .filter(Metadata.target == 'item') \
+            .filter(Metadata.id.in_([x[1].id_item for x in dgs if x[1]])) \
             .all()
         dg['items'] = []
         for bundle in dgs:
@@ -67,7 +68,6 @@ class DGRes(object):
             return APIResponse(subq.count())
 
         subq = subq.offset(offset).limit(limit).subquery('subq')
-
 
         groups_raw = DBSession.query(DIGroup, Metadata) \
             .outerjoin(Metadata, Metadata.id == DIGroup.id_group) \
@@ -123,7 +123,10 @@ class DGRes(object):
         return APIResponse(add_metadata_record(dg.get_dict(), dg.id_group, 'group'))
 
 
-group_item_service = Service(name='group_item_manip', path='/api/v1/dig/{group_id:[a-zA-Z0-9-]+}/item/{item_id:[a-zA-Z0-9-]+}', description='Test service', cors_policy=NAKI_CORS_POLICY)
+group_item_service = Service(name='group_item_manip',
+                             path='/api/v1/dig/{group_id:[a-zA-Z0-9-]+}/item/{item_id:[a-zA-Z0-9-]+}',
+                             description='Test service', cors_policy=NAKI_CORS_POLICY)
+
 
 @group_item_service.put(permission=RIGHTS.Editor)
 def group_item_service_func(request):
@@ -134,17 +137,14 @@ def group_item_service_func(request):
     req = Request.blank('/api/v1/di/' + item_id)
     return request.invoke_subrequest(req)
 
+
 @group_item_service.delete(permission=RIGHTS.Editor)
 def group_item_service_func_del(request):
     group_id = request.matchdict['group_id']
     item_id = request.matchdict['item_id']
-    gi = DBSession.query(GroupItem).filter(sqlalchemy.and_(GroupItem.id_group == group_id, GroupItem.id_item == item_id)).one()
+    gi = DBSession.query(GroupItem).filter(
+        sqlalchemy.and_(GroupItem.id_group == group_id, GroupItem.id_item == item_id)).one()
     DBSession.delete(gi)
     DBSession.flush()
     req = Request.blank('/api/v1/dig/' + group_id)
     return request.invoke_subrequest(req)
-
-
-
-
-
