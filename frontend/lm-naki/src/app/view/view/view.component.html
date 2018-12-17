@@ -140,6 +140,9 @@
                        droppable
                        [dropScope]="'container'"
                        [new_items]="newItemSubjects.get(container.id_container)"
+                       [events]="viewSubjects.get(container.id_container)"
+                       (stateUpdate)="newState($event)"
+                       [viewManager]="this"
                        (onDrop)="dropItem2($event, container)">
         </app-container>
 

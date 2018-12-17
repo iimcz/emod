@@ -16,6 +16,7 @@ import {ContainerInterface} from '../../interface/container.interface';
 import {Subject} from 'rxjs';
 import {FindGroupDialogComponent} from '../../find-group/find-group-dialog/find-group-dialog.component';
 import {DigitalGroup} from '../../interface/digital-group';
+import {ContainerEventInterface} from '../../interface/container-event.interface';
 
 @Component({
   selector: 'app-view',
@@ -29,6 +30,7 @@ export class ViewComponent implements OnInit {
   //
   // public items: DigitalItem[] = [];
   public newItemSubjects: Map<string, Subject<string>> = new Map<string, Subject<string>>();
+  public viewSubjects: Map<string, Subject<ContainerEventInterface>> = new Map<string, Subject<ContainerEventInterface>>();
 
   public get_metadata = Utils.get_metadata;
 
@@ -38,6 +40,8 @@ export class ViewComponent implements OnInit {
   public selected_items: DigitalItem[] = [];
 
   public mode2 = 'play';
+
+  private eventCache: Map<string, ContainerEventInterface> = new Map<string, ContainerEventInterface>();
 
   constructor(public dialog: MatDialog,
               private route: ActivatedRoute,
@@ -81,6 +85,12 @@ export class ViewComponent implements OnInit {
       items = [(<DigitalItem>item).id_item];
       type = this.defaultPlayer.getPlayerType((<DigitalItem>item).mime);
     }
+    this.add_container_with_type(type, items, x, y);
+  }
+  private add_container_with_type(type: string, items: string[], x: number, y: number, data?: string): void {
+    if (!this.view) {
+      return;
+    }
     const container: ContainerInterface = {
       id_container: '',
       id_view: this.view.id_view,
@@ -90,7 +100,8 @@ export class ViewComponent implements OnInit {
       z: 0,
       width: 16,
       height: 12,
-      item_ids: items
+      item_ids: items,
+      data: data
     };
     console.log(container);
     this.nakiService.create_container(this.view.id_view, container).then((res: APIResponse<ContainerInterface>) => {
@@ -102,9 +113,9 @@ export class ViewComponent implements OnInit {
       }
       this.view.containers.push(res.data);
       this.newItemSubjects.set(res.data.id_container, new Subject<string>());
+      this.viewSubjects.set(res.data.id_container, new Subject<ContainerEventInterface>());
     });
   }
-
   public remove_container(index: number) {
     console.log(index);
     // const c = this.containers.findIndex(e => e === container);
@@ -115,6 +126,8 @@ export class ViewComponent implements OnInit {
       const removed = this.view.containers.splice(index, 1);
       this.nakiService.delete_container(this.view.id_view, removed[0].id_container).then(res => {
         console.log('deleted, ' + res.toString());
+        this.newItemSubjects.delete(removed[0].id_container);
+        this.viewSubjects.delete(removed[0].id_container);
       });
     }
 
@@ -150,6 +163,7 @@ export class ViewComponent implements OnInit {
         }
         for (const cont of this.view.containers) {
           this.newItemSubjects.set(cont.id_container, new Subject<string>());
+          this.viewSubjects.set(cont.id_container, new Subject<ContainerEventInterface>());
         }
       });
     });
@@ -372,4 +386,22 @@ export class ViewComponent implements OnInit {
       this.prefixes.sort((a, b) => a > b ? 1 : a < b ? -1 : 0);
     }
   }
+
+  public newState(event: ContainerEventInterface): void {
+    console.log('newState: ', event);
+    if (!this.view || !this.view.containers) {
+      return;
+    }
+    this.eventCache.set(event.id_container, event);
+    for (const container of this.view.containers) {
+      if (container.id_container !== event.id_container) {
+        const eventSub = this.viewSubjects.get(container.id_container);
+        if (eventSub) {
+          console.log('sending to ' + container.id_container);
+          eventSub.next(event);
+        }
+      }
+    }
+  }
+
 }
