@@ -2,7 +2,7 @@ import {Component, Injectable} from '@angular/core';
 import {ImageViewerComponent} from './image-viewer/image-viewer/image-viewer.component';
 import {GenericViewerComponent} from './generic-viewer/generic-viewer/generic-viewer.component';
 import {IframeViewerComponent} from './iframe-viewer/iframe-view/iframe-viewer.component';
-import {VideoViewComponent} from './video-view/video-view/video-view.component';
+import {VideoViewerComponent} from './video-viewer/video-viewer/video-viewer.component';
 import {MotionViewComponent} from './motion-container/motion-view/motion-view.component';
 
 
@@ -24,7 +24,7 @@ export class NakiDefaultPlayerService {
     ['image', ImageViewerComponent],
     ['generic', GenericViewerComponent],
     ['www', IframeViewerComponent],
-    ['video', VideoViewComponent],
+    ['video', VideoViewerComponent],
     ['motion', MotionViewComponent]
   ]);
 

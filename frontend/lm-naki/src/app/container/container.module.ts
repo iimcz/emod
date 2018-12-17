@@ -6,7 +6,7 @@ import {ImageViewerModule} from '../image-viewer/image-viewer.module';
 import {GenericViewerModule} from '../generic-viewer/generic-viewer.module';
 import {MatButtonModule, MatIconModule, MatMenuModule} from '@angular/material';
 import {IframeViewerModule} from '../iframe-viewer/iframe-viewer.module';
-import {VideoViewModule} from '../video-view/video-view.module';
+import {VideoViewerModule} from '../video-viewer/video-viewer.module';
 import {MotionContainerModule} from '../motion-container/motion-container.module';
 
 @NgModule({
@@ -16,7 +16,7 @@ import {MotionContainerModule} from '../motion-container/motion-container.module
     ImageViewerModule,
     GenericViewModule,
     IframeViewerModule,
-    VideoViewModule,
+    VideoViewerModule,
     MotionContainerModule,
 
     MatButtonModule,

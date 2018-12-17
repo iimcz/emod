@@ -1,0 +1,5 @@
+<div class="viewer-container">
+  <video *ngIf="url" [controls]="true" (timeupdate)="timeupdate($event.target)" #videoElement>
+    <source [src]="url">
+  </video>
+</div>
