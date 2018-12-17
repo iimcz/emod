@@ -332,6 +332,10 @@ export class NakiService {
     // });
   }
 
+  public copy_view(view_id: string, item: ViewInterface): Promise<APIResponse<ViewInterface>> {
+    return this.generic_request_post('views', item, {'view_id': view_id});
+  }
+
   public update_view(view: ViewInterface): Promise<APIResponse<ViewInterface>> {
     return this.generic_update<ViewInterface>('view', view.id_view, view);
   }
