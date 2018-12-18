@@ -1,5 +1,6 @@
 # EMOD
-
+This file contains documetation for installation and testing.
+For usage instructions, please refer to [user documentation](/frontend/lm-naki/doc/DOC.md)
 ## Installation
 
 ### Requirements:
