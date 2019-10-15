@@ -6,6 +6,7 @@ import {APIResponse} from '../../apiresponse.interface';
 import {DigitalGroup} from '../../interface/digital-group';
 import {EditGroupDialogComponent} from '../edit-group-dialog/edit-group-dialog.component';
 import {GenericFindComponent, GenericListReply} from '../../generic-find.component';
+import {DigitalItem} from '../../interface/digital-item';
 
 @Component({
   selector: 'app-find-group',
@@ -16,6 +17,7 @@ export class FindGroupComponent extends GenericFindComponent<DigitalGroup> imple
   @Input() show_edit = true;
   @Input() show_add = false;
   @Output() add_clicked: EventEmitter<DigitalGroup> = new EventEmitter<DigitalGroup>();
+  @Input() disabled_ids: string[] = [];
 
   constructor(private sanitizer: DomSanitizer,
               private dialog: MatDialog,
@@ -32,6 +34,9 @@ export class FindGroupComponent extends GenericFindComponent<DigitalGroup> imple
     }
     this.displayedColumns.push('type');
     this.displayedColumns.push('description');
+    if (!this.disabled_ids) {
+      this.disabled_ids = [];
+    }
     this.init();
   }
 
@@ -48,6 +53,10 @@ export class FindGroupComponent extends GenericFindComponent<DigitalGroup> imple
     // } else {
     //   this.editGroupImpl(null);
     // }
+  }
+
+  public is_disabled(item: DigitalGroup): boolean {
+    return this.disabled_ids && this.disabled_ids.indexOf(item.id_group) !== -1;
   }
 
   protected reload_list(keys: string, offset: number, limit: number): Promise<GenericListReply<DigitalGroup>> {

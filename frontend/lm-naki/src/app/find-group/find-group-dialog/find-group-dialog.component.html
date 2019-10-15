@@ -1,6 +1,9 @@
 <h2 mat-dialog-title>Find group</h2>
 <mat-dialog-content>
-<app-find-group [show_add]="true" [show_edit]="false" (add_clicked)="dialogRef.close($event)">
+<app-find-group [show_add]="true"
+                [show_edit]="false"
+                (add_clicked)="dialogRef.close($event)"
+                [disabled_ids]="data?.disabled">
 
 </app-find-group>
 </mat-dialog-content>
