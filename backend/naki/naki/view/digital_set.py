@@ -8,7 +8,8 @@ import sqlalchemy
 from uuid import uuid4
 import datetime
 
-from naki.model import DigitalItem, DIGroup, DigitalSet, DBSession, MetaKey, Metadata, Link, GroupItem, ContainerItem, Container, User
+from naki.model import DigitalItem, DIGroup, DigitalSet, \
+    DBSession, MetaKey, Metadata, Link, GroupItem, ContainerItem, Container, User, GroupSet
 from naki.lib.cors import NAKI_CORS_POLICY
 from naki.schemas.digital_item import DigitalItemSchema
 from naki.schemas.digital_group import DigitalGroupSchema
@@ -30,7 +31,15 @@ class DSRes(object):
         set_id = self._request.matchdict['id']
         try:
             dset = DBSession.query(DigitalSet).filter(DigitalSet.id_set== set_id).one()
-            return APIResponse(add_metadata_record(dset.get_dict(), dset.id_set, 'set'))
+            out_dict = dset.get_dict()
+
+            groups = DBSession.query(GroupSet, DIGroup)\
+                .join(DIGroup, GroupSet.id_group == DIGroup.id_group)\
+                .filter(GroupSet.id_set == set_id)\
+                .all()
+
+            out_dict['groups'] = [g[1].get_dict() for g in groups]
+            return APIResponse(add_metadata_record(out_dict, dset.id_set, 'set'))
         except Exception as e:
             print(e)
             raise HTTPNotFound()
@@ -41,6 +50,18 @@ class DSRes(object):
         try:
             dset = DBSession.query(DigitalSet).filter(DigitalSet.id_set == set_id).one()
             dset.set_from_dict(self._request.validated)
+
+            old_groups = DBSession.query(GroupSet).filter(GroupSet.id_set == set_id).all()
+            old_ids = [gs.id_group for gs in old_groups]
+            new_ids = [g['id_group'] for g in self._request.validated['groups']]
+            new_groups = [GroupSet(set_id, gid) for gid in new_ids if not gid in old_ids]
+            for new_group in new_groups:
+                DBSession.add(new_group)
+
+            for old_group in old_groups:
+                if old_group.id_group not in new_ids:
+                    DBSession.delete(old_group)
+
             # metadata = [x for x in DBSession.query(Metadata).filter(Metadata.id == dset.id_set).all()]
             update_metadata(self._request.validated['metadata'], dset.id_set, 'set')
             DBSession.flush()
