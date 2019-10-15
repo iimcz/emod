@@ -1,0 +1,33 @@
+<form>
+  <table>
+    <tr *ngFor="let link of links; let index = index">
+      <th style="vertical-align: top;">
+        <mat-form-field>
+          <mat-select [ngModel]="link_type_base(link)"
+                      (ngModelChange)="set_link_type_base(link, $event)"
+                      [ngModelOptions]="{standalone: true}">
+            <mat-option value="annotation">Annotation</mat-option>
+            <mat-option value="data">Data</mat-option>
+            <mat-option value="link">Link</mat-option>
+            <mat-option value="preview">Preview</mat-option>
+          </mat-select>
+          <button mat-button
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Delete"
+                  (click)="delete_link(index)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td>
+        <app-link-edit-input [link]="link" (linkChange)="links[index]=$event"></app-link-edit-input>
+      </td>
+    </tr>
+    <tr>
+      <th colspan="2">
+        <button mat-raised-button (click)="add_empty_link()">Add link</button>
+      </th>
+    </tr>
+  </table>
+</form>
