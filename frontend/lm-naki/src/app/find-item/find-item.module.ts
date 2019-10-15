@@ -1,14 +1,14 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FindItemComponent} from './find-item/find-item.component';
-import {
-  MatButtonModule, MatCheckboxModule,
-  MatDialogModule, MatExpansionModule,
-  MatIconModule,
-  MatInputModule,
-  MatPaginatorModule,
-  MatTableModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import {FormsModule} from '@angular/forms';
 import {FindItemDialogComponent} from './find-item-dialog/find-item-dialog.component';
 import {EditItemComponent} from './edit-item/edit-item.component';

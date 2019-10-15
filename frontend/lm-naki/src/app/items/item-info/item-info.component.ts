@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 import {DigitalItem} from '../../interface/digital-item';
 import {Utils} from '../../naki.utils';
 import {Rights} from '../../rights.enum';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {EditItemDialogComponent} from '../../find-item/edit-item-dialog/edit-item-dialog.component';
 import {MetakeyInterface} from '../../interface/metakey.interface';
 import {LinksListComponent} from '../../links-edit/links-list/links-list.component';

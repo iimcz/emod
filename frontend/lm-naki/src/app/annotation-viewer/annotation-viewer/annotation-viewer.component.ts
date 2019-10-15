@@ -7,7 +7,7 @@ import {ContainerInterface} from '../../interface/container.interface';
 import {APIResponse} from '../../apiresponse.interface';
 import {DigitalItem} from '../../interface/digital-item';
 import {AnnotationInterface} from '../../interface/annotation.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-annotation-viewer',

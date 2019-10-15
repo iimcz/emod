@@ -8,7 +8,8 @@ import {FileTreeElementInterface} from '../../interface/filetree-element.interfa
 import {Router} from '@angular/router';
 import {DigitalGroup} from '../../interface/digital-group';
 import {FindGroupDialogComponent} from '../../find-group/find-group-dialog/find-group-dialog.component';
-import {MatButton, MatDialog} from '@angular/material';
+import { MatButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import {Utils} from '../../naki.utils';
 import {TreeElementInterface} from '../../interface/tree-element.interface';
 

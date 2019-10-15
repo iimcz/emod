@@ -5,7 +5,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {LinkInterface} from './interface/link.interface';
 import {NakiService} from './naki.service';
 import {AnnotationInterface} from './interface/annotation.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {EditAnnotationDialogComponent} from './annotation/edit-annotation-dialog/edit-annotation-dialog.component';
 // export interface AnnotationInterface
 export abstract class ContentViewer {

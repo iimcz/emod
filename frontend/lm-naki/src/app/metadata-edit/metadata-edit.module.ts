@@ -4,7 +4,10 @@ import {MetaKeyComponent} from './meta-key/meta-key.component';
 import {MetaSelectComponent} from './meta-select/meta-select.component';
 import {MetaListComponent} from './meta-list/meta-list.component';
 import {FormsModule} from '@angular/forms';
-import {MatAutocompleteModule, MatButtonModule, MatIconModule, MatInputModule} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [

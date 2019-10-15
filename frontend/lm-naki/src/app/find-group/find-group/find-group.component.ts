@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {NakiService} from '../../naki.service';
 import {APIResponse} from '../../apiresponse.interface';
 import {DigitalGroup} from '../../interface/digital-group';

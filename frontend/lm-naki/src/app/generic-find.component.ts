@@ -3,7 +3,7 @@ import {fromEvent as observableFromEvent, Observable, Subscription} from 'rxjs';
 
 import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import {ElementRef, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import {APIResponse} from './apiresponse.interface';
 import {GenericDataSource} from './generic-datasource';
 import {MetakeyInterface} from './interface/metakey.interface';
@@ -21,8 +21,8 @@ export interface GenericListReply<T> {
 export abstract class GenericFindComponent<T> {
 
 
-  @ViewChild('filterText') filterText: ElementRef | undefined;
-  @ViewChild('paginator') paginator: MatPaginator | undefined;
+  @ViewChild('filterText', { static: true }) filterText: ElementRef | undefined;
+  @ViewChild('paginator', { static: true }) paginator: MatPaginator | undefined;
   public total_length = 0;
   public dataSource: GenericDataSource<T> = new GenericDataSource<T>();
   public metakeys: MetakeyInterface[] = [];

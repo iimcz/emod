@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {GenericFindComponent, GenericListReply} from '../../generic-find.component';
 import {ViewInterface} from '../../interface/view.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {NakiService} from '../../naki.service';
 import {APIResponse} from '../../apiresponse.interface';
 import {EditViewDialogComponent} from '../edit-view-dialog/edit-view-dialog.component';

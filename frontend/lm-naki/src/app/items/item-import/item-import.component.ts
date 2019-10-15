@@ -9,7 +9,7 @@ import {MetakeyInterface} from '../../interface/metakey.interface';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {Location} from '@angular/common';
 import {MetadataInterface} from '../../interface/metadata.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {FindGroupDialogComponent} from '../../find-group/find-group-dialog/find-group-dialog.component';
 import {DigitalGroup} from '../../interface/digital-group';
 import {Utils} from '../../naki.utils';

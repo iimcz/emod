@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LinkInterface} from '../../interface/link.interface';
 import {FindItemDialogComponent} from '../../find-item/find-item-dialog/find-item-dialog.component';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {FindGroupDialogComponent} from '../../find-group/find-group-dialog/find-group-dialog.component';
 import {DigitalGroup} from '../../interface/digital-group';
 

@@ -9,7 +9,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {ContentViewer} from '../../content-viewer';
 import {ContainerEventInterface} from '../../interface/container-event.interface';
 import {AnnotationInterface} from '../../interface/annotation.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-image-viewer',
@@ -20,7 +20,7 @@ export class ImageViewerComponent extends ContentViewer implements OnInit, After
 
   @Input() data: string | undefined;
   @Output() update: EventEmitter<string> = new EventEmitter<string>();
-  @ViewChild('topDiv') topDiv: ElementRef | undefined;
+  @ViewChild('topDiv', { static: true }) topDiv: ElementRef | undefined;
   private index_ = 0;
   private event_sub: Subscription | undefined;
 
@@ -68,8 +68,8 @@ export class ImageViewerComponent extends ContentViewer implements OnInit, After
     } else {
       this.event_sub = observableFromEvent(this.topDiv.nativeElement, 'keyup').pipe(
         debounceTime(150),
-        distinctUntilChanged(),)
-        .subscribe((event0: {}) => {
+        distinctUntilChanged(), )
+        .subscribe((event0) => {
           const event = event0 as KeyboardEvent;
           console.log(event);
           if (event.key === 'ArrowLeft') {

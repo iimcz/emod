@@ -22,7 +22,7 @@ import {ContainerEventInterface} from '../../interface/container-event.interface
 })
 export class ItemPlayerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('innerContent') innerContent: ElementRef | undefined;
+  @ViewChild('innerContent', { static: true }) innerContent: ElementRef | undefined;
   @Output() stateUpdate: EventEmitter<ContainerEventInterface> = new EventEmitter<ContainerEventInterface>();
   @Input() view_id: string | undefined;
   private componentRef: ComponentRef<any> | undefined;

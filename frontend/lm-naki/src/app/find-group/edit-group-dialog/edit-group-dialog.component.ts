@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {DigitalGroup} from '../../interface/digital-group';
 import {Utils} from '../../naki.utils';
 import {DigitalItem} from '../../interface/digital-item';

@@ -6,7 +6,7 @@ import {LinkInterface} from '../../interface/link.interface';
 import {ContainerEventInterface} from '../../interface/container-event.interface';
 import {ContentViewer} from '../../content-viewer';
 import {AnnotationInterface} from '../../interface/annotation.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-video-viewer',
@@ -15,7 +15,7 @@ import {MatDialog} from '@angular/material';
 })
 export class VideoViewerComponent extends ContentViewer implements OnInit {
 
-  @ViewChild('videoElement') videoElement: ElementRef<HTMLVideoElement> | undefined;
+  @ViewChild('videoElement', { static: false }) videoElement: ElementRef<HTMLVideoElement> | undefined;
   public url: SafeResourceUrl | undefined;
 
   constructor(protected sanitizer: DomSanitizer,

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UserInterface} from '../../interface/user.interface';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import {Rights} from '../../rights.enum';
 import {APIResponse} from '../../apiresponse.interface';
 import {NakiService} from '../../naki.service';

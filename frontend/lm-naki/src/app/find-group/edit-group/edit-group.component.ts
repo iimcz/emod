@@ -3,7 +3,7 @@ import {MetakeyInterface} from '../../interface/metakey.interface';
 import {MetadataInterface} from '../../interface/metadata.interface';
 import {NakiService} from '../../naki.service';
 import {APIResponse} from '../../apiresponse.interface';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import {DigitalGroup} from '../../interface/digital-group';
 
 @Component({

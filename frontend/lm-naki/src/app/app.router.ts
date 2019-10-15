@@ -8,14 +8,14 @@ import {HomeComponent} from './home/home/home.component';
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
-  {path: 'items', loadChildren: './items/items.module#ItemsModule'},
-  {path: 'groups', loadChildren: './groups/groups.module#GroupsModule'},
-  {path: 'sets', loadChildren: './sets/sets.module#SetsModule'},
-  {path: 'views', loadChildren: './view/view.module#ViewModule'},
-  {path: 'metakeys', loadChildren: './metakeys/metakeys.module#MetakeysModule'},
-  {path: 'auth', loadChildren: './auth/auth.module#AuthModule'},
-  {path: 'users', loadChildren: './users/users.module#UsersModule'},
-  {path: 'profile', loadChildren: './user-profile/user-profile.module#UserProfileModule'},
+  {path: 'items', loadChildren: () => import('./items/items.module').then(m => m.ItemsModule)},
+  {path: 'groups', loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)},
+  {path: 'sets', loadChildren: () => import('./sets/sets.module').then(m => m.SetsModule)},
+  {path: 'views', loadChildren: () => import('./view/view.module').then(m => m.ViewModule)},
+  {path: 'metakeys', loadChildren: () => import('./metakeys/metakeys.module').then(m => m.MetakeysModule)},
+  {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
+  {path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule)},
+  {path: 'profile', loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfileModule)},
   // {path: 'view', component: ViewComponent},
 
 

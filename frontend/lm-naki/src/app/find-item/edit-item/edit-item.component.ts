@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DigitalItem} from '../../interface/digital-item';
 import {NakiService} from '../../naki.service';
 import {MetakeyInterface} from '../../interface/metakey.interface';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-item',

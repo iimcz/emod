@@ -20,7 +20,7 @@ import {APIResponse} from '../../apiresponse.interface';
 import {Subject, Subscription} from 'rxjs';
 import {ItemPlayerComponent} from '../item-player/item-player.component';
 import {Utils} from '../../naki.utils';
-import {MatMenuTrigger} from '@angular/material';
+import { MatMenuTrigger } from '@angular/material/menu';
 import {ContainerEventInterface} from '../../interface/container-event.interface';
 import {ViewComponent} from '../../view/view/view.component';
 
@@ -44,10 +44,10 @@ export class ContainerComponent implements OnInit, OnDestroy {
   @Input() new_items: Subject<string> | undefined;
   @Input() events: Subject<ContainerEventInterface> | undefined;
   @Input() viewManager: ViewComponent | undefined;
-  @ViewChild('topDraggable') topDraggable: AngularDraggableDirective | undefined;
-  @ViewChild('topResizable') topResizable: AngularResizableDirective | undefined;
-  @ViewChild('topElement') topElement: ElementRef | undefined;
-  @ViewChild('itemPlayer') itemPlayer: ItemPlayerComponent | undefined;
+  @ViewChild('topDraggable', { static: true }) topDraggable: AngularDraggableDirective | undefined;
+  @ViewChild('topResizable', { static: true }) topResizable: AngularResizableDirective | undefined;
+  @ViewChild('topElement', { static: true }) topElement: ElementRef | undefined;
+  @ViewChild('itemPlayer', { static: false }) itemPlayer: ItemPlayerComponent | undefined;
 
   public dis: DigitalItem[] = [];
   public nakiConfig = NakiConfig;
