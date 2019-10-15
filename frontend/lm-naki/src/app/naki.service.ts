@@ -314,6 +314,16 @@ export class NakiService {
     return this.generic_update('dis', dset.id_set.toString(), dset);
   }
 
+  public get_set(id: string): Promise<APIResponse<DigitalSetInterface>> {
+    return new Promise<APIResponse<DigitalSetInterface>>((resolve, reject) => {
+      this.httpClient.get<APIResponse<DigitalSetInterface>>(base_url + 'dis/' + id).subscribe(res => {
+        console.log(res);
+        resolve(res);
+      });
+    });
+  }
+
+
   public get_view_list(query: string = '', limit: number = 10, offset: number = 0): Promise<APIResponse<ViewInterface[]>> {
     return this.generic_list<ViewInterface>('views', query, {limit: limit.toString(10), offset: offset.toString(10)});
   }
