@@ -9,6 +9,7 @@ import {Rights} from '../../rights.enum';
 import {MatDialog} from '@angular/material';
 import {EditItemDialogComponent} from '../../find-item/edit-item-dialog/edit-item-dialog.component';
 import {MetakeyInterface} from '../../interface/metakey.interface';
+import {LinksListComponent} from '../../links-edit/links-list/links-list.component';
 
 @Component({
   selector: 'app-item-info',
@@ -42,6 +43,11 @@ export class ItemInfoComponent implements OnInit, OnDestroy {
     }
     this.nakiService.get_item(this.item_id).then((res: APIResponse<DigitalItem>) => {
       this.item = res.data;
+      console.log(this.item);
+      if (this.item !== undefined && this.item.links) {
+        console.log('Sorting');
+        this.item.links = LinksListComponent.sortLinks(this.item.links);
+      }
     });
   }
 

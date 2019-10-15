@@ -1,12 +1,12 @@
 <a mat-raised-button class="mat-primary" [routerLink]="['/items']">< Back to list</a>
 
 <ng-container *ngIf="item !== undefined">
-<h1>{{get_metadata(item, 'description')}}</h1>
+  <h1>{{get_metadata(item, 'description')}}</h1>
 
   <app-item-preview [item]="item" [maxWidth]="800" [maxHeight]="600"></app-item-preview>
-<br>
+  <br>
 
-<h3>Item details</h3>
+  <h3>Item details</h3>
   <table>
     <tr>
       <th colspan="2">
@@ -15,7 +15,27 @@
     </tr>
     <tr *ngFor="let link of item.links">
       <th>{{link.type}}</th>
-      <td>{{link.uri}}</td>
+      <td>
+        <ng-container [ngSwitch]="link.uri.split(':')[0]">
+          <ng-container *ngSwitchCase="'di'">
+            <button mat-button [routerLink]="['/items/show', link.uri.split(':', 2)[1]]">
+              Digital Item {{link.uri.split(':', 2)[1]}}
+            </button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'dg'">
+            <button mat-button [routerLink]="['/groups/show', link.uri.split(':', 2)[1]]">
+              Digital Group {{link.uri.split(':', 2)[1]}}
+            </button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'ds'">
+            <button mat-button [routerLink]="['/sets/show', link.uri.split(':', 2)[1]]">
+              Digital Set{{link.uri.split(':', 2)[1]}}
+            </button>
+          </ng-container>
+          <ng-container *ngSwitchDefault>{{link.uri}}</ng-container>
+        </ng-container>
+
+      </td>
     </tr>
 
     <tr>
@@ -25,7 +45,9 @@
     </tr>
     <tr *ngFor="let meta of item.metadata">
       <th>{{meta.key}}</th>
-      <td>{{meta.value}}</td>
+      <td>
+        {{meta.value}}
+      </td>
     </tr>
   </table>
 
