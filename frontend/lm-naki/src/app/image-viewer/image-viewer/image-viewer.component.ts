@@ -1,8 +1,11 @@
+
+import {fromEvent as observableFromEvent, Observable, Subscription} from 'rxjs';
+
+import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import {Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit, EventEmitter, Output, OnDestroy} from '@angular/core';
 import {NakiService} from '../../naki.service';
 import {DigitalItem} from '../../interface/digital-item';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Observable, Subscription} from 'rxjs';
 import {ContentViewer} from '../../content-viewer';
 import {ContainerEventInterface} from '../../interface/container-event.interface';
 import {AnnotationInterface} from '../../interface/annotation.interface';
@@ -63,10 +66,9 @@ export class ImageViewerComponent extends ContentViewer implements OnInit, After
     if (this.topDiv === undefined) {
       console.error('topDiv not defined');
     } else {
-      this.event_sub = Observable
-        .fromEvent(this.topDiv.nativeElement, 'keyup')
-        .debounceTime(150)
-        .distinctUntilChanged()
+      this.event_sub = observableFromEvent(this.topDiv.nativeElement, 'keyup').pipe(
+        debounceTime(150),
+        distinctUntilChanged(),)
         .subscribe((event0: {}) => {
           const event = event0 as KeyboardEvent;
           console.log(event);
