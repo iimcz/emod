@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FindItemComponent} from './find-item/find-item.component';
 import {
   MatButtonModule, MatCheckboxModule,
-  MatDialogModule,
+  MatDialogModule, MatExpansionModule,
   MatIconModule,
   MatInputModule,
   MatPaginatorModule,
@@ -17,6 +17,7 @@ import {ItemPreviewComponent} from './item-preview/item-preview.component';
 import {ContainerModule} from '../container/container.module';
 import {MetadataEditModule} from '../metadata-edit/metadata-edit.module';
 import {RouterModule} from '@angular/router';
+import {LinksEditModule} from '../links-edit/links-edit.module';
 
 @NgModule({
   imports: [
@@ -31,9 +32,11 @@ import {RouterModule} from '@angular/router';
     MatPaginatorModule,
     MatTableModule,
     MatCheckboxModule,
+    MatExpansionModule,
 
     ContainerModule,
     MetadataEditModule,
+    LinksEditModule
   ],
   declarations: [
     FindItemComponent,
