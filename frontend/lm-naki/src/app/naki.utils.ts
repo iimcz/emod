@@ -2,9 +2,10 @@ import {DigitalItem} from './interface/digital-item';
 import {DigitalGroup} from './interface/digital-group';
 import {ViewInterface} from './interface/view.interface';
 import {Md5} from 'ts-md5';
+import {DigitalSetInterface} from './interface/digital-set.interface';
 
 export class Utils {
-  static get_metadata(item: DigitalItem | DigitalGroup | ViewInterface, key: string): string {
+  static get_metadata(item: DigitalItem | DigitalGroup | ViewInterface | DigitalSetInterface, key: string): string {
     if (item.metadata) {
       const value = item.metadata.find(e => e.key === key);
       if (value) {
