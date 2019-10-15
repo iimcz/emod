@@ -1,3 +1,14 @@
-<p>
-  set-info works!
-</p>
+<span *ngIf="dset !== undefined">
+  <h1>{{get_title()}}</h1>
+
+  <h2>Digital Groups</h2>
+  <ng-container *ngIf="dset.groups">
+    <ng-container *ngFor="let dg of dset.groups">
+      <button mat-icon-button (click)="delete_group(dg)"><mat-icon>delete</mat-icon></button>
+      <button mat-raised-button [routerLink]="['/groups/show', dg.id_group]">{{get_metadata(dg, 'description') || dg.id_group}}</button>
+      <br>
+    </ng-container>
+  </ng-container>
+
+  <button mat-raised-button (click)="add_group()">Add group</button>
+</span>
