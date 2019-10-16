@@ -518,6 +518,10 @@ export class NakiService {
     return '';
   }
 
+  public get_mods_url(di: DigitalItem): string {
+    return base_url + 'mods/di/' + di.id_item;
+  }
+
   private _prepare_params(params: { [key: string]: string }): string {
     if (!params) {
       params = {};
