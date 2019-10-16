@@ -52,4 +52,8 @@
   </table>
 
   <button mat-raised-button *ngIf="nakiService.has_right(rights.Editor)" (click)="edit_item()">Edit item</button>
+  <br>
+  <a mat-raised-button [href]="nakiService.get_mods_url(item)">Show MODS</a>
+  <br>
+
 </ng-container>
