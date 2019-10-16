@@ -42,6 +42,7 @@ def update_metakeys(metakeys):
         k = MetaKey(key, 'string', '', '')
         try:
             DBSession.add(k)
+            DBSession.flush()
             print('Created key %s' % key)
         except sqlalchemy.exc.IntegrityError:
             # We don't exlicitely lock the tables here, so this may actually happen... but it's not fatal
