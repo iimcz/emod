@@ -15,6 +15,7 @@ from naki.lib.utils import get_list_params, check_missing_metakeys, update_metak
 from naki.model import DigitalItem, DBSession, MetaKey, Metadata, Link, GroupItem
 from naki.schemas.digital_item import DigitalItemSchema
 from naki.lib.auth import RIGHTS
+from naki.lib.mods import generate_mods
 # di_schema = SQLAlchemySchemaNode(DigitalItem)
 
 
@@ -183,3 +184,18 @@ def search_item(request):
     return None
 
 
+mods_res = Service(name='di mods', path='/api/v1/mods/di/{id:[a-zA-Z0-9-]*}')
+
+@mods_res.get()
+def get_di_mods(request):
+    di_id = request.matchdict['id']
+    try:
+        item = DBSession.query(DigitalItem).filter(DigitalItem.id_item == di_id).one()
+        resp = request.response
+        resp.status_int = 200
+        resp.body = generate_mods(item, None).encode('utf8')
+        resp.content_type = 'text/xml'
+        return resp
+    except Exception as e:
+        print('Exception %s' % str(e))
+        raise HTTPBadRequest()
