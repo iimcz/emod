@@ -96,6 +96,29 @@ export class MetaListComponent implements OnInit, OnChanges {
     meta.value = x.join(';');
   }
 
+
+  public edit_user(meta: MetadataInterface, index: number, value: string) {
+    const x = meta.value.split(';');
+    while (x.length <= index) {
+      x.push(',');
+    }
+    const val_parts = x[index].split(',');
+    val_parts[0] = value;
+    x[index] = val_parts.join(',');
+    meta.value = x.join(';');
+  }
+
+  public edit_role(meta: MetadataInterface, index: number, value: string) {
+    const x = meta.value.split(';');
+    while (x.length <= index) {
+      x.push(',');
+    }
+    const val_parts = x[index].split(',');
+    val_parts[1] = value;
+    x[index] = val_parts.join(',');
+    meta.value = x.join(';');
+  }
+
   private update_metakeys(): void {
     this.mandatory_keys = this.metakeys.filter(e => e.mandatory.indexOf(this.mandatory_type) !== -1);
     this.optional_keys = this.metakeys.filter(e => e.mandatory.indexOf(this.mandatory_type) === -1);

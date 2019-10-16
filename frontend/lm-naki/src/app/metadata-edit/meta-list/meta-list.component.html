@@ -37,6 +37,34 @@
 
 
           </ng-container>
+          <ng-container *ngSwitchCase="'user-role'">
+            <ng-container *ngFor="let x of meta.value.split(';'); let index = index">
+              <mat-form-field>
+                <span matPreffix>name: </span>
+                <input type="text"
+                       matInput
+                       [ngModel]="x.split(',', 1)[0]"
+                       (ngModelChange)="edit_user(meta, index, $event)"
+                       [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+
+              <mat-form-field>
+                <span matPreffix>role: </span>
+                <input type="text"
+                       matInput
+                       [ngModel]="x.split(',', 2)[1] || ''"
+                       (ngModelChange)="edit_role(meta, index, $event)"
+                       [ngModelOptions]="{standalone: true}">
+                <button mat-icon-button matSuffix (click)="delete_multistring(meta, index)"><mat-icon>delete</mat-icon></button>
+              </mat-form-field>
+              <br>
+
+            </ng-container>
+            <br>
+            <button mat-raised-button (click)="meta.value = meta.value+';'">Add</button>
+
+
+          </ng-container>
           <ng-container *ngSwitchCase="'long-string'">
             <mat-form-field>
               <textarea matInput [(ngModel)]="meta.value" [ngModelOptions]="{standalone: true}"></textarea>
