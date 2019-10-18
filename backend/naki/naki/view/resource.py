@@ -107,7 +107,7 @@ def download_resource(request):
         thumb_dir = cfg.get('thumbnails', os.path.join(root, '.thumbnails'))
         os.makedirs(thumb_dir, exist_ok=True)
         thumb_path = os.path.join(thumb_dir, item_id + '.jpg')
-        return prepare_image(request, item, (64, 64), full_path, thumb_path)
+        return prepare_image(request, item, (128, 128), full_path, thumb_path)
     elif 'preview' in opts:
         item = item_info[0][0]
         preview_dir = cfg.get('preview', os.path.join(root, '.preview'))
