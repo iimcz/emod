@@ -23,6 +23,7 @@ TAGS = {
     'note': ['<physicalDescription>', '<note>'],
     'part_name': ['<titleInfo>', '<partName>'],
     'description': ['<titleInfo>', '<title>'],
+    'topic': ['<subject>', '<topic>'],
     'type': ['<typeOfResource>'],
 
 }
@@ -89,7 +90,7 @@ def process_subject(tags, metadata):
         tags.append(t)
 
 
-def stringify_tag(t, indent = 0):
+def stringify_tag(t, indent=0):
     tag = t['tag']
     m = re.search(r'\<([a-zA-Z0-9-_]+).*', tag)
     if m is None:
