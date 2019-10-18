@@ -46,6 +46,10 @@
       <td colspan="2">
         <mat-expansion-panel>
           <mat-expansion-panel-header><h2>Metadata</h2></mat-expansion-panel-header>
+          <button mat-raised-button (click)="modsFile.click()">Load MODS</button>
+          <span style="display: none">
+            <input type="file" #modsFile (change)="load_mods($event, modsFile)">
+          </span>
           <app-meta-list [metakeys]="metakeys" [values]="item.metadata"></app-meta-list>
         </mat-expansion-panel>
       </td>
