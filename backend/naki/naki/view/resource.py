@@ -36,7 +36,7 @@ def prepare_image(request, item, res, full_path, image_path):
         if not os._exists(image_path):
             img = Image.open(full_path)
             if img.size[0] / res[0] > img.size[1] / res[1]:
-                res = [res[0], int(img.size[1] * res[1] / img.size[0])]
+                res = [res[0], int(img.size[1] * res[0] / img.size[0])]
             else:
                 res = [int(img.size[0] * res[1] / img.size[1]), res[1]]
             img2 = img.resize(res)
