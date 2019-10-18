@@ -2,7 +2,7 @@ from naki.model.digital_item import DigitalItem
 from naki.model.metadata import Metadata
 from naki.model.meta import DBSession
 import re
-
+from lxml import  etree
 # Ignoring XML NS for now
 # <mods xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd" version="3.6">
 
@@ -89,14 +89,19 @@ def process_subject(tags, metadata):
         ]}
         tags.append(t)
 
+def strip_tag(raw_tag):
+    m = re.search(r'\<([a-zA-Z0-9-_]+).*', raw_tag)
+    if not m:
+        return None
+    return m[1]
 
 def stringify_tag(t, indent=0):
     tag = t['tag']
-    m = re.search(r'\<([a-zA-Z0-9-_]+).*', tag)
+    m = strip_tag(tag)
     if m is None:
         print('BAD TAG')
         return ''
-    end_tag = '</%s>' % m[1]
+    end_tag = '</%s>' % m
     data = ''
     ind = indent * '\t'
     if len(t['children']) > 0:
@@ -134,3 +139,46 @@ def generate_mods(di, metadata):
     process_subject(tags, metadata)
 
     return '\n'.join([MODS_HEADER] + [stringify_tag(x, 1) for x in tags] + [MODS_FOOTER])
+
+
+def parse_names(tree):
+    names = tree.xpath('/mods/name')
+    res = []
+    for name in names:
+        n = name.xpath('namePart')
+        r = name.xpath('role/roleTerm')
+        if len(n) > 0 and len(r) > 0:
+            res.append('%s, %s' % (n[0].text.strip(), r[0].text.strip()))
+    if len(res):
+        return {'name': ';'.join(res)}
+    return {}
+
+def parse_subjects(tree):
+    names = tree.xpath('/mods/subject')
+    res = []
+    for name in names:
+        n = name.xpath('namePart')
+        r = name.xpath('role/roleTerm')
+        if len(n) > 0 and len(r) > 0:
+            res.append('%s, %s' % (n[0].text.strip(), r[0].text.strip()))
+    if len(res):
+        return {'subject': ';'.join(res)}
+    return {}
+
+def parse_mods(mods):
+    '''
+    Parses MODS data
+    :param mods: string with mods xml
+    :return: metadata array
+    '''
+    metadata = {}
+    tree = etree.fromstring(mods.encode('utf8'))
+    for metakey in TAGS:
+        path = '/'.join(['/mods'] + [strip_tag(x) for x in TAGS[metakey]])
+        el = tree.xpath(path)
+        if len(el) > 0:
+            metadata[metakey] = el[0].text.strip()
+
+    metadata.update(parse_names(tree))
+    metadata.update(parse_subjects(tree))
+    return metadata
