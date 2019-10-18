@@ -1,10 +1,13 @@
-<app-item-player [dis]="[item]"
+<app-item-player *ngIf="!dummy; else dummyPreview"
+                 [dis]="[item]"
                  [type]="defaultPlayer.getPlayerType(item.mime)"
                  mode="play"
                  class="preview"
                  [style.maxWidth]="maxWidth.toString()+'px'"
                  [style.maxHeight]="maxHeight.toString()+'px'"
                  [size]="[maxWidth, maxHeight]">
-
-
 </app-item-player>
+
+<ng-template #dummyPreview>
+  <img [src]="nakiService.get_resource_thumb_url(item)">
+</ng-template>
