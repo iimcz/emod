@@ -1,5 +1,7 @@
 from PIL import Image
 import subprocess
+import os.path
+
 def video_params(path):
     # TODO better use ffprobe -show_streams and support audio as well ...
     cmd = ('ffprobe %s 2>&1 | ' % path) + \
@@ -11,6 +13,9 @@ def video_params(path):
 
 def load_metadata(path, mime):
     metadata = {}
+    head, tail = os.path.split(path)
+    if tail:
+        metadata['original_name'] = tail
     if mime.startswith('image/'):
         img = Image.open(path)
         metadata['resolution'] = 'x'.join([str(x) for x in img.size])
