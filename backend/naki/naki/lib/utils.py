@@ -48,30 +48,32 @@ def update_metakeys(metakeys):
             # We don't exlicitely lock the tables here, so this may actually happen... but it's not fatal
             print('Key already exists')
 
-def update_metadata(new_meta, item_id, type):
+def update_metadata(new_meta, item_id, type, delete_old = True):
     '''
     Adds new metadata and removes old ones.
     The method creates metakey records if required
     :param new_meta: list of dicts {'key':'', 'value':''} from request (usially self._request.validated['metadata']
     :param item_id: ID of item (gi/dg/ds/view/...)
     :param type: type of metadata (eg. 'item')
+    :param delete_old: Delete metadata not specified on in new_meta
     :return:
     '''
     metadata = [x for x in DBSession.query(Metadata).filter(sqlalchemy.and_(Metadata.id == item_id, Metadata.target == type)).all()]
     metakeys = [m['key'] for m in new_meta]
     update_metakeys(metakeys)
-    for meta in new_meta:
+        for meta in new_meta:
         m = next((x for x in metadata if x.key == meta['key']), None)
         if m:
             m.value = meta['value']
         else:
             m = Metadata(item_id, type, meta['key'], meta['value'])
             DBSession.add(m)
-    for meta in metadata:
-        m = next((x for x in new_meta if x['key'] == meta.key), None)
-        if not m:
-            print('Deleting meta')
-            DBSession.delete(meta)
+    if delete_old:
+        for meta in metadata:
+            m = next((x for x in new_meta if x['key'] == meta.key), None)
+            if not m:
+                print('Deleting meta')
+                DBSession.delete(meta)
 
 
 def meta_record(key, data):
