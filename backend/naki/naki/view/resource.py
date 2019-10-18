@@ -115,4 +115,7 @@ def download_resource(request):
         preview_path = os.path.join(preview_dir, item_id + '.jpg')
         return prepare_image(request, item, (1280, 720), full_path, preview_path)
 
-    return FileResponse(full_path, request=request)
+    resp = FileResponse(full_path, request=request)
+    d, fname = os.path.split(full_path)
+    resp.content_disposition = '%s; filename="%s"'%('attachment' if 'download' in opts else ' inline', fname)
+    return resp
