@@ -526,6 +526,10 @@ export class NakiService {
     return base_url + 'mods/di/' + di.id_item;
   }
 
+  public upload_mods(di: DigitalItem, mods: string): Promise<APIResponse<DigitalItem>> {
+    return this.generic_request_put<string, DigitalItem>(this._join_path('mods/di', di.id_item), mods);
+  }
+
   private _prepare_params(params: { [key: string]: string }): string {
     if (!params) {
       params = {};
