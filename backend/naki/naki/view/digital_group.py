@@ -92,6 +92,7 @@ class DGRes(object):
         dg_id = self._request.matchdict['id']
         try:
             group = DBSession.query(DIGroup).filter(DIGroup.id_group == dg_id).one()
+            group.type = self._request.validated['type']
             update_metadata(self._request.validated['metadata'], group.id_group, 'group')
             DBSession.flush()
             # return APIResponse(self._add_metadata(group))
