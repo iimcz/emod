@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DigitalItem} from '../../interface/digital-item';
 import {NakiDefaultPlayerService} from '../../naki-default-player.service';
+import {NakiService} from '../../naki.service';
 
 @Component({
   selector: 'app-item-preview',
@@ -11,7 +12,11 @@ export class ItemPreviewComponent implements OnInit {
   @Input() item: DigitalItem | undefined;
   @Input() maxWidth = 128;
   @Input() maxHeight = 128;
-  constructor(public defaultPlayer: NakiDefaultPlayerService) { }
+  @Input() dummy = false;
+
+  constructor(public defaultPlayer: NakiDefaultPlayerService,
+              public nakiService: NakiService) {
+  }
 
   ngOnInit() {
   }
