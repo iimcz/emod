@@ -5,7 +5,7 @@ import {ContainerInterface} from './interface/container.interface';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {FileTreeInterface} from './interface/filetree.interface';
 import {HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
-import {base_url, cookie_name} from './app.site-config';
+import {base_url, vrmod_url, cookie_name} from './app.site-config';
 import {APIResponse} from './apiresponse.interface';
 import {MetakeyInterface} from './interface/metakey.interface';
 import {ViewInterface} from './interface/view.interface';
@@ -528,6 +528,10 @@ export class NakiService {
 
   public upload_mods(di: DigitalItem, mods: string): Promise<APIResponse<DigitalItem>> {
     return this.generic_request_put<string, DigitalItem>(this._join_path('mods/di', di.id_item), mods);
+  }
+
+  public get_vrmod_url(): string {
+    return vrmod_url;
   }
 
   private _prepare_params(params: { [key: string]: string }): string {
