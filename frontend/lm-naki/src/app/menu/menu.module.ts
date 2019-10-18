@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MenuComponent} from './menu/menu.component';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import {RouterModule} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import {RouterModule} from '@angular/router';
     RouterModule,
     MatIconModule,
     MatToolbarModule,
-    MatMenuModule
+    MatMenuModule,
+    MatButtonModule,
   ],
   exports: [
     MenuComponent
