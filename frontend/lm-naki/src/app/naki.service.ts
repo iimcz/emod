@@ -518,6 +518,10 @@ export class NakiService {
     return '';
   }
 
+  public get_resource_thumb_url(di: DigitalItem): string {
+    return this._join_path(base_url, 'storage/resource', di.id_item, 'thumbnail');
+  }
+
   public get_mods_url(di: DigitalItem): string {
     return base_url + 'mods/di/' + di.id_item;
   }
