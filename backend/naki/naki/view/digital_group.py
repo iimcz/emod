@@ -9,7 +9,7 @@ from uuid import uuid4
 import datetime
 
 from naki.model import DigitalItem, DIGroup, DBSession, MetaKey, Metadata, Link, GroupItem, ContainerItem, Container
-from naki.lib.auth import RIGHTS
+from naki.lib.auth import RIGHTS, RIGHTLevels
 from naki.lib.cors import NAKI_CORS_POLICY
 from naki.schemas.digital_item import DigitalItemSchema
 from naki.schemas.digital_group import DigitalGroupSchema
@@ -22,6 +22,12 @@ class DGRes(object):
     def __init__(self, request, context=None):
         self._context = context
         self._request = request
+
+    def _get_key_value(self, meta, key):
+        for m in meta:
+            if m['key'] == key:
+                return m['value']
+        return None
 
     @view(permission=Everyone)
     def get(self):
@@ -47,6 +53,11 @@ class DGRes(object):
             item = bundle[1].get_dict()
             item['metadata'] = [meta_record(x[1], x[0]) for x in meta if x[0].id == bundle[1].id_item]
             dg['items'].append(item)
+        if not self._request.user or self._request.user.auth_level < RIGHTLevels.Researcher:
+            # Guests should see only public items!
+            old_items = dg['items']
+            dg['items']=[x for x in old_items if self._get_key_value(x['metadata'], 'public') == '1']
+
         # dg['items'] = [x[1].get_dict() for x in dgs if x[1]]
         return APIResponse(dg)
 
