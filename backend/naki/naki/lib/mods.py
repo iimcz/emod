@@ -2,7 +2,8 @@ from naki.model.digital_item import DigitalItem
 from naki.model.metadata import Metadata
 from naki.model.meta import DBSession
 import re
-from lxml import  etree
+from lxml import etree
+
 # Ignoring XML NS for now
 # <mods xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd" version="3.6">
 
@@ -89,13 +90,15 @@ def process_subject(tags, metadata):
         ]}
         tags.append(t)
 
+
 def strip_tag(raw_tag):
     m = re.search(r'\<([a-zA-Z0-9-_]+).*', raw_tag)
     if not m:
         return None
     return m[1]
 
-def stringify_tag(t, indent=0):
+
+def stringify_tag(t, indent=0, formated=True):
     tag = t['tag']
     m = strip_tag(tag)
     if m is None:
@@ -103,15 +106,17 @@ def stringify_tag(t, indent=0):
         return ''
     end_tag = '</%s>' % m
     data = ''
-    ind = indent * '\t'
+    indent_char = '\t' if formated else ''
+    cr = '\n' if formated else ''
+    ind = indent * indent_char
     if len(t['children']) > 0:
-        data = '\n'.join([stringify_tag(x, indent + 1) for x in t['children']])
+        data = cr.join([stringify_tag(x, indent + 1, formated) for x in t['children']])
     else:
-        data = (indent + 1) * '\t' + t['value']
-    return '\n'.join([ind + tag, ind + data, ind + end_tag])
+        data = (indent + 1) * indent_char + t['value']
+    return cr.join([ind + tag, ind + data, ind + end_tag])
 
 
-def generate_mods(di, metadata):
+def generate_mods(di, metadata, formated=True):
     '''
 
     :param di: Digital Item object
@@ -122,23 +127,23 @@ def generate_mods(di, metadata):
     if metadata is None:
         metadata = [x for x in DBSession.query(Metadata).filter(Metadata.id == di.id_item).all()]
 
-    for m in metadata:
-        print(str(m.get_dict()))
+    # for m in metadata:
+    #     print(str(m.get_dict()))
 
     # tags shoud be array of terms in form:
     # {'tag': '<TAG1>', 'children': {'tag': '<TAG2>', 'value': 'VALUE}}
     tags = []
     for metakey in TAGS:
-        print('Testing key %s' % metakey)
+        # print('Testing key %s' % metakey)
         value = find_metavalue(metakey, metadata)
         if value:
-            print('Adding metakey %s: %s' % (metakey, value))
+            # print('Adding metakey %s: %s' % (metakey, value))
             add_tag(tags, metakey, value)
 
     process_name(tags, metadata)
     process_subject(tags, metadata)
 
-    return '\n'.join([MODS_HEADER] + [stringify_tag(x, 1) for x in tags] + [MODS_FOOTER])
+    return '\n'.join([MODS_HEADER] + [stringify_tag(x, 1, formated) for x in tags] + [MODS_FOOTER])
 
 
 def parse_names(tree):
@@ -153,6 +158,7 @@ def parse_names(tree):
         return {'name': ';'.join(res)}
     return {}
 
+
 def parse_subjects(tree):
     names = tree.xpath('/mods/subject')
     res = []
@@ -164,6 +170,7 @@ def parse_subjects(tree):
     if len(res):
         return {'subject': ';'.join(res)}
     return {}
+
 
 def parse_mods(mods):
     '''
