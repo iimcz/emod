@@ -14,6 +14,7 @@ import {MatTableModule} from '@angular/material/table';
 import {FindSetModule} from '../find-set/find-set.module';
 import {SetInfoComponent} from './set-info/set-info.component';
 import {FindGroupModule} from '../find-group/find-group.module';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 export const routerConfig = [{
@@ -44,6 +45,7 @@ export const routerConfig = [{
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatExpansionModule,
+    MatProgressSpinnerModule,
 
     FindSetModule,
     FindGroupModule,

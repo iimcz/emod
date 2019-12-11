@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material';
 import {NakiService} from '../../naki.service';
@@ -91,5 +91,17 @@ export class SetInfoComponent implements OnInit {
         this.nakiService.update_set(this.dset).then(() => this.reloadData());
       }
     }
+  }
+
+  public export_package(tpl: TemplateRef<any>): void {
+    if (this.dset) {
+      const dialogRef = this.dialog.open(tpl, {disableClose: true});
+      this.nakiService.generate_spi(this.dset).then(e => {
+        dialogRef.close();
+      }, e => {
+        dialogRef.close();
+      });
+    }
+
   }
 }
