@@ -61,7 +61,13 @@ def update_metadata(new_meta, item_id, type, delete_old = True):
     metadata = [x for x in DBSession.query(Metadata).filter(sqlalchemy.and_(Metadata.id == item_id, Metadata.target == type)).all()]
     metakeys = [m['key'] for m in new_meta]
     update_metakeys(metakeys)
-        for meta in new_meta:
+    # Newly, we want keys to be allowed present multiple time
+    # So we update metadata with the same UUID
+    # Or maybe not... dunno
+
+
+    # Original method enforcing each key to be present at most once
+    for meta in new_meta:
         m = next((x for x in metadata if x.key == meta['key']), None)
         if m:
             m.value = meta['value']
