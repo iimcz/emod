@@ -76,5 +76,10 @@ export class FindGroupComponent extends GenericFindComponent<DigitalGroup> imple
       }
     });
   }
-
+  add_braces(val: string): string {
+    if (val) {
+      return ` (${val})`;
+    }
+    return '';
+  }
 }
