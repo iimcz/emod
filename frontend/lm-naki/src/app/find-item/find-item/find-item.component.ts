@@ -91,11 +91,11 @@ export class FindItemComponent extends GenericFindComponent<DigitalItem> impleme
     dialogRef.close(this.selected_items.map(e => e.id_item));
   }
 
-  public set_export(di: DigitalItem, state: MatCheckboxChange): void {
+  public set_key(di: DigitalItem, key: string, state: MatCheckboxChange): void {
     if (di.metadata) {
-      let m = di.metadata.find(e => e.key === 'export');
+      let m = di.metadata.find(e => e.key === key);
       if (!m) {
-        m = {key: 'export', value: '', id: di.id_item, target: 'item'};
+        m = {key: key, value: '', id: di.id_item, target: 'item'};
         di.metadata.push(m);
       }
       m.value = state.checked ? '1' : '0';
@@ -105,9 +105,9 @@ export class FindItemComponent extends GenericFindComponent<DigitalItem> impleme
     }
   }
 
-  public get_export(di: DigitalItem): boolean {
-    console.log(di, Utils.get_metadata(di, 'export'))
-    return Utils.get_metadata(di, 'export') === '1';
+  public get_key(di: DigitalItem, key: string): boolean {
+    console.log(di, Utils.get_metadata(di, key))
+    return Utils.get_metadata(di, key) === '1';
   }
 
   protected reload_list(keys: string, offset: number, limit: number): Promise<GenericListReply<DigitalItem>> {

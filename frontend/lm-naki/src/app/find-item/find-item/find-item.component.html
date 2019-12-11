@@ -37,13 +37,15 @@
 
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef>
-  Edit/export
+  Edit/export/public
       </th>
       <td mat-cell *matCellDef="let element">
         <button mat-icon-button (click)="edit_item(element)">
           <mat-icon>edit</mat-icon>
         </button>
-        <mat-checkbox (change)="set_export(element, $event)" [checked]="get_export(element)"></mat-checkbox>
+        <mat-checkbox (change)="set_key(element, 'export', $event)" [checked]="get_key(element, 'export')"></mat-checkbox>
+        &nbsp;
+        <mat-checkbox (change)="set_key(element, 'public', $event)" [checked]="get_key(element, 'public')"></mat-checkbox>
       </td>
     </ng-container>
 
