@@ -10,7 +10,7 @@ class DigitalItemSchema(colander.MappingSchema):
     created = colander.SchemaNode(colander.String(), missing='')
     description = colander.SchemaNode(colander.String(), missing='')
     id_user = colander.SchemaNode(colander.String(), missing='Unknown')
-    rights = colander.SchemaNode(colander.String(), missing='')
+    rights = colander.SchemaNode(colander.String(), missing=0)
     src = colander.SchemaNode(colander.String(), missing='')
     metadata = MetadataSequenceSchema()
     links = LinkSequenceSchema(missing=[])

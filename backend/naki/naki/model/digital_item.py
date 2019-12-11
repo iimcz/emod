@@ -11,7 +11,7 @@ class DigitalItem(Base):
     created = Column('dCreated', DateTime)
     description = Column('sDescription', UnicodeText, info={'colanderalchemy': {'missing': ''}})
     id_user = Column('sAuthor', Unicode(64))
-    rights = Column('sRights', Integer)
+    rights = Column('sRights', Integer, info={'colanderalchemy': {'missing': 0}})
         
     def __init__(self, id_item, mime, created, description, id_user, rights):
         self.id_item = id_item
