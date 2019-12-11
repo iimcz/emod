@@ -534,6 +534,17 @@ export class NakiService {
     return vrmod_url;
   }
 
+  public generate_spi(ds: DigitalSetInterface): Promise<string> {
+    const url = this._prepare_url(this._join_path('export/', ds.id_set), {});
+    return new Promise<string>((resolve, reject) => {
+      this.httpClient.get(url, {observe: 'body', responseType: 'text'})
+        .subscribe(res => {
+          console.log(res);
+          resolve(res);
+        });
+    });
+  }
+
   private _prepare_params(params: { [key: string]: string }): string {
     if (!params) {
       params = {};
