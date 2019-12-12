@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {GenericFindComponent, GenericListReply} from '../../generic-find.component';
 import {DigitalSetInterface} from '../../interface/digital-set.interface';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {NakiService} from '../../naki.service';
 import {APIResponse} from '../../apiresponse.interface';
 import {Rights} from '../../rights.enum';
@@ -41,14 +41,6 @@ export class FindSetComponent extends GenericFindComponent<DigitalSetInterface> 
     this.deinit();
   }
 
-  protected reload_list(keys: string, offset: number, limit: number): Promise<GenericListReply<DigitalSetInterface>> {
-    return Promise.all([
-      this.nakiService.get_set_list(keys, limit, offset),
-      this.nakiService.get_set_list_count(keys)]).then((res: [APIResponse<DigitalSetInterface[]>, APIResponse<number>]) => {
-      return {count: res[1].data || 0, data: res[0].data || []};
-    });
-  }
-
   public editSet(dset: DigitalSetInterface | null): void {
     const set_copy = JSON.parse(JSON.stringify(dset));
     const dialogRef = this.dialog.open(EditSetDialogComponent, {data: {set: set_copy, metakeys: this.metakeys}});
@@ -57,6 +49,19 @@ export class FindSetComponent extends GenericFindComponent<DigitalSetInterface> 
       if (res) {
         this.reloadData();
       }
+    });
+  }
+
+  public get_name(element: DigitalSetInterface): string {
+    const name = [this.get_metadata(element, 'description'), this.get_metadata(element, 'part_name')].filter(e => !!e).join(' - ');
+    return name || element.id_set;
+  }
+
+  protected reload_list(keys: string, offset: number, limit: number): Promise<GenericListReply<DigitalSetInterface>> {
+    return Promise.all([
+      this.nakiService.get_set_list(keys, limit, offset),
+      this.nakiService.get_set_list_count(keys)]).then((res: [APIResponse<DigitalSetInterface[]>, APIResponse<number>]) => {
+      return {count: res[1].data || 0, data: res[0].data || []};
     });
   }
 }
