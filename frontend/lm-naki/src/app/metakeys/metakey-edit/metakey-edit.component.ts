@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MetakeyInterface} from '../../interface/metakey.interface';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import {NakiService} from '../../naki.service';
 import {APIResponse} from '../../apiresponse.interface';
 

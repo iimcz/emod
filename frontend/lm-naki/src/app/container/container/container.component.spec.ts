@@ -3,7 +3,9 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ContainerComponent} from './container.component';
 import {Directive, ElementRef, Input} from '@angular/core';
 import {IPosition} from 'angular2-draggable';
-import {MatButtonModule, MatIconModule, MatMenuModule} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Directive({exportAs: 'ngDraggable', selector: '[ngDraggable]'})
 class DraggableStubDirective {

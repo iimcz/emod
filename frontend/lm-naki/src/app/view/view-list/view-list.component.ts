@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NakiService} from '../../naki.service';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {EditViewDialogComponent} from '../../find-view/edit-view-dialog/edit-view-dialog.component';
 import {FindViewComponent} from '../../find-view/find-view/find-view.component';
 import {APIResponse} from '../../apiresponse.interface';
@@ -15,7 +15,7 @@ import {Rights} from '../../rights.enum';
 })
 export class ViewListComponent implements OnInit {
   public rights = Rights;
-  @ViewChild('viewList') viewList: FindViewComponent | undefined;
+  @ViewChild('viewList', { static: true }) viewList: FindViewComponent | undefined;
   constructor(private dialog: MatDialog,
               private router: Router,
               public nakiService: NakiService) { }

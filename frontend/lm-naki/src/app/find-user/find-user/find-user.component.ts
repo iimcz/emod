@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {GenericFindComponent, GenericListReply} from '../../generic-find.component';
 import {UserInterface} from '../../interface/user.interface';
 import {NakiService} from '../../naki.service';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {APIResponse} from '../../apiresponse.interface';
 import {EditUserDialogComponent} from '../edit-user-dialog/edit-user-dialog.component';
 

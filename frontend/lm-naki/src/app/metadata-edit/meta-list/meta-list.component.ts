@@ -15,16 +15,16 @@ export class MetaListComponent implements OnInit, OnChanges {
   optional_keys: MetakeyInterface[] | undefined;
   @Input() mandatory_type = 'i';
   @Input() meta_target = 'item';
+  @Input() ignore_mandatory = false;
   private metakeys_: MetakeyInterface[] = [];
 
   constructor() {
   }
 
-  @Input() ignore_mandatory = false;
-
   get metakeys() {
     return this.metakeys_;
   }
+
   @Input() set metakeys(keys: MetakeyInterface[]) {
     this.metakeys_ = keys;
     this.update_metakeys();
@@ -73,6 +73,52 @@ export class MetaListComponent implements OnInit, OnChanges {
     }
   }
 
+  public get_meta_type(key_name: string): string {
+    const metakey = this.metakeys_.find(e => e.key === key_name);
+    return metakey ? metakey.type : 'string';
+  }
+
+  public edit_multistring(meta: MetadataInterface, index: number, value: string) {
+    const x = meta.value.split(';');
+    while (x.length <= index) {
+      x.push('');
+    }
+    x[index] = value;
+    meta.value = x.join(';');
+  }
+
+  public delete_multistring(meta: MetadataInterface, index: number): void {
+    const x = meta.value.split(';');
+    if (x.length <= index) {
+      return;
+    }
+    x.splice(index, 1);
+    meta.value = x.join(';');
+  }
+
+
+  public edit_user(meta: MetadataInterface, index: number, value: string) {
+    const x = meta.value.split(';');
+    while (x.length <= index) {
+      x.push(',');
+    }
+    const val_parts = x[index].split(',');
+    val_parts[0] = value;
+    x[index] = val_parts.join(',');
+    meta.value = x.join(';');
+  }
+
+  public edit_role(meta: MetadataInterface, index: number, value: string) {
+    const x = meta.value.split(';');
+    while (x.length <= index) {
+      x.push(',');
+    }
+    const val_parts = x[index].split(',');
+    val_parts[1] = value;
+    x[index] = val_parts.join(',');
+    meta.value = x.join(';');
+  }
+
   private update_metakeys(): void {
     this.mandatory_keys = this.metakeys.filter(e => e.mandatory.indexOf(this.mandatory_type) !== -1);
     this.optional_keys = this.metakeys.filter(e => e.mandatory.indexOf(this.mandatory_type) === -1);
@@ -90,5 +136,4 @@ export class MetaListComponent implements OnInit, OnChanges {
       }
     }
   }
-
 }

@@ -2,16 +2,87 @@
   <table>
     <tr *ngFor="let meta of values; let index = index">
       <th class="left-column">
-        <app-meta-key [metakeys]="optional_keys" [(value)]="meta.key" *ngIf="!is_mandatory(meta.key, index); else mandatoryValue"></app-meta-key>
+        <app-meta-key [metakeys]="optional_keys" [(value)]="meta.key"
+                      *ngIf="!is_mandatory(meta.key, index); else mandatoryValue"></app-meta-key>
         <ng-template #mandatoryValue>{{meta.key}}</ng-template>
       </th>
       <td>
-        <mat-form-field>
-          <input type="text" matInput [(ngModel)]="meta.value" [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
+
+        <ng-container [ngSwitch]="get_meta_type(meta.key)">
+          <ng-container *ngSwitchCase="'number'">
+            <mat-form-field>
+              <input type="number" matInput [(ngModel)]="meta.value" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+          </ng-container>
+          <ng-container *ngSwitchCase="'date'">
+            <mat-form-field>
+              <input type="date" matInput [(ngModel)]="meta.value" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+          </ng-container>
+          <ng-container *ngSwitchCase="'multi-string'">
+            <ng-container *ngFor="let x of meta.value.split(';'); let index = index">
+              <mat-form-field>
+                <input type="text"
+                       matInput
+                       [ngModel]="x"
+                       (ngModelChange)="edit_multistring(meta, index, $event)"
+                       [ngModelOptions]="{standalone: true}">
+                <button mat-icon-button matSuffix (click)="delete_multistring(meta, index)"><mat-icon>delete</mat-icon></button>
+              </mat-form-field>
+              <br>
+
+            </ng-container>
+            <br>
+            <button mat-raised-button (click)="meta.value = meta.value+';'">Add</button>
+
+
+          </ng-container>
+          <ng-container *ngSwitchCase="'user-role'">
+            <ng-container *ngFor="let x of meta.value.split(';'); let index = index">
+              <mat-form-field>
+                <span matPreffix>name: </span>
+                <input type="text"
+                       matInput
+                       [ngModel]="x.split(',', 1)[0]"
+                       (ngModelChange)="edit_user(meta, index, $event)"
+                       [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+
+              <mat-form-field>
+                <span matPreffix>role: </span>
+                <input type="text"
+                       matInput
+                       [ngModel]="x.split(',', 2)[1] || ''"
+                       (ngModelChange)="edit_role(meta, index, $event)"
+                       [ngModelOptions]="{standalone: true}">
+                <button mat-icon-button matSuffix (click)="delete_multistring(meta, index)"><mat-icon>delete</mat-icon></button>
+              </mat-form-field>
+              <br>
+
+            </ng-container>
+            <br>
+            <button mat-raised-button (click)="meta.value = meta.value+';'">Add</button>
+
+
+          </ng-container>
+          <ng-container *ngSwitchCase="'long-string'">
+            <mat-form-field>
+              <textarea matInput [(ngModel)]="meta.value" [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <mat-form-field>
+              <input type="text" matInput [(ngModel)]="meta.value" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+          </ng-container>
+        </ng-container>
+
+
       </td>
       <td>
-        <button mat-icon-button (click)="delete_meta(meta, index)" *ngIf="!is_mandatory(meta.key, index)"><mat-icon>delete</mat-icon></button>
+        <button mat-icon-button (click)="delete_meta(meta, index)" *ngIf="!is_mandatory(meta.key, index)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </tr>
 

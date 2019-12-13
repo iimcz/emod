@@ -3,12 +3,15 @@ import {NakiService} from '../../naki.service';
 import {DigitalItem} from '../../interface/digital-item';
 import {DomSanitizer} from '@angular/platform-browser';
 import {LinkInterface} from '../../interface/link.interface';
-import {MatCheckboxChange, MatDialog, MatDialogRef, MatPaginator} from '@angular/material';
+import {MatCheckboxChange} from '@angular/material/checkbox';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
 import {EditItemDialogComponent} from '../edit-item-dialog/edit-item-dialog.component';
 import {APIResponse} from '../../apiresponse.interface';
 import 'rxjs-compat/add/observable/fromEvent';
 import 'rxjs-compat/add/operator/distinctUntilChanged';
 import {GenericFindComponent, GenericListReply} from '../../generic-find.component';
+import {Utils} from '../../naki.utils';
 
 @Component({
   selector: 'app-find-item',
@@ -56,17 +59,68 @@ export class FindItemComponent extends GenericFindComponent<DigitalItem> impleme
     this.deinit();
   }
 
+  public edit_item(item: DigitalItem): void {
+    // Make a deep copy (Object.assing is not sufficient, so the dialog cannot modify our data directly
+    const item_copy = JSON.parse(JSON.stringify(item));
+    const dialogRef = this.dialog.open(EditItemDialogComponent, {data: {item: item_copy, metakeys: this.metakeys}});
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(res);
+      if (res) {
+        this.reloadData();
+      }
+    });
+  }
+
+  public is_disabled(item: DigitalItem): boolean {
+    return this.disabled_ids && this.disabled_ids.indexOf(item.id_item) !== -1;
+  }
+
+  public update_multi(item: DigitalItem, event: MatCheckboxChange): void {
+    if (event.checked) {
+      this.selected_items.push(item);
+    } else {
+      const idx = this.selected_items.findIndex(e => e.id_item === item.id_item);
+      if (idx >= 0) {
+        this.selected_items.splice(idx, 1);
+      }
+    }
+    console.log(event);
+  }
+
+  public multi_add<T>(dialogRef: MatDialogRef<T>): void {
+    dialogRef.close(this.selected_items.map(e => e.id_item));
+  }
+
+  public set_key(di: DigitalItem, key: string, state: MatCheckboxChange): void {
+    if (di.metadata) {
+      let m = di.metadata.find(e => e.key === key);
+      if (!m) {
+        m = {key: key, value: '', id: di.id_item, target: 'item'};
+        di.metadata.push(m);
+      }
+      m.value = state.checked ? '1' : '0';
+      this.nakiService.update_item(di).then(() => {
+        this.reloadData();
+      });
+    }
+  }
+
+  public get_key(di: DigitalItem, key: string): boolean {
+    console.log(di, Utils.get_metadata(di, key))
+    return Utils.get_metadata(di, key) === '1';
+  }
+
   protected reload_list(keys: string, offset: number, limit: number): Promise<GenericListReply<DigitalItem>> {
     return Promise.all([
       this.nakiService.get_item_list(keys, limit, offset),
       this.nakiService.get_item_list_count(keys)]).then((res: [APIResponse<DigitalItem[]>, APIResponse<number>]) => {
-        if (res[0].data === undefined) {
-          res[0].data = [];
-        }
+      if (res[0].data === undefined) {
+        res[0].data = [];
+      }
       (<DigitalItem[]>res[0].data).forEach(e => {
-          e.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.find_url(e));
-        });
-        return {count: res[1].data || 0 , data: res[0].data || []};
+        e.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.find_url(e));
+      });
+      return {count: res[1].data || 0, data: res[0].data || []};
     });
   }
 
@@ -88,37 +142,6 @@ export class FindItemComponent extends GenericFindComponent<DigitalItem> impleme
     }
     const link = this.find_link_url_for_preview(item.links);
     return link ? this.nakiService.get_resource_url(link) : '';
-  }
-
-  public edit_item(item: DigitalItem): void {
-    // Make a deep copy (Object.assing is not sufficient, so the dialog cannot modify our data directly
-    const item_copy = JSON.parse(JSON.stringify(item));
-    const dialogRef = this.dialog.open(EditItemDialogComponent, {data: {item: item_copy, metakeys: this.metakeys}});
-    dialogRef.afterClosed().subscribe(res => {
-      console.log(res);
-      if (res) {
-        this.reloadData();
-      }
-    });
-  }
-
-  public is_disabled(item: DigitalItem): boolean {
-    return this.disabled_ids && this.disabled_ids.indexOf(item.id_item) !== -1;
-  }
-  public update_multi(item: DigitalItem, event: MatCheckboxChange): void {
-    if (event.checked) {
-      this.selected_items.push(item);
-    } else {
-      const idx = this.selected_items.findIndex(e => e.id_item === item.id_item);
-      if (idx >= 0) {
-        this.selected_items.splice(idx, 1);
-      }
-    }
-    console.log(event);
-  }
-
-  public multi_add<T>(dialogRef: MatDialogRef<T>): void {
-    dialogRef.close(this.selected_items.map(e => e.id_item));
   }
 }
 

@@ -5,7 +5,7 @@ import {ContainerInterface} from './interface/container.interface';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {FileTreeInterface} from './interface/filetree.interface';
 import {HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
-import {base_url, cookie_name} from './app.site-config';
+import {base_url, vrmod_url, cookie_name} from './app.site-config';
 import {APIResponse} from './apiresponse.interface';
 import {MetakeyInterface} from './interface/metakey.interface';
 import {ViewInterface} from './interface/view.interface';
@@ -314,6 +314,16 @@ export class NakiService {
     return this.generic_update('dis', dset.id_set.toString(), dset);
   }
 
+  public get_set(id: string): Promise<APIResponse<DigitalSetInterface>> {
+    return new Promise<APIResponse<DigitalSetInterface>>((resolve, reject) => {
+      this.httpClient.get<APIResponse<DigitalSetInterface>>(base_url + 'dis/' + id).subscribe(res => {
+        console.log(res);
+        resolve(res);
+      });
+    });
+  }
+
+
   public get_view_list(query: string = '', limit: number = 10, offset: number = 0): Promise<APIResponse<ViewInterface[]>> {
     return this.generic_list<ViewInterface>('views', query, {limit: limit.toString(10), offset: offset.toString(10)});
   }
@@ -506,6 +516,33 @@ export class NakiService {
       }
     }
     return '';
+  }
+
+  public get_resource_thumb_url(di: DigitalItem): string {
+    return this._join_path(base_url, 'storage/resource', di.id_item, 'thumbnail');
+  }
+
+  public get_mods_url(di: DigitalItem): string {
+    return base_url + 'mods/di/' + di.id_item;
+  }
+
+  public upload_mods(di: DigitalItem, mods: string): Promise<APIResponse<DigitalItem>> {
+    return this.generic_request_put<string, DigitalItem>(this._join_path('mods/di', di.id_item), mods);
+  }
+
+  public get_vrmod_url(): string {
+    return vrmod_url;
+  }
+
+  public generate_spi(ds: DigitalSetInterface): Promise<string> {
+    const url = this._prepare_url(this._join_path('export/', ds.id_set), {});
+    return new Promise<string>((resolve, reject) => {
+      this.httpClient.get(url, {observe: 'body', responseType: 'text'})
+        .subscribe(res => {
+          console.log(res);
+          resolve(res);
+        });
+    });
   }
 
   private _prepare_params(params: { [key: string]: string }): string {

@@ -3,7 +3,7 @@ import {NakiService} from '../../naki.service';
 import {GenericFindComponent, GenericListReply} from '../../generic-find.component';
 import {MetakeyInterface} from '../../interface/metakey.interface';
 import {APIResponse} from '../../apiresponse.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {MetakeyEditDialogComponent} from '../metakey-edit-dialog/metakey-edit-dialog.component';
 
 @Component({

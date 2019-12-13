@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 
 @Component({
@@ -9,7 +9,8 @@ import {MatDialogRef} from '@angular/material';
 })
 export class FindGroupDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<FindGroupDialogComponent>) {
+  constructor(public dialogRef: MatDialogRef<FindGroupDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: {disabled?: string[]}) {
   }
 
   ngOnInit() {

@@ -2,17 +2,19 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SetListComponent} from './set-list/set-list.component';
 import {RouterModule} from '@angular/router';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCheckboxModule, MatExpansionModule,
-  MatIconModule,
-  MatInputModule,
-  MatSelectModule, MatSlideToggleModule,
-  MatTableModule
-} from '@angular/material';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatTableModule} from '@angular/material/table';
 import {FindSetModule} from '../find-set/find-set.module';
 import {SetInfoComponent} from './set-info/set-info.component';
+import {FindGroupModule} from '../find-group/find-group.module';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 export const routerConfig = [{
@@ -43,8 +45,10 @@ export const routerConfig = [{
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatExpansionModule,
+    MatProgressSpinnerModule,
 
-    FindSetModule
+    FindSetModule,
+    FindGroupModule,
   ],
   declarations: [SetListComponent, SetInfoComponent]
 })

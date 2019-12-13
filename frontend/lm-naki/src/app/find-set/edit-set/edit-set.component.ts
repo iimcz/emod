@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MetakeyInterface} from '../../interface/metakey.interface';
 import {DigitalSetInterface} from '../../interface/digital-set.interface';
 import {NakiService} from '../../naki.service';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-set',

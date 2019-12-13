@@ -7,7 +7,7 @@ import {ContainerInterface} from '../../interface/container.interface';
 import {APIResponse} from '../../apiresponse.interface';
 import {DigitalItem} from '../../interface/digital-item';
 import {AnnotationInterface} from '../../interface/annotation.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-annotation-viewer',
@@ -15,9 +15,9 @@ import {MatDialog} from '@angular/material';
   styleUrls: ['./annotation-viewer.component.css']
 })
 export class AnnotationViewerComponent extends ContentViewer implements OnInit {
-  @Input() data: string | undefined;
   public remote_container: ContainerInterface | undefined;
   public annotation_text = '';
+  private data_: string | undefined;
   private remote_container_id: string | undefined;
   private annotationMap: Map<string, AnnotationInterface[]> = new Map<string, AnnotationInterface[]>();
 
@@ -27,7 +27,13 @@ export class AnnotationViewerComponent extends ContentViewer implements OnInit {
     super(sanitizer, dialog, nakiService);
   }
 
-  ngOnInit() {
+  get data(): string | undefined {
+    return this.data_;
+  }
+
+  @Input() set data(val: string | undefined) {
+    console.log('Setting value', val);
+    this.data_ = val;
     if (this.data && this.view_id) {
       const parsed = JSON.parse(this.data);
       console.log(parsed);
@@ -35,6 +41,29 @@ export class AnnotationViewerComponent extends ContentViewer implements OnInit {
         this.remote_container_id = parsed.id_container;
         this.reloadContainer();
       }
+    } else {
+      console.log('Missing data', this.data, this.view_id);
+    }
+  }
+
+  ngOnInit() {
+    // if (this.data && this.view_id) {
+    //   const parsed = JSON.parse(this.data);
+    //   console.log(parsed);
+    //   if (parsed.id_container) {
+    //     this.remote_container_id = parsed.id_container;
+    //     this.reloadContainer();
+    //   }
+    // }
+    if (this.data && this.view_id) {
+      const parsed = JSON.parse(this.data);
+      console.log(parsed);
+      if (parsed.id_container) {
+        this.remote_container_id = parsed.id_container;
+        this.reloadContainer();
+      }
+    } else {
+      console.log('Missing data', this.data, this.view_id);
     }
   }
 
@@ -70,11 +99,30 @@ export class AnnotationViewerComponent extends ContentViewer implements OnInit {
                 }
               });
               console.log(this.annotationMap);
+              if (!this.annotation_text && this.remote_container && this.remote_container.item_ids.length === 1) {
+                const item_annot = this.find_annot(this.remote_container.item_ids[0], 0);
+                if (item_annot) {
+                  console.log(item_annot);
+                  if (item_annot.uri.startsWith('text:')) {
+                    this.annotation_text = item_annot.uri.substr(5);
+                  }
+                }
+              }
               resolve(true);
             });
         }
       });
     });
+  }
+
+  private find_annot(item_id: string, time: number): AnnotationInterface | undefined {
+    const annots = this.annotationMap.get(item_id);
+    if (!annots) {
+      console.log('Unknown item');
+      return undefined;
+    }
+    const item_annot = annots.find(e => e.time <= time);
+    return item_annot || undefined;
   }
 
   public receiveEvent(event: ContainerEventInterface): void {
@@ -90,15 +138,17 @@ export class AnnotationViewerComponent extends ContentViewer implements OnInit {
       this.reloadContainer().then((res: boolean) => {
         if (res) {
           this.receiveEvent(event);
-        }});
+        }
+      });
     }
-    const annots = this.annotationMap.get(event.id_item);
-    if (!annots) {
-      console.log('Unknown item');
-      this.annotation_text = '';
-      return;
-    }
-    const item_annot = annots.find(e => e.time <= event.item_time);
+    // const annots = this.annotationMap.get(event.id_item);
+    // if (!annots) {
+    //   console.log('Unknown item');
+    //   this.annotation_text = '';
+    //   return;
+    // }
+    // const item_annot = annots.find(e => e.time <= event.item_time);
+    const item_annot = this.find_annot(event.id_item, event.item_time);
     if (item_annot) {
       console.log(item_annot);
       if (item_annot.uri.startsWith('text:')) {

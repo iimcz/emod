@@ -2,7 +2,10 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {NakiService} from '../../naki.service';
 import {DropEvent} from 'ng-drag-drop';
 import {NakiConfig} from '../../config';
-import {MatCheckboxChange, MatDialog, MatMenuTrigger, MatSlideToggleChange} from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 import {DigitalItem} from '../../interface/digital-item';
 import {FindItemDialogComponent} from '../../find-item/find-item-dialog/find-item-dialog.component';

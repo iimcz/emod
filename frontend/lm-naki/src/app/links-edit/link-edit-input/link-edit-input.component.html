@@ -1,0 +1,50 @@
+<ng-container *ngIf="link_type_base(link) === 'annotation'">
+  <mat-form-field>
+    <mat-label>Time</mat-label>
+    <input type="number" matInput
+           [ngModel]="link_type_part(link, 1)"
+           (ngModelChange)="set_link_type_part(link, 1, $event)"
+           [ngModelOptions]="{standalone: true}">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Duration</mat-label>
+    <input type="number" matInput
+           [ngModel]="link_type_part(link, 2)"
+           (ngModelChange)="set_link_type_part(link, 2, $event)"
+           [ngModelOptions]="{standalone: true}">
+  </mat-form-field>
+  <br>
+</ng-container>
+<!--<ng-container *ngIf="link_type_base(link) === 'link'">-->
+<!--<button mat-raised-button>Select item</button>-->
+<!--<br>-->
+<!--</ng-container>-->
+<mat-form-field>
+  <mat-select [ngModel]="get_link_data_part(link, 0)"
+              (ngModelChange)="set_link_data_part(link, 0, $event)"
+              [ngModelOptions]="{standalone: true}">
+    <mat-option value="text">Text</mat-option>
+    <mat-option value="storage">Storage</mat-option>
+    <mat-option value="di">Digital Item</mat-option>
+    <mat-option value="dg">Digital Group</mat-option>
+  </mat-select>
+</mat-form-field><br>
+
+  <ng-container *ngIf="get_link_data_part(link, 0) === 'di'">
+    <button mat-raised-button (click)="select_target()">Select item</button>
+    <br>
+  </ng-container>
+<ng-container *ngIf="get_link_data_part(link, 0) === 'dg'">
+  <button mat-raised-button (click)="select_target_group()">Select group</button>
+  <br>
+</ng-container>
+<mat-form-field>
+  <input matInput
+         [ngModel]="get_link_data_part(link, 1)"
+         (ngModelChange)="set_link_data_part(link, 1, $event)"
+         [ngModelOptions]="{standalone: true}"
+         [disabled]="is_target_link(link)"
+         [placeholder]="get_link_data_part(link, 0)">
+
+</mat-form-field>

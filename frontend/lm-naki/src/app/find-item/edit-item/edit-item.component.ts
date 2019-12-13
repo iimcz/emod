@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DigitalItem} from '../../interface/digital-item';
 import {NakiService} from '../../naki.service';
 import {MetakeyInterface} from '../../interface/metakey.interface';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-item',
@@ -13,6 +13,7 @@ import {MatDialogRef} from '@angular/material';
 export class EditItemComponent implements OnInit {
   @Input() item: DigitalItem | undefined;
   @Input() metakeys: MetakeyInterface[] = [];
+  @Output() wantsReload: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(public nakiService: NakiService) { }
 
@@ -31,5 +32,23 @@ export class EditItemComponent implements OnInit {
       });
       console.log('SAVE');
     }
+  }
+
+  public load_mods(event: Event, element: HTMLInputElement): void {
+    if (!element.files || element.files.length === 0) {
+      return;
+    }
+    const fr = new FileReader();
+    fr.onload = (readEvent: ProgressEvent) => {
+      const text = fr.result as string;
+      if (this.item) {
+        this.nakiService.upload_mods(this.item, text).then(x => {
+          if (x.status === 'ok') {
+            this.wantsReload.emit(true);
+          }
+        });
+      }
+    }
+    fr.readAsText(element.files[0]);
   }
 }

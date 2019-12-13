@@ -1,3 +1,33 @@
-<p>
-  set-info works!
-</p>
+<span *ngIf="dset !== undefined">
+  <h1>{{get_title()}}</h1>
+<h2>Metadata</h2>
+  <table>
+    <tr *ngFor="let meta of dset.metadata">
+      <th>{{meta.key}}</th>
+      <td>
+        {{meta.value}}
+      </td>
+    </tr>
+  </table>
+  <h2>Digital Groups</h2>
+  <ng-container *ngIf="dset.groups">
+    <ng-container *ngFor="let dg of dset.groups">
+      <button mat-icon-button (click)="delete_group(dg)"><mat-icon>delete</mat-icon></button>
+      <button mat-raised-button
+              >{{get_metadata(dg, 'description') || dg.id_group}}</button>
+      <!-- [routerLink]="['/groups/show', dg.id_group]" -->
+      <br>
+    </ng-container>
+  </ng-container>
+
+  <button mat-raised-button (click)="add_group()">Add group</button>
+
+  <br>
+  <button mat-raised-button (click)="export_package(exportDialog)">Export SPI package</button>
+</span>
+
+
+<ng-template #exportDialog>
+  <h1>Generating package</h1>
+  <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+</ng-template>

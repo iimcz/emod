@@ -13,6 +13,7 @@ from naki.lib.metadata import load_metadata
 from naki.lib.rest import APIResponse
 from naki.lib.utils import get_cfg
 from naki.model import Link, DBSession
+from naki.lib.mods import parse_mods
 
 
 def guess_mime(magic, path):
@@ -52,6 +53,18 @@ class StorageRes(object):
         except IsADirectoryError:
             raise HTTPNotFound()
 
+    def _load_metadata(self, full_path, mime):
+        m = load_metadata(full_path, mime)
+        mods_file = full_path+'.mods.xml'
+        if os.path.exists(mods_file):
+            try:
+                mods = open(mods_file, 'rb').read().decode('utf8')
+                mods_meta = parse_mods(mods)
+                m.update(mods_meta)
+            except Exception as e:
+                print('Exception processing mods: %s' % str(e))
+        return m
+
     def _process_file(self, file, full_path, used_paths):
         mime = self._guess_mime(full_path)
         stripped_path = self._strip_path(full_path)
@@ -60,7 +73,7 @@ class StorageRes(object):
                 'mime': mime,
                 'path': stripped_path,
                 'used': used,
-                'metadata': load_metadata(full_path, mime) if not used else {}}
+                'metadata': self._load_metadata(full_path, mime) if not used else {}}
 
     @view(permission=RIGHTS.Editor)
     def collection_get(self):
@@ -87,7 +100,7 @@ class StorageRes(object):
         print(req_path)
 
         r, d, f = next(os.walk(req_path))
-        res = {'files': [self._process_file(file, os.path.join(r, file), used_paths) for file in f],
+        res = {'files': [self._process_file(file, os.path.join(r, file), used_paths) for file in f if not file.endswith('.mods.xml')],
                'path': self._strip_path(r),
                'dirs': d}
         print(res)

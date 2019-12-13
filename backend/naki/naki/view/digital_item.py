@@ -5,17 +5,45 @@ from cornice.validators import colander_body_validator
 import datetime
 from pyramid.httpexceptions import HTTPNotFound, HTTPBadRequest
 from pyramid.security import Everyone
+from pyramid.request import Request
 import sqlalchemy
 
 from uuid import uuid4
 
 from naki.lib.cors import NAKI_CORS_POLICY
 from naki.lib.rest import APIResponse
-from naki.lib.utils import get_list_params, check_missing_metakeys, update_metakeys, update_metadata, add_metadata_record
+from naki.lib.utils import get_list_params, check_missing_metakeys, update_metakeys, update_metadata, \
+    add_metadata_record
 from naki.model import DigitalItem, DBSession, MetaKey, Metadata, Link, GroupItem
 from naki.schemas.digital_item import DigitalItemSchema
 from naki.lib.auth import RIGHTS
+from naki.lib.mods import generate_mods, parse_mods
 # di_schema = SQLAlchemySchemaNode(DigitalItem)
+
+
+import traceback
+
+def update_links(new_links, item_id):
+    old_links = [x for x in DBSession.query(Link).filter(
+        Link.id_item == item_id).all()]
+    for link in new_links:
+        print(link)
+        l = next((x for x in old_links if x.id_link == link['id_link']), None) if 'id_link' in link else None
+        if not l:
+            # Our link is a new one
+            print('Creating new link')
+            ll = Link(str(uuid4()), item_id, link['id_user'], link['type'], link['description'], link['uri'])
+            DBSession.add(ll)
+        else:
+            # Update old link
+            print('Updating link %s' % link['id_link'])
+            l.set_from_dict(link)
+    for link in old_links:
+        l = next((x for x in new_links if x['id_link'] == link.id_link), None)
+        if not l:
+            # link was deleted
+            print('Deleting link')
+            DBSession.delete(link)
 
 
 @resource(path='/api/v1/di/{id:[a-zA-Z0-9-]*}', collection_path='/api/v1/dis', cors_policy=NAKI_CORS_POLICY)
@@ -29,8 +57,8 @@ class DIRes(object):
     def _add_metadata(self, item):
         ret = add_metadata_record(item.get_dict(), item.id_item, 'item')
         ret['links'] = [x.get_dict() for x in DBSession.query(Link) \
-                               .filter(Link.id_item == item.id_item) \
-                               .all()]
+            .filter(Link.id_item == item.id_item) \
+            .all()]
         return ret
 
     @view(permission=Everyone)
@@ -51,10 +79,12 @@ class DIRes(object):
             item = DBSession.query(DigitalItem).filter(DigitalItem.id_item == di_id).one()
             item.set_from_dict(self._request.validated)
             update_metadata(self._request.validated['metadata'], item.id_item, 'item')
+            update_links(self._request.validated['links'], item.id_item)
             DBSession.flush()
             return APIResponse(self._add_metadata(item))
         except Exception as e:
             print(e)
+            traceback.print_exc()
             raise HTTPNotFound()
 
     def _get_subq_base(self):
@@ -65,7 +95,8 @@ class DIRes(object):
         subq = self._get_subq_base()
         if parent is not None:
             subq = subq.join(parent, parent.c.sID_Item == DigitalItem.id_item)
-        return subq.filter(sqlalchemy.or_(Metadata.value.contains(key), DigitalItem.mime.contains(key))).group_by(DigitalItem.id_item)
+        return subq.filter(sqlalchemy.or_(Metadata.value.contains(key), DigitalItem.mime.contains(key))).group_by(
+            DigitalItem.id_item)
 
     @view(permission=Everyone)
     def collection_get(self):
@@ -82,18 +113,18 @@ class DIRes(object):
         else:
             subq = self._get_subq_with_key(params.query_keys[0], None)
             for idx, key in enumerate(params.query_keys[1:]):
-                subq = self._get_subq_with_key(key, subq.subquery('subq%d'%idx))
+                subq = self._get_subq_with_key(key, subq.subquery('subq%d' % idx))
 
         if params.dry:
             return APIResponse(subq.count())
 
         subq = subq.offset(params.offset).limit(params.limit).subquery('subq')
 
-        items_raw = DBSession.query(DigitalItem, Link, Metadata)\
-            .outerjoin(Link, Link.id_item == DigitalItem.id_item)\
-        .outerjoin(Metadata, Metadata.id == DigitalItem.id_item)\
-        .join(subq, subq.c.sID_Item == DigitalItem.id_item)\
-        .all()
+        items_raw = DBSession.query(DigitalItem, Link, Metadata) \
+            .outerjoin(Link, Link.id_item == DigitalItem.id_item) \
+            .outerjoin(Metadata, Metadata.id == DigitalItem.id_item) \
+            .join(subq, subq.c.sID_Item == DigitalItem.id_item) \
+            .all()
 
         items = {}
         for bundle in items_raw:
@@ -110,10 +141,7 @@ class DIRes(object):
                 if not next((x for x in item['metadata'] if x['key'] == bundle[2].key), None):
                     item['metadata'].append(bundle[2].get_dict())
 
-
         return APIResponse([items[x] for x in items])
-
-
 
     @view(permission=RIGHTS.Editor, schema=DigitalItemSchema, validators=(colander_body_validator,))
     def collection_post(self):
@@ -150,8 +178,42 @@ class DIRes(object):
 
 search_res = Service(name='search di', path='/api/v1/search/di')
 
+
 @search_res.get()
 def search_item(request):
     return None
 
 
+mods_res = Service(name='di mods', path='/api/v1/mods/di/{id:[a-zA-Z0-9-]*}', cors_policy=NAKI_CORS_POLICY)
+
+
+@mods_res.get()
+def get_di_mods(request):
+    di_id = request.matchdict['id']
+    try:
+        item = DBSession.query(DigitalItem).filter(DigitalItem.id_item == di_id).one()
+        resp = request.response
+        resp.status_int = 200
+        resp.body = generate_mods(item, None).encode('utf8')
+        resp.content_type = 'text/xml'
+        return resp
+    except Exception as e:
+        print('Exception %s' % str(e))
+        raise HTTPBadRequest()
+
+
+@mods_res.put(permission=RIGHTS.Researcher)
+def set_di_mods(request):
+    di_id = request.matchdict['id']
+    try:
+        mods = parse_mods(request.body.decode('utf8'))
+        print(mods)
+        new_meta = [{'key': key, 'value': mods[key]} for key in mods]
+        update_metadata(new_meta, di_id, 'item', False)
+        DBSession.flush()
+        subreq = Request.blank('/api/v1/di/' + di_id)
+        response = request.invoke_subrequest(subreq)
+        return response
+    except Exception as e:
+        print('Exception %s' % str(e))
+        raise HTTPBadRequest()

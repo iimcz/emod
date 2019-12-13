@@ -6,15 +6,15 @@ import {ItemImportComponent} from '../items/item-import/item-import.component';
 import {ItemInfoComponent} from '../items/item-info/item-info.component';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCheckboxModule, MatExpansionModule,
-  MatIconModule,
-  MatInputModule,
-  MatSelectModule, MatSlideToggleModule,
-  MatTableModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
 import {FindGroupModule} from '../find-group/find-group.module';
 import {GroupInfoComponent} from './group-info/group-info.component';
 

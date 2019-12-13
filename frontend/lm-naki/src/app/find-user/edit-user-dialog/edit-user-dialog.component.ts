@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {UserInterface} from '../../interface/user.interface';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {NakiService} from '../../naki.service';
 import {APIResponse} from '../../apiresponse.interface';
 

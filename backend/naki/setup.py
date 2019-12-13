@@ -25,7 +25,8 @@ requires = [
     'python-magic',
     'zope.sqlalchemy',
     'mysqlclient',
-    'Pillow'
+    'Pillow',
+    'lxml'
 ]
 
 tests_require = [

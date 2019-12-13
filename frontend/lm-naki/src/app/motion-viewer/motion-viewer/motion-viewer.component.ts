@@ -7,7 +7,7 @@ import {NakiService} from '../../naki.service';
 import {Utils} from '../../naki.utils';
 import {ContentViewer} from '../../content-viewer';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {AnnotationInterface} from '../../interface/annotation.interface';
 import {ContainerEventInterface} from '../../interface/container-event.interface';
 @Component({
@@ -16,7 +16,7 @@ import {ContainerEventInterface} from '../../interface/container-event.interface
   styleUrls: ['./motion-viewer.component.css']
 })
 export class MotionViewerComponent extends ContentViewer implements OnInit, OnDestroy {
-  @ViewChild('canvasElement') canvasElement: ElementRef<HTMLCanvasElement> | undefined;
+  @ViewChild('canvasElement', { static: true }) canvasElement: ElementRef<HTMLCanvasElement> | undefined;
   // @Input() dis: DigitalItem[] = [];
   private size_: number[] | undefined;
   private renderer: any; // THREE.WebGLRenderer;

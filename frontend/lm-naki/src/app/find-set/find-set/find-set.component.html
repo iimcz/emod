@@ -48,9 +48,9 @@
     <ng-container matColumnDef="description">
       <th mat-header-cell *matHeaderCellDef> Description</th>
       <td mat-cell *matCellDef="let element">
-        <ng-container *ngIf="!click_to_show">{{get_metadata(element, 'description') || element.id_set}}</ng-container>
+        <ng-container *ngIf="!click_to_show">{{get_name(element)}}</ng-container>
         <a mat-button *ngIf="click_to_show" [routerLink]="['/sets/show', element.id_set]">
-          {{get_metadata(element, 'description') || element.id_set}}
+          {{get_name(element)}}
         </a>
       </td>
     </ng-container>
