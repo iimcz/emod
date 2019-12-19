@@ -19,7 +19,7 @@
  5. [Postupy k jednotlivým scénářům](#postupy-k-jednotlivým-scénářům)
     1. [Vstup do aplikace](#vstup-do-aplikace)
     2. [Vkládání nových dat](#vkládání-nových-dat)
-       1. [Vkládání jednotlivých datových objektů](#vkládání-jednotlivých-datových-objektů)
+       1. [Vkládání jednotlivých digitálních objektů](#vkládání-jednotlivých-digitálních-objektů)
        2. [Hromadný import dat](#hromadný-import-dat)
        3. [Ruční zadávání metadat](#ruční-zadávání-metadat)
        4. [Editace a přidávání metadatových záznamů](#editace-a-přidávání-metadatových-záznamů)
@@ -47,7 +47,7 @@ Pohybová a multimediální data jsou v databázi strukturována do tří úrovn
 
 Dva a více digitálních objektů lze sdružit do **skupiny digitálních objektů** (Group of Digital Items - GDI). Jde například o skupinu fotografií, které se vážou ke stejné akci nebo popisují stejný děj. GDI představuje druhou úroveň struktury datového modelu databáze.
 
-Několik GDI lze sdružit do **datové sady** (Data Set - DS), která pak reprezentuje celé představení nebo jeho část a zahrnuje datové objekty vážící se k danému představení.
+Několik GDI lze sdružit do **datové sady** (Data Set - DS), která pak reprezentuje celé představení nebo jeho část a zahrnuje digitální objekty vážící se k danému představení.
 
 ### Uživatelské role
 
@@ -55,7 +55,7 @@ Uživatel přistupuje k dokumentaci v jedné ze tří rolí: návštěvník (vis
 
 **Návštěvník** je role která neumožňuje uživateli provádět žádné změny v obsahu uložených dat. Tato role slouží pouze pro prohlížení obsahu pohybových a ostatních multimediálních dat a zpřístupněných informací o těchto datech. V dalších plánovaných komponentách je tato role zamýšlena pro návštěvníky prezentačních akcí paměťové instituce, například v rámci výstav.
 
-**Badatel** je role umožňující aktivní vyhledávání v metadatech, tvorbu anotací k obsahu a vyznačování vazeb mezi datovými objekty nebo skupinami datových objektů. Badatel může vytvářet tzv. **pohledy** a zpřístupňovat je uživatelům v roli správcePohled je výběr datových objektů a jejich skupin, se kterými badatel v daný okamžik pracuje. Pohled slouží jako anotační nástroj, umožňující navíc vytváření linků mezi jednotlivými datovými objekty.
+**Badatel** je role umožňující aktivní vyhledávání v metadatech, tvorbu anotací k obsahu a vyznačování vazeb mezi digitálními objekty nebo skupinami digitálních objektů. Badatel může vytvářet tzv. **pohledy** a zpřístupňovat je uživatelům v roli správce. Pohled je výběr digitálních objektů a jejich skupin, se kterými badatel v daný okamžik pracuje. Pohled slouží jako anotační nástroj, umožňující navíc vytváření linků mezi jednotlivými digitálními objekty.
 
 **Správce záznamů (Editor)** je kategorie uživatele, která je oprávněná měnit stávající obsah uložených dat a přidávat nový obsah. Zpravidla v celém systému existuje pouze jeden správce, který rozhoduje o zpřístupnění obsahu pro všechny ostatní role.
 
@@ -63,8 +63,8 @@ Uživatel přistupuje k dokumentaci v jedné ze tří rolí: návštěvník (vis
 
 #### Vkládání nových dat
 
-Vkládání dat do aplikace je dvoustupňové. V prvním stupni komponenta EMOD umožňuje vkládání datových objektů do aplikace, kde jsou připraveny pro následné zpracování (zařazení a anotace). Vkládání datového objektu v prvním stupni probíhá po jedné komponentě (ručně) nebo na úrovni serveru hromadně.  Druhý stupeň probíhá po jednotlivých datových objektech, protože je nutné je postupně zařadit a popsat.
-Do aplikace lze dále vkládat metadata popisující jednotlivé datové objekty. To lze provést opět ručně vyplňováním jednotlivých metadatových klíčů, případně definováním a vyplněním nových klíčů. Metadata lze importovat i ze souboru poloautomaticky pro více datových objektů najednou.
+Vkládání dat do aplikace je dvoustupňové. V prvním stupni komponenta EMOD umožňuje vkládání digitálních objektů do aplikace, kde jsou připraveny pro následné zpracování (zařazení a anotace). Vkládání digitálního objektu v prvním stupni probíhá po jedné komponentě (ručně) nebo na úrovni serveru hromadně.  Druhý stupeň probíhá po jednotlivých digitálních objektech, protože je nutné je postupně zařadit a popsat.
+Do aplikace lze dále vkládat metadata popisující jednotlivé digitální objekty. To lze provést opět ručně vyplňováním jednotlivých metadatových klíčů, případně definováním a vyplněním nových klíčů. Metadata lze importovat i ze souboru poloautomaticky pro více digitálních objektů najednou.
 
 
 #### Vyhledávání v datech
@@ -73,21 +73,21 @@ Vyhledávání dat probíhá na základě dotazů vytvořených pomocí hesel za
 
 #### Vytvoření pohledu
 
-“Pohled” je výběr datových objektů uspořádaných na ploše. Uživatel si takové pohledy může vytvářet, upravovat, vyhledávat k nim další souvislosti  a anotovat je. Vytvoření pohledu spočívá ve výběru vyhledaných datových objektů a jejich skupin a jejich rozmístění na pracovní ploše. Pohled je pak možné uložit.
+“Pohled” je výběr digitálních objektů uspořádaných na ploše. Uživatel si takové pohledy může vytvářet, upravovat, vyhledávat k nim další souvislosti  a anotovat je. Vytvoření pohledu spočívá ve výběru vyhledaných digitálních objektů a jejich skupin a jejich rozmístění na pracovní ploše. Pohled je pak možné uložit.
 
 
 #### Vytváření struktury v datech
 
-Fyzická data jsou reprezentována Datovými objekty - základními elementy dokumentujícími představení a mají formu některého datového souboru (obrázek, video, dokument, text, nebo pohybová data). Datové objekty je možné sdružovat do skupin, které popisují některou konkrétní fázi procesu zpracování představení (fotografie vážící se k představení, fotografie z procesu rekonstrukce, videa z představení, pohybová data, texty, texty k rekonstrukci atd.). 
+Fyzická data jsou reprezentována digitálními objekty - základními elementy dokumentujícími představení a mají formu některého datového souboru (obrázek, video, dokument, text, nebo pohybová data). Digitální objekty je možné sdružovat do skupin, které popisují některou konkrétní fázi procesu zpracování představení (fotografie vážící se k představení, fotografie z procesu rekonstrukce, videa z představení, pohybová data, texty, texty k rekonstrukci atd.). 
 Skupina digitálních objektů vznikne sdružením alespoň dvou objektů stejného typu (fotografie, video apod.) a jejich pojmenováním. Uživatel tak získá možnost pracovat např. se skupinou několika fotografií jako s jedním objektem.
-Skupiny datových objektů je dále nutné sdružit do Datových sad, kde jedna sada reprezentuje představení nebo jeho část. Tím vzniká struktura, která umožňuje udržovat vztah mezi daty popisujících jedno představení a zároveň pracovat pouze se samotným  datovým objektem na nejnižší úrovni.
+Skupiny digitálních objektů je dále nutné sdružit do _Datových sad_, kde jedna sada reprezentuje představení nebo jeho část. Tím vzniká struktura, která umožňuje udržovat vztah mezi daty popisujících jedno představení a zároveň pracovat pouze se samotným  digitálním objektem na nejnižší úrovni.
 
 
 #### Definice odkazu a anotace
 
-Mezi datovými objekty lze vytvářet (zaznamenávat) vztahy pomocí odkazů a jednotlivé datové objekty může opatřit anotacemi. Odkazy si uživatel v aplikaci definuje sám.
+Mezi digitálními objekty lze vytvářet (zaznamenávat) vztahy pomocí odkazů a jednotlivé digitální objekty může opatřit anotacemi. Odkazy si uživatel v aplikaci definuje sám.
 
-Anotaci k datovému objektu lze vytvořit i v pohledu (view). Každý objekt v pohledu lze popsat textovou formou vytvořením anotace. Tuto anotaci lze přiřadit u časově závislých médií (pohybová data, video) konkrétnímu okamžiku. Anotace se pak zobrazuje v průběhu prohlížení. 
+Anotaci k digitálnímu objektu lze vytvořit i v pohledu (view). Každý objekt v pohledu lze popsat textovou formou vytvořením anotace. Tuto anotaci lze přiřadit u časově závislých médií (pohybová data, video) konkrétnímu okamžiku. Anotace se pak zobrazuje v průběhu prohlížení. 
 
 #### Export balíčku SIP
 
@@ -109,7 +109,7 @@ Položky v menu nabízí několik způsobů nahlížení na data a metadata spra
 
 ### Vkládání nových dat
 
-#### Vkládání jednotlivých datových objektů
+#### Vkládání jednotlivých digitálních objektů
 
 Kliknutím na nabídku v levém horním roku a jejím rozbalením se dostanete do menu, ve kterém stisknete volbu _Digital items_. Otevře se stránka s nadpisem a tlačítky _Reload data_, _Import_ a _Upload_. Pod nimi je řádek s nadpisem _Filter items_ pro vyhledávání položek.
 Pro nahrání nových položek z počítače (vašeho zařízení) stisknete tlačítko _Upload_. Tímto se dostanete do vyhledávače zařízení, na kterém vyberete zvolené soubory a tlačítkem _OK_ potvrdíte jejich nahrání. Nahrané soubory se zobrazí v seznamu pod tlačítky _Reload data_, _Import_ a _Upload_.
@@ -117,22 +117,22 @@ Pro nahrání nových položek z počítače (vašeho zařízení) stisknete tla
 #### Hromadný import dat
 
 Pro nahrání dat z lokálního úložiště slouží tlačítko _Import_. Soubory se nahrají po kliknutí na tlačítko _Import_ po vybrání označených položek a potvrzení importu tlačítkem _OK_.
-Importem se ze souborů stávají datové objekty. Ty lze po nahrání pojmenovávat, a dále popsat pomocí metadatových záznamů (tagů), a podle nich s nimi následně pracovat. 
+Importem se ze souborů stávají digitální objekty. Ty lze po nahrání pojmenovávat, a dále popsat pomocí metadatových záznamů (tagů), a podle nich s nimi následně pracovat. 
 
 #### Ruční zadávání metadat
 
-Popisování datových objektů je velmi flexibilní. Každý digitální objekt lze popsat libovolnou sadou dvojic _název:hodnota,_ kde název je identifikace záznamu a hodnota je jejím obsahem (např: dvojice &quot;autor&quot; : &quot;Josef Svoboda&quot;). Aplikace při zakládání nového datového objektu nejprve automaticky nastaví několik povinných záznamů a dále vyžaduje povinný záznam pro identifikaci. Rovněž nabízí sadu již definovaných záznamů použitých v minulosti. Lze také doplnit nový metadatový záznam vytvořením jeho jména a hodnoty.
+Popisování digitálních objektů je velmi flexibilní. Každý digitální objekt lze popsat libovolnou sadou dvojic _název:hodnota,_ kde název je identifikace záznamu a hodnota je jejím obsahem (např: dvojice &quot;autor&quot; : &quot;Josef Svoboda&quot;). Aplikace při zakládání nového digitálního objektu nejprve automaticky nastaví několik povinných záznamů a dále vyžaduje povinný záznam pro identifikaci. Rovněž nabízí sadu již definovaných záznamů použitých v minulosti. Lze také doplnit nový metadatový záznam vytvořením jeho jména a hodnoty.
 
 #### Editace a ruční přidávání metadatových záznamů
 
-V aplikaci EMOD vlevo nahoře otevřete menu a z něho vyberte položku Digital Items (Datové objekty). Ve výpisu datových objektů kliknutím na ikonu tužky lze přejít do režimu editace metadat přiřazených vybranému datovému objektu. Rozbalením nabídky Metadata se zpřístupní jednotlivé metadatové záznamy, které pak lze měnit a vytvářet. Nový metadatový záznam lze přidat stiskem tlačítka Add metadata.
+V aplikaci EMOD vlevo nahoře otevřete menu a z něho vyberte položku Digital Items (Digitální objekty). Ve výpisu digitálních objektů kliknutím na ikonu tužky lze přejít do režimu editace metadat přiřazených vybranému digitálnímu objektu. Rozbalením nabídky Metadata se zpřístupní jednotlivé metadatové záznamy, které pak lze měnit a vytvářet. Nový metadatový záznam lze přidat stiskem tlačítka Add metadata.
 
 
  ![][DI]
 
 #### Import metadat ze souboru
 
-Import metadat ze souboru lze provést opět ze seznamu Datových objektů, který vyvoláte výběrem položky Digital Items v hlavním menu (ikonka menu vlevo nahoře). Ve výpisu datových objektů kliknutím na ikonu tužky lze opět přejít do režimu editace metadat přiřazených vybranému datovému objektu. Rozbalením položky Metadata a výběrem tlačítka Load MODS lze otevřít dialog pro výběr souboru s XML popisem vybraného datového objektu. 
+Import metadat ze souboru lze provést opět ze seznamu digitálních objektů, který vyvoláte výběrem položky Digital Items v hlavním menu (ikonka menu vlevo nahoře). Ve výpisu digitálních objektů kliknutím na ikonu tužky lze opět přejít do režimu editace metadat přiřazených vybranému digitálnímu objektu. Rozbalením položky Metadata a výběrem tlačítka Load MODS lze otevřít dialog pro výběr souboru s XML popisem vybraného digitálního objektu. 
 
 ### Vyhledávání v databázi
 
@@ -163,22 +163,22 @@ Datovou sadu k představení vytvoříme otevřením hlavního menu a výběrem 
 
 ### Definice odkazu
 
-EMOD umožňuje vytvořit 4 různé typy odkazů pro každý Datový objekt: 
+EMOD umožňuje vytvořit 4 různé typy odkazů pro každý digitální objekt: 
 
 
 1. **Annotation** - krátký text, poznámka, 
-2. **Data** - odkaz na soubor datového objektu, 
-3. **Link** - odkaz na jiný datový objekt, 
+2. **Data** - odkaz na soubor digitálního objektu, 
+3. **Link** - odkaz na jiný digitální objekt, 
 4. **Preview** - odkaz na soubor s náhledem. 
 
 
-Odkaz lze vytvořit ze seznamu datových objektů (v levém horním rohu hlavní menu, položka _Digital Items_). Kliknutím na tlačítko tužky u vybraného datového objektu a rozbalením položky _Links_ se otevře dialog. V tomto dialogu lze definovat odkazy vedené z vybraného datového objektu. Pomocí tlačítka _Add link_ lze vytvořit nový odkaz, pro který je potřeba nastavit typ odkazu (viz 4 typy výše) a typ cílového objektu. Zde je možné volit opět ze čtyř typů obsahu cílového objektu:
+Odkaz lze vytvořit ze seznamu digitálních objektů (v levém horním rohu hlavní menu, položka _Digital Items_). Kliknutím na tlačítko tužky u vybraného digitálního objektu a rozbalením položky _Links_ se otevře dialog. V tomto dialogu lze definovat odkazy vedené z vybraného digitálního objektu. Pomocí tlačítka _Add link_ lze vytvořit nový odkaz, pro který je potřeba nastavit typ odkazu (viz 4 typy výše) a typ cílového objektu. Zde je možné volit opět ze čtyř typů obsahu cílového objektu:
 
 
 1. **text** - data typu text,
 2. **storage** - typ cesta k souboru,
-3. **digital item** - datový objekt,
-4. **digital group** - skupina datových objektů.
+3. **digital item** - digitální objekt,
+4. **digital group** - skupina digitálních objektů.
 
 
 Ze všech možných kombinací typu odkazu a typu cílového objektu mají smysl jen některé. (např. annotation-text, data-storage, link-digital item, preview-digital item).
@@ -197,11 +197,11 @@ Pro zobrazení anotace musíme vytvořit **“anotační kontejner”** - okno s
 
 ### Export balíčku SIP
 
-Pro účely dlouhodobého ukládání dokumentace přestavení je možné vyexportovat balíček (tzv. _informační objekt_). Ten je reprezentován v EMODu _Datovou sadou_ (viz. Struktura uložených dat) a doplněný popisem vytvořeným z metadatových záznamů k příslušným datovým objektům.
+Pro účely dlouhodobého ukládání dokumentace přestavení je možné vyexportovat balíček (tzv. _informační objekt_). Ten je reprezentován v EMODu _Datovou sadou_ (viz. Struktura uložených dat) a doplněný popisem vytvořeným z metadatových záznamů k příslušným digitálním objektům.
 
 ### Specifikace digitálních objektů pro export
 
-Před exportem je možné zkontrolovat/nastavit výběr datových objektů, které budou exportovány. To je možné udělat v seznamu datových objektů (hlavní menu vlevo nahoře, položka Digital Items) zatržením příslušného checkboxu nalevo od názvu příslušného datového objektu.
+Před exportem je možné zkontrolovat/nastavit výběr digitálních objektů, které budou exportovány. To je možné udělat v seznamu digitálních objektů (hlavní menu vlevo nahoře, položka Digital Items) zatržením příslušného checkboxu nalevo od názvu příslušného digitálního objektu.
 
 ### Export balíčku
 
