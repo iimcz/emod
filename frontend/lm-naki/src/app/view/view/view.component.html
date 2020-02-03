@@ -1,33 +1,33 @@
-<a mat-raised-button class="mat-primary" [routerLink]="['/views']">&lt; Back to list</a>
+<a mat-raised-button class="mat-primary" [routerLink]="['/views']">&lt; Zpět na seznam</a>
 
 <ng-container *ngIf="view; else loading">
 
   <h1>{{get_metadata(view, 'description')}}</h1>
   <br>
-  <a [routerLink]="['/views/show/' + view.id_view]" mat-raised-button class="mat-primary">Show view-only version</a><br>
+  <a [routerLink]="['/views/show/' + view.id_view]" mat-raised-button class="mat-primary">Zobrazit pouze pohled</a><br>
   <!--<mat-button-toggle-group #mode="matButtonToggleGroup" class="mat-primary" value="edit">-->
     <!--<mat-button-toggle value="edit">EDIT MODE</mat-button-toggle>-->
     <!--<mat-button-toggle value="play">PLAY MODE</mat-button-toggle>-->
   <!--</mat-button-toggle-group>-->
-  <h2>Press CRTL key to enter edit mode</h2>
+  <h2>Podržením CTRL se přepnete do módu editace</h2>
 
 
   <split direction="horizontal" [gutterSize]="5" height="1024">
     <split-area [size]="30">
-      <h2>Contents</h2>
+      <h2>Obsah</h2>
 
-      <button mat-button (click)="add_item(false)">Add item</button>
-      <button mat-button (click)="add_item(true)">Add multiple item</button>
+      <button mat-button (click)="add_item(false)">Přidat objekt</button>
+      <button mat-button (click)="add_item(true)">Přidat více objektů</button>
       <br>
-      <button mat-button (click)="add_group()">Add group</button>
+      <button mat-button (click)="add_group()">Přidat skupinu</button>
       <br>
-      <mat-slide-toggle [checked]="selecting_items" (change)="selecting_start($event)">Select items</mat-slide-toggle>
+      <mat-slide-toggle [checked]="selecting_items" (change)="selecting_start($event)">Vybrat objekty</mat-slide-toggle>
       <br>
 
       <mat-menu #itemGroupMenu="matMenu">
         <ng-template matMenuContent let-item="item">
           <form>
-            <a mat-menu-item (click)="move_item_to_a_group(item, null)">root group</a>
+            <a mat-menu-item (click)="move_item_to_a_group(item, null)">kořenová skupina</a>
             <a mat-menu-item *ngFor="let prefix of prefixes" (click)="move_item_to_a_group(item, prefix)"
                [disabled]="item?.path === prefix">{{prefix}}</a>
             <a mat-menu-item (click)="$event.stopPropagation(); false">
@@ -38,8 +38,8 @@
       </mat-menu>
       <mat-menu #itemMenu="matMenu">
         <ng-template matMenuContent let-item="item">
-          <a mat-menu-item (click)="remove_item(item)">Remove item</a>
-          <a mat-menu-item [matMenuTriggerFor]="itemGroupMenu" [matMenuTriggerData]="{item: item}">Move to a group</a>
+          <a mat-menu-item (click)="remove_item(item)">Odebrat objekt</a>
+          <a mat-menu-item [matMenuTriggerFor]="itemGroupMenu" [matMenuTriggerData]="{item: item}">Přesunout do skupiny</a>
         </ng-template>
       </mat-menu>
       <mat-menu #groupMenu="matMenu">
@@ -51,7 +51,7 @@
               </mat-form-field>
               <input type="submit" style="display: none" (click)="rename_group(prefix, inputElement.value)">
             </a>
-            <a mat-menu-item (click)="save_group(prefix)">Save as a digital group</a>
+            <a mat-menu-item (click)="save_group(prefix)">Uložit jako skupinu DO</a>
           </form>
         </ng-template>
       </mat-menu>
@@ -67,10 +67,10 @@
           </mat-checkbox>
           <span><span #xx="matMenuTrigger" [matMenuTriggerFor]="itemMenu" [matMenuTriggerData]="{item: item}"
                       class="hidden-trigger"></span>{{get_metadata(item, 'description')}}</span>
-          <button mat-icon-button (click)="add_container(item)" matTooltip="Add item to the canvas">
+          <button mat-icon-button (click)="add_container(item)" matTooltip="Přidat objekt na plátno">
             <mat-icon>add</mat-icon>
           </button>
-          <button mat-icon-button (click)="remove_item(item)" matTooltip="Removes item from the view">
+          <button mat-icon-button (click)="remove_item(item)" matTooltip="Odebere objekt z pohledu">
             <mat-icon>delete</mat-icon>
           </button>
         </li>
@@ -97,7 +97,7 @@
                     [matMenuTriggerData]="{prefix: prefix}" class="hidden-trigger"></span>
               {{prefix}}
               <button mat-icon-button (click)="remove_group(prefix);$event.stopPropagation();false"
-                      style="height: 18px" matTooltip="Remove all item belonging to this group from the view">
+                      style="height: 18px" matTooltip="Odebere všechny objekty skupiny z pohledu">
                 <mat-icon style="vertical-align: top; position: relative; top: -2px;">delete_sweep</mat-icon>
               </button>
             </mat-expansion-panel-header>
@@ -108,10 +108,10 @@
         </li>
       </ul>
       <button mat-raised-button *ngIf="selecting_items" [disabled]="selected_items.length === 0"
-              (click)="delete_selected()">Delete selected
+              (click)="delete_selected()">Odebrat zvolené
       </button>
       <button mat-raised-button *ngIf="selecting_items" [disabled]="selected_items.length === 0"
-              [matMenuTriggerFor]="itemGroupMenu" [matMenuTriggerData]="{item: null}">Move to a group
+              [matMenuTriggerFor]="itemGroupMenu" [matMenuTriggerData]="{item: null}">Přesunout do skupiny
       </button>
       <br><br>
       <div>
@@ -153,6 +153,6 @@
 </ng-container>
 <ng-template #loading>
   <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
-  Loading view, please wait
+  Načítám pohled, prosím vyčkejte.
 </ng-template>
 

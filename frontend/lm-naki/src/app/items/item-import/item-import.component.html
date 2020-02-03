@@ -1,9 +1,9 @@
-<a mat-raised-button class="mat-primary" [routerLink]="['/items']">< Back to list</a>
-<h1>Import Digital Items</h1>
+<a mat-raised-button class="mat-primary" [routerLink]="['/items']">< Zpět na seznam</a>
+<h1>Importovat Digitální objekty</h1>
 
-<button mat-raised-button (click)="reloadData()">Reload data</button>&nbsp;
-<button mat-raised-button class="mat-primary" [disabled]="selectedItems.size === 0" (click)="process_import()">Import
-  {{selectedItems.size}} items
+<button mat-raised-button (click)="reloadData()">Znovu načíst data</button>&nbsp;
+<button mat-raised-button class="mat-primary" [disabled]="selectedItems.size === 0" (click)="process_import()">Importovat 
+  {{selectedItems.size}} položek
 </button> <br>
 
 <form>
@@ -11,7 +11,7 @@
     <mat-select [(ngModel)]="selectedMime" (ngModelChange)="filter_items()" [ngModelOptions]="{standalone: true}"
                 placeholder="Select mime type">
       <mat-option [value]="null">
-        All files
+        Všechny typy souborů
       </mat-option>
       <mat-option *ngFor="let mime of mimeTypes" [value]="mime">{{mime}}</mat-option>
     </mat-select>
@@ -19,17 +19,17 @@
 
   <br>
   <mat-expansion-panel>
-    <mat-expansion-panel-header>Common metadata&nbsp; <span class="circle-bg mat-caption" *ngIf="common_metadata.length > 0">{{common_metadata.length}}</span></mat-expansion-panel-header>
+    <mat-expansion-panel-header>Společná metadata&nbsp; <span class="circle-bg mat-caption" *ngIf="common_metadata.length > 0">{{common_metadata.length}}</span></mat-expansion-panel-header>
     <app-meta-list [values]="common_metadata" [metakeys]="metakeys" [ignore_mandatory]="true"></app-meta-list>
 
   </mat-expansion-panel>
   <mat-expansion-panel>
-    <mat-expansion-panel-header>Digital Group</mat-expansion-panel-header>
-    <mat-checkbox [(ngModel)]="use_group" [ngModelOptions]="{standalone: true}">Use group</mat-checkbox>&nbsp;
-    <button mat-raised-button (click)="select_group()" [disabled]="!use_group">Select group</button>
+    <mat-expansion-panel-header>Skupina DO</mat-expansion-panel-header>
+    <mat-checkbox [(ngModel)]="use_group" [ngModelOptions]="{standalone: true}">Použít skupinu DO</mat-checkbox>&nbsp;
+    <button mat-raised-button (click)="select_group()" [disabled]="!use_group">Vybrat skupinu DO</button>
     <ng-container *ngIf="use_group">
-      <ng-container *ngIf="selected_group; else group_not_selected">Selected group {{selected_group?.id_group}} ({{get_metadata(selected_group, 'description')}})</ng-container>
-      <ng-template #group_not_selected>No group selected!</ng-template>
+      <ng-container *ngIf="selected_group; else group_not_selected">Vybraná skupina DO {{selected_group?.id_group}} ({{get_metadata(selected_group, 'description')}})</ng-container>
+      <ng-template #group_not_selected>Není vybrána žádná skupina DO!</ng-template>
     </ng-container>
   </mat-expansion-panel>
   <br>
@@ -42,24 +42,24 @@
 
     </split-area>
     <split-area [size]="70">
-      <mat-slide-toggle class="full-width" [(ngModel)]="show_used" (ngModelChange)="filter_items()" [ngModelOptions]="{standalone: true}">Show used files</mat-slide-toggle>
+      <mat-slide-toggle class="full-width" [(ngModel)]="show_used" (ngModelChange)="filter_items()" [ngModelOptions]="{standalone: true}">Zobrazit použité soubory</mat-slide-toggle>
       <br>
       <mat-progress-spinner [mode]="'indeterminate'" *ngIf="flat_tree === undefined"></mat-progress-spinner>
-      <div *ngIf="flat_tree !== undefined && loaded_path && flat_tree !== undefined">Directory {{loaded_path}}, total {{flat_tree?.length}} files<br></div>
+      <div *ngIf="flat_tree !== undefined && loaded_path && flat_tree !== undefined">Adresář {{loaded_path}}, celkem {{flat_tree?.length}} souborů<br></div>
       <table mat-table [dataSource]="flat_tree2" class="mat-elevation-z8 full-width" *ngIf="flat_tree2 !== undefined && flat_tree2?.length > 0">
 
       <ng-container matColumnDef="path">
-      <th mat-header-cell *matHeaderCellDef> Path</th>
+      <th mat-header-cell *matHeaderCellDef> Cesta</th>
       <td mat-cell *matCellDef="let element"> {{element.value.path}}</td>
       </ng-container>
 
       <ng-container matColumnDef="mime">
-      <th mat-header-cell *matHeaderCellDef> Mime</th>
+      <th mat-header-cell *matHeaderCellDef> Datový typ MIME</th>
       <td mat-cell *matCellDef="let element"> {{element.value.mime}}</td>
       </ng-container>
 
       <ng-container matColumnDef="check">
-      <th mat-header-cell *matHeaderCellDef> Select</th>
+      <th mat-header-cell *matHeaderCellDef> Vybrat</th>
       <td mat-cell *matCellDef="let element">
       <mat-checkbox class="mat-primary" [(ngModel)]="element.checked" [disabled]="element.value.used"
       [ngModelOptions]="{standalone: true}"
@@ -78,7 +78,7 @@
 
       <ng-container matColumnDef="import">
       <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length - 2">
-      <h4>Link: {{element.value.item.links[0].uri}}</h4>
+      <h4>Odkaz: {{element.value.item.links[0].uri}}</h4>
       <h4>Metadata</h4>
       <app-meta-list [metakeys]="metakeys" [values]="element.value.item.metadata"></app-meta-list>
       <!--<br>-->

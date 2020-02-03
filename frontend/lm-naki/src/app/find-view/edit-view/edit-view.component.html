@@ -1,11 +1,11 @@
 <table>
   <ng-container *ngIf="view?.id_view">
   <tr>
-    <th>ID</th>
+    <th>Identifikátor</th>
     <td>{{view.id_view}}</td>
   </tr>
   <tr>
-    <th>Author</th>
+    <th>Autor</th>
     <td>{{view?.id_user}}
     <ng-container *ngIf="view?.author">
       <br>{{view?.author?.fullname}}
@@ -14,12 +14,12 @@
     </td>
   </tr>
   <tr>
-    <th>Created</th>
+    <th>Vytvořeno</th>
     <td>{{view.created}}</td>
   </tr>
   </ng-container>
   <tr>
-    <th>Public</th>
+    <th>Ke zveřejnění</th>
     <td><mat-checkbox [(ngModel)]="view.public"></mat-checkbox></td>
   </tr>
   <tr>

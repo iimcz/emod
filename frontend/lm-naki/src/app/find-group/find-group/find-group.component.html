@@ -1,7 +1,7 @@
-<button mat-raised-button (click)="editGroup(null)"><mat-icon>add</mat-icon> Add new group</button>
+<button mat-raised-button (click)="editGroup(null)"><mat-icon>add</mat-icon> Přidat novou Skupinu DO</button>
 <form>
   <mat-form-field class="full-width">
-    <input matInput type="text" mat-input placeholder="Filter groups" #filterText>
+    <input matInput type="text" mat-input placeholder="Filtrovat Skupiny DO" #filterText>
   </mat-form-field>
 
 </form>
@@ -10,12 +10,12 @@
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
 
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID</th>
+      <th mat-header-cell *matHeaderCellDef> Identifikátor</th>
       <td mat-cell *matCellDef="let element"> {{element.id_group}}</td>
     </ng-container>
 
     <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Type</th>
+      <th mat-header-cell *matHeaderCellDef> Typ</th>
       <td mat-cell *matCellDef="let element"> {{element.type}}</td>
     </ng-container>
 
@@ -42,7 +42,7 @@
     </ng-container>
 
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description</th>
+      <th mat-header-cell *matHeaderCellDef> Popis</th>
       <td mat-cell *matCellDef="let element"> {{get_metadata(element, 'description')}} {{add_braces(get_metadata(element, 'part_name'))}}</td>
     </ng-container>
 

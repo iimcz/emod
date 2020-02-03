@@ -6,10 +6,10 @@
           <mat-select [ngModel]="link_type_base(link)"
                       (ngModelChange)="set_link_type_base(link, $event)"
                       [ngModelOptions]="{standalone: true}">
-            <mat-option value="annotation">Annotation</mat-option>
+            <mat-option value="annotation">Popisek</mat-option>
             <mat-option value="data">Data</mat-option>
-            <mat-option value="link">Link</mat-option>
-            <mat-option value="preview">Preview</mat-option>
+            <mat-option value="link">Odkaz</mat-option>
+            <mat-option value="preview">Náhled</mat-option>
           </mat-select>
           <button mat-button
                   matSuffix
@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <th colspan="2">
-        <button mat-raised-button (click)="add_empty_link()">Add link</button>
+        <button mat-raised-button (click)="add_empty_link()">Přidat odkaz</button>
       </th>
     </tr>
   </table>
