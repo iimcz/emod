@@ -246,12 +246,7 @@ export class NakiService {
   }
 
   public remove_item_from_group(id_group: string, id_item: string): Promise<APIResponse<DigitalGroup>> {
-    return new Promise<APIResponse<DigitalGroup>>((resolve, reject) => {
-      this.httpClient.delete<APIResponse<DigitalGroup>>(base_url + 'dig/' + id_group + '/item/' + id_item, {}).subscribe(res => {
-        console.log(res);
-        resolve(res);
-      });
-    });
+    return this.generic_request_delete<DigitalGroup>(this._join_path('dig', id_group, 'item', id_item), {});
   }
 
   public get_item(id: string): Promise<APIResponse<DigitalItem>> {
