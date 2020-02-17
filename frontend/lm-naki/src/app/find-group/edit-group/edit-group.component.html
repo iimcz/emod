@@ -1,26 +1,26 @@
 <table>
   <ng-container *ngIf="group?.id_group">
     <tr>
-      <th>ID</th>
+      <th>Identifikátor</th>
       <td>{{group.id_group}}</td>
     </tr>
     <tr>
-      <th>Author</th>
+      <th>Autor</th>
       <td>{{group.id_user}}</td>
     </tr>
     <tr>
-      <th>Created</th>
+      <th>Vytvořeno</th>
       <td>{{group.created}}</td>
     </tr>
   </ng-container>
   <tr>
-    <th>Type</th>
+    <th>Typ</th>
     <td>
       <mat-form-field>
         <mat-select [(ngModel)]="group.type">
-          <mat-option value="">Default</mat-option>
+          <mat-option value="">Základní</mat-option>
           <mat-option value="video">Video</mat-option>
-          <mat-option value="image">Images</mat-option>
+          <mat-option value="image">Obrázky</mat-option>
         </mat-select>
       </mat-form-field>
     </td>

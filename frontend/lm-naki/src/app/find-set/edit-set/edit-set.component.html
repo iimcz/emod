@@ -1,16 +1,16 @@
 <table>
   <ng-container *ngIf="set?.id_set">
     <tr>
-      <th>ID</th>
+      <th>Identifikátor</th>
       <td>{{set?.id_set}}</td>
     </tr>
     <tr>
-      <th>Created</th>
+      <th>Vytvořeno</th>
       <td>{{set.created}}</td>
     </tr>
   </ng-container>
   <tr>
-    <th>Author</th>
+    <th>Autor</th>
     <td>{{set?.id_user}}
       <ng-container *ngIf="set?.author">
         <br>{{set?.author?.fullname}}

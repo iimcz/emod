@@ -9,7 +9,7 @@
       </td>
     </tr>
   </table>
-  <h2>Digital Groups</h2>
+  <h2>Skupina digitálních objektů</h2>
   <ng-container *ngIf="dset.groups">
     <ng-container *ngFor="let dg of dset.groups">
       <button mat-icon-button (click)="delete_group(dg)"><mat-icon>delete</mat-icon></button>
@@ -20,14 +20,14 @@
     </ng-container>
   </ng-container>
 
-  <button mat-raised-button (click)="add_group()">Add group</button>
+  <button mat-raised-button (click)="add_group()">Přidat skupinu DO</button>
 
   <br>
-  <button mat-raised-button (click)="export_package(exportDialog)">Export SPI package</button>
+  <button mat-raised-button (click)="export_package(exportDialog)">Exportovat balíček SPI</button>
 </span>
 
 
 <ng-template #exportDialog>
-  <h1>Generating package</h1>
+  <h1>Generuji balíček</h1>
   <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
 </ng-template>

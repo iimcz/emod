@@ -1,8 +1,8 @@
-<h1>Digital items</h1>
+<h1>Digitální objekty</h1>
 
-<button mat-raised-button (click)="findItem.reloadData()">Reload data</button>&nbsp;
-<a mat-raised-button [routerLink]="can_edit() ? ['/items/import']: []" [disabled]="!can_edit()">Import</a>
-<a mat-raised-button [routerLink]="can_edit() ? ['/items/upload'] : []" [disabled]="!can_edit()">Upload</a>
+<button mat-raised-button (click)="findItem.reloadData()">Znovu načíst data</button>&nbsp;
+<a mat-raised-button [routerLink]="can_edit() ? ['/items/import']: []" [disabled]="!can_edit()">Import dat</a>
+<a mat-raised-button [routerLink]="can_edit() ? ['/items/upload'] : []" [disabled]="!can_edit()">Načíst soubor</a>
 <br><br>
 
 <app-find-item style="width: 100%" #findItem="FindItemComponent" [click_to_show]="true" [show_edit]="can_edit()"></app-find-item>

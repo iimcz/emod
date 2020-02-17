@@ -1,15 +1,15 @@
 <form *ngIf="item !== undefined">
   <table>
     <tr>
-      <th>ID</th>
+      <th>Identifikátor</th>
       <td>{{item.id_item}}</td>
     </tr>
     <tr>
-      <th>Created</th>
+      <th>Vytvořeno</th>
       <td>{{item.created}}</td>
     </tr>
     <tr>
-      <th>Mime</th>
+      <th>Datový typ MIME</th>
       <td>
         <mat-form-field>
           <input type="text" matInput [(ngModel)]="item.mime" name="mime">
@@ -17,7 +17,7 @@
       </td>
     </tr>
     <tr>
-      <th>Author</th>
+      <th>Autor</th>
       <td>
         <mat-form-field>
           <input type="text" matInput [(ngModel)]="item.id_user" name="author" [disabled]="true">
@@ -34,7 +34,7 @@
 
       <td colspan="2">
         <mat-expansion-panel>
-          <mat-expansion-panel-header><h2>Links</h2></mat-expansion-panel-header>
+          <mat-expansion-panel-header><h2>Odkazy</h2></mat-expansion-panel-header>
           <app-links-list [links]="item.links" [item]="item"></app-links-list>
         </mat-expansion-panel>
       </td>
@@ -46,7 +46,7 @@
       <td colspan="2">
         <mat-expansion-panel>
           <mat-expansion-panel-header><h2>Metadata</h2></mat-expansion-panel-header>
-          <button mat-raised-button (click)="modsFile.click()">Load MODS</button>
+          <button mat-raised-button (click)="modsFile.click()">Načíst MODS</button>
           <span style="display: none">
             <input type="file" #modsFile (change)="load_mods($event, modsFile)">
           </span>

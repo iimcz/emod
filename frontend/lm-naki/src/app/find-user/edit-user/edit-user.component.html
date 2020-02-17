@@ -1,11 +1,11 @@
 <table>
   <ng-container *ngIf="user !== undefined">
     <tr>
-      <th>ID</th>
+      <th>Identifikátor</th>
       <td>{{user?.id_user}}</td>
     </tr>
     <tr>
-      <th>Username</th>
+      <th>Uživatelské jméno</th>
       <td>
         <mat-form-field>
           <input type="text" matInput [(ngModel)]="user.username">
@@ -13,7 +13,7 @@
       </td>
     </tr>
     <tr>
-      <th>Full name</th>
+      <th>Celé jméno</th>
       <td>
         <mat-form-field>
           <input type="text" matInput [(ngModel)]="user.fullname">
@@ -22,8 +22,8 @@
     </tr>
     <tr>
       <th>
-        <ng-container *ngIf="!user?.id_user; else hasPW">Password</ng-container>
-        <ng-template #hasPW>Update password</ng-template>
+        <ng-container *ngIf="!user?.id_user; else hasPW">Heslo</ng-container>
+        <ng-template #hasPW>Aktualizovat heslo</ng-template>
       </th>
       <td>
         <mat-form-field>
@@ -32,21 +32,21 @@
       </td>
     </tr>
     <tr>
-      <th>Verify Password</th>
+      <th>Potvrdit heslo</th>
       <td><mat-form-field>
         <input type="password" matInput [(ngModel)]="passwd2">
         </mat-form-field>
       </td>
     </tr>
     <tr>
-      <th>Auth level</th>
+      <th>Role</th>
       <td>
         <mat-form-field>
           <mat-select [(ngModel)]="user.auth_level" name="auth_level" [disabled]="!nakiService.has_right(rights.Admin)">
-            <mat-option [value]="rights.Guest">Guest</mat-option>
-            <mat-option [value]="rights.Researcher">Researcher</mat-option>
+            <mat-option [value]="rights.Guest">Host</mat-option>
+            <mat-option [value]="rights.Researcher">Badatel</mat-option>
             <mat-option [value]="rights.Editor">Editor</mat-option>
-            <mat-option [value]="rights.Admin">Admin</mat-option>
+            <mat-option [value]="rights.Admin">Administrátor</mat-option>
           </mat-select>
         </mat-form-field>
       </td>

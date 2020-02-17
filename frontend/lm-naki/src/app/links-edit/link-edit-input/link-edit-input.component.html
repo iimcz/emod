@@ -1,6 +1,6 @@
 <ng-container *ngIf="link_type_base(link) === 'annotation'">
   <mat-form-field>
-    <mat-label>Time</mat-label>
+    <mat-label>Čas</mat-label>
     <input type="number" matInput
            [ngModel]="link_type_part(link, 1)"
            (ngModelChange)="set_link_type_part(link, 1, $event)"
@@ -8,7 +8,7 @@
   </mat-form-field>
   <br>
   <mat-form-field>
-    <mat-label>Duration</mat-label>
+    <mat-label>Doba</mat-label>
     <input type="number" matInput
            [ngModel]="link_type_part(link, 2)"
            (ngModelChange)="set_link_type_part(link, 2, $event)"
@@ -25,18 +25,18 @@
               (ngModelChange)="set_link_data_part(link, 0, $event)"
               [ngModelOptions]="{standalone: true}">
     <mat-option value="text">Text</mat-option>
-    <mat-option value="storage">Storage</mat-option>
-    <mat-option value="di">Digital Item</mat-option>
-    <mat-option value="dg">Digital Group</mat-option>
+    <mat-option value="storage">Úložiště</mat-option>
+    <mat-option value="di">Digitální objekt</mat-option>
+    <mat-option value="dg">Skupina digitálních objektů</mat-option>
   </mat-select>
 </mat-form-field><br>
 
   <ng-container *ngIf="get_link_data_part(link, 0) === 'di'">
-    <button mat-raised-button (click)="select_target()">Select item</button>
+    <button mat-raised-button (click)="select_target()">Vybrat objekt</button>
     <br>
   </ng-container>
 <ng-container *ngIf="get_link_data_part(link, 0) === 'dg'">
-  <button mat-raised-button (click)="select_target_group()">Select group</button>
+  <button mat-raised-button (click)="select_target_group()">Vybrat skupinu DO</button>
   <br>
 </ng-container>
 <mat-form-field>

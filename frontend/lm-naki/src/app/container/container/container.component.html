@@ -52,12 +52,12 @@
 </div>
 
 <mat-menu #containerMenu="matMenu">
-  <a mat-menu-item [mat-menu-trigger-for]="containerTypeMenu">Change type</a>
-  <a mat-menu-item [mat-menu-trigger-for]="moveZ">Position</a>
-  <a mat-menu-item [mat-menu-trigger-for]="removeItems" *ngIf="dis?.length > 1">Remove items</a>
-  <a mat-menu-item (click)="itemPlayer.annotate()">Annotate</a>
-  <a mat-menu-item (click)="create_annotation_container()">Create annotation container</a>
-  <a mat-menu-item>Other stuff</a>
+  <a mat-menu-item [mat-menu-trigger-for]="containerTypeMenu">Změnit typ</a>
+  <a mat-menu-item [mat-menu-trigger-for]="moveZ">Pozice</a>
+  <a mat-menu-item [mat-menu-trigger-for]="removeItems" *ngIf="dis?.length > 1">Odstranit objekty</a>
+  <a mat-menu-item (click)="itemPlayer.annotate()">Popsat</a>
+  <a mat-menu-item (click)="create_annotation_container()">Vytvořit blok popisku</a>
+  <a mat-menu-item>Ostatní věci</a>
 
 </mat-menu>
 
@@ -67,9 +67,9 @@
 </mat-menu>
 
 <mat-menu #moveZ="matMenu">
-  <a mat-menu-item>Current position {{container?.z}}</a>
-  <a mat-menu-item (click)="update_z(1)">Move up</a>
-  <a mat-menu-item (click)="update_z(-1)">Move down</a>
+  <a mat-menu-item>Aktuální pozice {{container?.z}}</a>
+  <a mat-menu-item (click)="update_z(1)">Posunout nahoru</a>
+  <a mat-menu-item (click)="update_z(-1)">Podunout dolů</a>
 </mat-menu>
 
 <mat-menu #removeItems="matMenu">
